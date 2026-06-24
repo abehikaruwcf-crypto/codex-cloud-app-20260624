@@ -228,6 +228,9 @@ requireText("scripts/apply-release-inputs.mjs", "--dry-run", "Release input scri
 requireText("scripts/apply-release-inputs.mjs", "https URL", "Release input script requires HTTPS URLs");
 requireText("tests/matching-and-learning.test.ts", "matching ranks the closest charm", "Matching ranking unit test exists");
 requireText("tests/matching-and-learning.test.ts", "learning merge keeps the latest examples", "Learning cap unit test exists");
+requireText("tests/matching-and-learning.test.ts", "backup validation rejects duplicate management numbers", "Backup duplicate validation unit test exists");
+requireText("tests/matching-and-learning.test.ts", "backup validation rejects incomplete six-angle models", "Backup angle validation unit test exists");
+requireText("src/backup.ts", "validateBackupPayload", "Backup validation module exists");
 requireText("scripts/print-app-store-metadata.mjs", "fieldLimits", "Metadata print includes field limits");
 requireText("scripts/print-app-store-metadata.mjs", "maxBytes: 100", "Metadata print validates keyword byte limit");
 requireText("scripts/print-app-store-metadata.mjs", "used > max", "Metadata print fails on field limit overflow");

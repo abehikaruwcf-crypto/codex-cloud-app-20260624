@@ -1,5 +1,10 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import {
+  normalizeBackupPayload,
+  normalizeManagementNumber,
+  validateBackupPayload,
+} from "../src/backup";
 import { captureAngles, Charm, CharmImage, ImageSignature } from "../src/domain";
 import {
   createLearningImages,
@@ -37,6 +42,10 @@ function charm(id: string, managementNumber: string, images: CharmImage[]): Char
 const gold = { red: 220, green: 174, blue: 72, brightness: 155 };
 const silver = { red: 166, green: 177, blue: 186, brightness: 176 };
 const dark = { red: 35, green: 45, blue: 50, brightness: 43 };
+const backupOptions = {
+  makeId: (prefix: string) => `${prefix}-generated`,
+  now: () => "2026-06-25T09:00:00.000Z",
+};
 
 test("matching ranks the closest charm first and returns candidates in descending score order", () => {
   const query = image("query-front", "表", { ...gold, red: 219 });
@@ -126,4 +135,95 @@ test("learning merge keeps the latest examples per angle and preserves registrat
     [...new Set(updatedCharm.images.map((updatedImage) => updatedImage.angleLabel))],
     captureAngles.slice(0, 2).map((angle) => angle.label),
   );
+});
+
+test("backup normalization uppercases and trims management numbers for import", () => {
+  const payload = normalizeBackupPayload(
+    {
+      charms: [
+        {
+          managementNumber: " ch-010  ",
+          images: captureAngles.map((angle) => image(`backup-${angle.id}`, angle.label, gold)),
+        },
+      ],
+      decisionLogs: [{ managementNumber: "ch-010", decision: "rejected" }],
+    },
+    backupOptions,
+  );
+
+  assert.equal(payload?.charms[0].managementNumber, "CH-010");
+  assert.equal(payload?.decisionLogs[0].decision, "rejected");
+  assert.equal(payload?.decisionLogs[0].learnedImages, 0);
+  assert.equal(payload?.exportedAt, "2026-06-25T09:00:00.000Z");
+});
+
+test("backup validation rejects duplicate management numbers after normalization", () => {
+  const payload = normalizeBackupPayload(
+    {
+      charms: [
+        {
+          managementNumber: "ch-020",
+          images: captureAngles.map((angle) => image(`first-${angle.id}`, angle.label, gold)),
+        },
+        {
+          managementNumber: " CH-020 ",
+          images: captureAngles.map((angle) => image(`second-${angle.id}`, angle.label, silver)),
+        },
+      ],
+    },
+    backupOptions,
+  );
+
+  assert.ok(payload);
+  assert.equal(
+    validateBackupPayload({ version: 1 }, payload),
+    "バックアップに重複した管理番号があります: CH-020",
+  );
+});
+
+test("backup validation rejects incomplete six-angle models", () => {
+  const payload = normalizeBackupPayload(
+    {
+      charms: [
+        {
+          managementNumber: "CH-030",
+          images: captureAngles
+            .filter((angle) => angle.label !== "下側面")
+            .map((angle) => image(`partial-${angle.id}`, angle.label, gold)),
+        },
+      ],
+    },
+    backupOptions,
+  );
+
+  assert.ok(payload);
+  assert.equal(
+    validateBackupPayload({ version: 1 }, payload),
+    "CH-030 の6方向写真が不足しています: 下側面",
+  );
+});
+
+test("backup validation rejects future backup versions before import", () => {
+  const payload = normalizeBackupPayload(
+    {
+      version: 2,
+      charms: [
+        {
+          managementNumber: "CH-040",
+          images: captureAngles.map((angle) => image(`future-${angle.id}`, angle.label, gold)),
+        },
+      ],
+    },
+    backupOptions,
+  );
+
+  assert.ok(payload);
+  assert.equal(
+    validateBackupPayload({ version: 2 }, payload),
+    "未対応のバックアップ形式です。version 2 は読み込めません。",
+  );
+});
+
+test("management number normalization collapses spaces for duplicate checks", () => {
+  assert.equal(normalizeManagementNumber(" ch   050 "), "CH 050");
 });

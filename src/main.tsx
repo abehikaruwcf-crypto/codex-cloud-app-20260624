@@ -2,6 +2,12 @@ import React, { ChangeEvent, Component, FormEvent, ReactNode, useEffect, useMemo
 import { createRoot } from "react-dom/client";
 import packageJson from "../package.json";
 import {
+  missingAngles,
+  normalizeBackupPayload,
+  normalizeManagementNumber,
+  validateBackupPayload,
+} from "./backup";
+import {
   angleSuggestions,
   BackupPayload,
   Candidate,
@@ -210,10 +216,6 @@ function makeId(prefix: string) {
   return `${prefix}-${crypto.randomUUID()}`;
 }
 
-function normalizeManagementNumber(value: string) {
-  return value.trim().replace(/\s+/g, " ").toUpperCase();
-}
-
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
@@ -313,10 +315,6 @@ function formatDate(value: string) {
   });
 }
 
-function missingAngles(images: CharmImage[]) {
-  return captureAngles.filter((angle) => !images.some((image) => image.angleLabel === angle.label));
-}
-
 function loadDecisions() {
   const stored = localStorage.getItem(DECISION_STORAGE_KEY);
 
@@ -332,135 +330,6 @@ function loadDecisions() {
   } catch {
     return [];
   }
-}
-
-function normalizeDecisionLog(value: unknown): DecisionLog | null {
-  if (!isRecord(value)) {
-    return null;
-  }
-
-  const decision = value.decision === "rejected" ? "rejected" : "confirmed";
-
-  return {
-    id: typeof value.id === "string" ? value.id : makeId("decision"),
-    managementNumber:
-      typeof value.managementNumber === "string" ? value.managementNumber : "UNKNOWN",
-    decision,
-    score: typeof value.score === "number" ? value.score : 0,
-    learnedImages: typeof value.learnedImages === "number" ? value.learnedImages : 0,
-    createdAt: typeof value.createdAt === "string" ? value.createdAt : new Date().toISOString(),
-  };
-}
-
-function normalizeCharmImage(value: unknown): CharmImage | null {
-  if (!isRecord(value)) {
-    return null;
-  }
-
-  const signature = isRecord(value.signature) ? value.signature : {};
-  const source =
-    value.source === "confirmed-identification" ? "confirmed-identification" : "registration";
-
-  return {
-    id: typeof value.id === "string" ? value.id : makeId("image"),
-    imageUrl: typeof value.imageUrl === "string" ? value.imageUrl : "",
-    angleLabel: typeof value.angleLabel === "string" ? value.angleLabel : captureAngles[0].label,
-    signature: {
-      red: typeof signature.red === "number" ? signature.red : 0,
-      green: typeof signature.green === "number" ? signature.green : 0,
-      blue: typeof signature.blue === "number" ? signature.blue : 0,
-      brightness: typeof signature.brightness === "number" ? signature.brightness : 0,
-    },
-    source,
-    createdAt: typeof value.createdAt === "string" ? value.createdAt : new Date().toISOString(),
-  };
-}
-
-function normalizeCharm(value: unknown): Charm | null {
-  if (!isRecord(value)) {
-    return null;
-  }
-
-  const images = Array.isArray(value.images)
-    ? value.images.map(normalizeCharmImage).filter((image): image is CharmImage => Boolean(image))
-    : [];
-
-  if (images.length === 0) {
-    return null;
-  }
-
-  const managementNumber =
-    typeof value.managementNumber === "string"
-      ? normalizeManagementNumber(value.managementNumber)
-      : "";
-
-  if (!managementNumber) {
-    return null;
-  }
-
-  return {
-    id: typeof value.id === "string" ? value.id : makeId("charm"),
-    managementNumber,
-    note: typeof value.note === "string" ? value.note : "",
-    images,
-    createdAt: typeof value.createdAt === "string" ? value.createdAt : new Date().toISOString(),
-  };
-}
-
-function normalizeBackupPayload(value: unknown): BackupPayload | null {
-  if (!isRecord(value) || !Array.isArray(value.charms)) {
-    return null;
-  }
-
-  const charms = value.charms
-    .map(normalizeCharm)
-    .filter((charm): charm is Charm => Boolean(charm));
-
-  if (charms.length === 0) {
-    return null;
-  }
-
-  const decisionLogs = Array.isArray(value.decisionLogs)
-    ? value.decisionLogs
-        .map(normalizeDecisionLog)
-        .filter((log): log is DecisionLog => Boolean(log))
-    : [];
-
-  return {
-    charms,
-    decisionLogs,
-    exportedAt:
-      typeof value.exportedAt === "string" ? value.exportedAt : new Date().toISOString(),
-    version: 1,
-  };
-}
-
-function validateBackupPayload(value: unknown, backup: BackupPayload) {
-  if (isRecord(value) && typeof value.version === "number" && value.version > 1) {
-    return `未対応のバックアップ形式です。version ${value.version} は読み込めません。`;
-  }
-
-  const seenManagementNumbers = new Set<string>();
-
-  for (const charm of backup.charms) {
-    const normalizedManagementNumber = normalizeManagementNumber(charm.managementNumber);
-
-    if (seenManagementNumbers.has(normalizedManagementNumber)) {
-      return `バックアップに重複した管理番号があります: ${normalizedManagementNumber}`;
-    }
-
-    seenManagementNumbers.add(normalizedManagementNumber);
-
-    const missingRequiredAngles = missingAngles(charm.images);
-
-    if (missingRequiredAngles.length > 0) {
-      return `${normalizedManagementNumber} の6方向写真が不足しています: ${missingRequiredAngles
-        .map((angle) => angle.label)
-        .join(" / ")}`;
-    }
-  }
-
-  return null;
 }
 
 function loadCharms() {
@@ -840,7 +709,10 @@ function App() {
     try {
       const text = await file.text();
       const parsed = JSON.parse(text) as unknown;
-      const backup = normalizeBackupPayload(parsed);
+      const backup = normalizeBackupPayload(parsed, {
+        makeId,
+        now: () => new Date().toISOString(),
+      });
 
       if (!backup) {
         setMessage("バックアップJSONを読み込めませんでした。形式を確認してください。");
