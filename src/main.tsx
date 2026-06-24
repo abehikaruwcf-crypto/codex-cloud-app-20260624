@@ -28,6 +28,8 @@ const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
 const APP_VERSION = packageJson.version;
 const CAMERA_PERMISSION_HELP =
   "カメラが開かない場合は、iPhoneの設定アプリで Charm ID > カメラ を許可し、この画面に戻って撮り直してください。写真ライブラリから選べる場合は、既存写真でも登録・識別できます。";
+const STORED_IMAGE_MAX_EDGE = 1024;
+const STORED_IMAGE_QUALITY = 0.82;
 
 type AppShotMode = "onboarding" | "register" | "identify" | "library";
 type LibrarySort = "recent" | "managementAsc" | "managementDesc";
@@ -229,13 +231,42 @@ async function fileToDataUrl(file: File): Promise<string> {
   });
 }
 
-async function signatureFromImage(imageUrl: string): Promise<ImageSignature> {
-  const image = await new Promise<HTMLImageElement>((resolve, reject) => {
+async function imageFromUrl(imageUrl: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = reject;
     img.src = imageUrl;
   });
+}
+
+async function fileToStoredImageUrl(file: File): Promise<string> {
+  const originalImageUrl = await fileToDataUrl(file);
+
+  if (file.type === "image/svg+xml") {
+    return originalImageUrl;
+  }
+
+  const image = await imageFromUrl(originalImageUrl);
+  const largestEdge = Math.max(image.naturalWidth, image.naturalHeight, 1);
+  const scale = Math.min(1, STORED_IMAGE_MAX_EDGE / largestEdge);
+  const width = Math.max(1, Math.round(image.naturalWidth * scale));
+  const height = Math.max(1, Math.round(image.naturalHeight * scale));
+  const canvas = document.createElement("canvas");
+  canvas.width = width;
+  canvas.height = height;
+  const context = canvas.getContext("2d");
+
+  if (!context) {
+    return originalImageUrl;
+  }
+
+  context.drawImage(image, 0, 0, width, height);
+  return canvas.toDataURL("image/jpeg", STORED_IMAGE_QUALITY);
+}
+
+async function signatureFromImage(imageUrl: string): Promise<ImageSignature> {
+  const image = await imageFromUrl(imageUrl);
 
   const canvas = document.createElement("canvas");
   const size = 48;
@@ -461,8 +492,8 @@ function App() {
 
     try {
       const nextImages = await Promise.all(
-        files.map(async (file, index) => {
-          const imageUrl = await fileToDataUrl(file);
+        files.map(async (file) => {
+          const imageUrl = await fileToStoredImageUrl(file);
           const signature = await signatureFromImage(imageUrl);
 
           return {
@@ -481,7 +512,7 @@ function App() {
         ...nextImages.slice(0, 1),
       ]);
     } catch {
-      setMessage("画像を読み込めませんでした。別の写真でもう一度試してください。");
+      setMessage("画像を処理できませんでした。別の写真でもう一度試してください。");
     } finally {
       setIsProcessing(false);
       event.target.value = "";
@@ -499,11 +530,11 @@ function App() {
     setMessage("");
 
     try {
-      const imageUrl = await fileToDataUrl(file);
-      const signature = await signatureFromImage(imageUrl);
+      const storedImageUrl = await fileToStoredImageUrl(file);
+      const signature = await signatureFromImage(storedImageUrl);
       const nextImage = {
         id: makeId("query"),
-        imageUrl,
+        imageUrl: storedImageUrl,
         signature,
         angleLabel,
         source: "confirmed-identification" as const,
@@ -1222,7 +1253,7 @@ function App() {
           <h3>このアプリについて</h3>
           <p>
             現在のバージョンでは、写真・管理番号・判定履歴はこの端末内に保存されます。
-            外部サーバーへのアップロードや広告トラッキングは行いません。
+            撮影写真は端末内保存前にサイズ調整され、外部サーバーへのアップロードや広告トラッキングは行いません。
           </p>
           <p>
             照合エンジンは公開前検証用のプロトタイプです。候補を確定する前に、管理番号を目視で確認してください。

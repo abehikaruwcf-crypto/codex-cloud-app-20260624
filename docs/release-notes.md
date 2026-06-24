@@ -20,6 +20,7 @@ Please test first launch, demo data, six-angle registration, camera-based identi
 
 - Guided six-angle registration: front, back, right side, left side, top side, and bottom side.
 - Camera/photo input for registration and identification.
+- Stored camera/photo images are resized and JPEG-compressed before local persistence.
 - Candidate ranking from the local matching engine.
 - Human-confirmed learning with confirmation before adding new examples.
 - Registered library with search, sorting, and detail view.

@@ -16,7 +16,7 @@ This draft applies to the current prototype release:
 - No analytics SDK.
 - No advertising SDK.
 - No third-party tracking.
-- User-entered item IDs and item photos stay on the device.
+- User-entered item IDs and resized item photos stay on the device.
 - Backup export creates a user-controlled local JSON file.
 
 If cloud sync, analytics, crash reporting, or AI server upload is added, this draft must be updated before submission.
