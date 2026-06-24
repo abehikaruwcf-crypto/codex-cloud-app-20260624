@@ -21,6 +21,11 @@ const requiredSteps = [
     expected: ['"screen": "App Information"', '"screen": "Build"', '"remainingManualScreens"'],
   },
   {
+    name: "App Store Connect field copy map",
+    script: "appstore:connect-fields",
+    expected: ['"purpose": "Flat App Store Connect field copy map', '"field": "Description"', '"blockedFields"'],
+  },
+  {
     name: "App Privacy answers",
     script: "appstore:privacy",
     expected: ['"sourceDoc": "docs/app-privacy-answers.md"', '"dataCollected": "No"', '"trackingDeclaredFalse": true'],
@@ -166,6 +171,7 @@ const preflight = {
     strictGate: "npm run appstore:verify -- --strict",
     status: "npm run appstore:status",
     submissionChecklist: "npm run appstore:submission-checklist",
+    connectFields: "npm run appstore:connect-fields",
     privacyPacket: "npm run appstore:privacy",
     screenshotPacket: "npm run appstore:screenshot-packet",
     xcodePacket: "npm run appstore:xcode-packet",

@@ -14,6 +14,7 @@ npm run appstore:status
 npm run appstore:metadata
 npm run appstore:connect-packet
 npm run appstore:submission-checklist
+npm run appstore:connect-fields
 npm run appstore:rating
 npm run appstore:accessibility
 npm run appstore:handoff
@@ -47,6 +48,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - `npm run appstore:metadata` prints the current App Store Connect listing values as JSON.
 - `npm run appstore:connect-packet` prints the complete App Store Connect transfer packet.
 - `npm run appstore:submission-checklist` prints a screen-by-screen App Store Connect submission checklist.
+- `npm run appstore:connect-fields` prints a flat App Store Connect copy map for field-by-field transfer.
 - `npm run appstore:privacy` prints the App Store Privacy answers and validates the local iOS privacy manifest assumptions.
 - `npm run appstore:rating` prints the current App Store age rating questionnaire draft.
 - `npm run appstore:accessibility` prints the current Accessibility Nutrition Labels draft.

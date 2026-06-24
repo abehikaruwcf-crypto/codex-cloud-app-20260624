@@ -157,6 +157,7 @@ fileExists("scripts/print-xcode-evidence-packet.mjs", "Xcode evidence packet scr
 fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print script");
 fileExists("scripts/print-app-store-connect-packet.mjs", "App Store Connect packet script");
 fileExists("scripts/print-app-store-submission-checklist.mjs", "App Store submission checklist script");
+fileExists("scripts/print-app-store-connect-fields.mjs", "App Store Connect field copy map script");
 fileExists("scripts/print-app-privacy-answers.mjs", "App Privacy answers print script");
 fileExists("scripts/print-app-age-rating-answers.mjs", "App age rating answers print script");
 fileExists("scripts/print-app-accessibility-answers.mjs", "App accessibility answers print script");
@@ -236,6 +237,7 @@ requireText("docs/app-store-submission-packet.md", "iOS development region: `ja`
 requireText("docs/app-store-submission-packet.md", "npm run appstore:metadata", "Submission packet includes metadata print command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:connect-packet", "Submission packet includes App Store Connect packet command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:submission-checklist", "Submission packet includes screen-by-screen checklist command");
+requireText("docs/app-store-submission-packet.md", "npm run appstore:connect-fields", "Submission packet includes field copy map command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:privacy", "Submission packet includes App Privacy command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:preflight", "Submission packet includes App Store preflight command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:rating", "Submission packet includes age rating command");
@@ -287,6 +289,7 @@ requireText("docs/app-store-submission-packet.md", "npm run appstore:xcode-packe
 requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
 requireText("package.json", "\"appstore:connect-packet\"", "App Store Connect packet script entry");
 requireText("package.json", "\"appstore:submission-checklist\"", "App Store submission checklist script entry");
+requireText("package.json", "\"appstore:connect-fields\"", "App Store Connect field copy map script entry");
 requireText("package.json", "\"appstore:privacy\"", "App Privacy script entry");
 requireText("package.json", "\"appstore:rating\"", "App age rating script entry");
 requireText("package.json", "\"appstore:accessibility\"", "App accessibility script entry");
@@ -344,6 +347,8 @@ requireText("tests/release-status-cli.test.ts", "exits nonzero while App Review 
 requireText("tests/app-privacy-answers.test.ts", "App Privacy packet maps local-only release answers", "App Privacy packet unit test exists");
 requireText("tests/app-store-preflight.test.ts", "App Store preflight stays parseable", "App Store preflight JSON unit test exists");
 requireText("tests/app-store-preflight.test.ts", "confirms every submission packet substep", "App Store preflight substep unit test exists");
+requireText("tests/app-store-connect-fields.test.ts", "field copy map exposes screen and field values", "App Store Connect field copy map unit test exists");
+requireText("tests/app-store-connect-fields.test.ts", "keeps manual blockers explicit", "App Store Connect field copy map blocker test exists");
 requireText("tests/app-store-submission-checklist.test.ts", "maps Connect packet into screen order", "App Store submission checklist unit test exists");
 requireText("tests/screenshot-evidence-packet.test.ts", "maps App Store image sets", "Screenshot evidence packet unit test exists");
 requireText("tests/xcode-evidence-packet.test.ts", "maps archive prerequisites to signoff fields", "Xcode evidence packet unit test exists");
@@ -437,6 +442,7 @@ requireText("README.md", "npm run appstore:status", "README includes release sta
 requireText("README.md", "npm run appstore:metadata", "README includes metadata print command");
 requireText("README.md", "npm run appstore:connect-packet", "README includes App Store Connect packet command");
 requireText("README.md", "npm run appstore:submission-checklist", "README includes submission checklist command");
+requireText("README.md", "npm run appstore:connect-fields", "README includes field copy map command");
 requireText("README.md", "npm run appstore:privacy", "README includes App Privacy command");
 requireText("README.md", "--copyright-holder", "README includes copyright holder input");
 requireText("README.md", "npm run appstore:rating", "README includes age rating command");
@@ -527,6 +533,7 @@ requireText("scripts/print-app-store-submission-checklist.mjs", "appstore:privac
 requireText("scripts/print-app-store-submission-checklist.mjs", "App Review Information", "Submission checklist includes review information screen");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:connect-packet", "Preflight includes App Store Connect packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:submission-checklist", "Preflight includes App Store submission checklist");
+requireText("scripts/print-app-store-preflight.mjs", "appstore:connect-fields", "Preflight includes App Store Connect field copy map");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:privacy", "Preflight includes App Privacy packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:rating", "Preflight includes age rating packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:accessibility", "Preflight includes accessibility packet");

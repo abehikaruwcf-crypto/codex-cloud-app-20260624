@@ -215,6 +215,7 @@ Use this table as the direct entry map for App Store Connect.
 | What's New | Run `npm run appstore:metadata` and copy `japaneseListing.whatsNew`. |
 | Full transfer packet | Run `npm run appstore:connect-packet`. |
 | Screen-by-screen submission checklist | Run `npm run appstore:submission-checklist`. |
+| Field-by-field copy map | Run `npm run appstore:connect-fields`. |
 | Submission preflight packet | Run `npm run appstore:preflight`. |
 | Screenshot evidence packet | Run `npm run appstore:screenshot-packet` after `npm run appstore:screenshots:submission`. |
 | Xcode upload steps | Use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md) and run `npm run appstore:xcode-packet`. |
