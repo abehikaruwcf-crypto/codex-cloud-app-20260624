@@ -54,7 +54,7 @@ npm run appstore:preflight
 - Accessibility Nutrition Labels from [app-accessibility-answers.md](app-accessibility-answers.md) match the tested release build.
 - App Review notes from [app-store-review-answers.md](app-store-review-answers.md) are entered in App Store Connect.
 - `npm run appstore:preflight` has been generated and reviewed against the App Store Connect entry screens.
-- `npm run appstore:evidence` has been generated on the release commit and reviewed against this signoff page.
+- `npm run appstore:evidence` has been generated on the release commit and reviewed against this signoff page, including the screenshot evidence packet.
 - `npm run appstore:evidence-check -- --strict` passes on the release commit.
 - `npm run appstore:status` reports `0 todo`.
 - `npm run appstore:audit` reports `0 fail`.

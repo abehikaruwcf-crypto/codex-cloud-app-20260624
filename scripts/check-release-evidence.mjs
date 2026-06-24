@@ -62,6 +62,24 @@ addCheck(
 );
 addCheck(
   checks,
+  evidence.screenshots?.packetGenerated === true &&
+    evidence.evidenceTargets?.screenshotDoc === "docs/app-store-screenshots.md",
+  "Screenshot evidence packet",
+  evidence.screenshots?.packetGenerated
+    ? "Screenshot evidence packet is included."
+    : "Run npm run appstore:screenshot-packet and check docs/app-store-screenshots.md.",
+);
+addCheck(
+  checks,
+  evidence.screenshots?.ready === true,
+  "Submission screenshots ready",
+  evidence.screenshots?.ready
+    ? "6.9 inch and 6.5 inch App Store screenshot sets are ready."
+    : "Run npm run appstore:screenshots:submission, then npm run appstore:screenshot-packet.",
+  true,
+);
+addCheck(
+  checks,
   evidence.releaseStatus?.todo === 0,
   "Release status TODOs",
   `${evidence.releaseStatus?.todo ?? "unknown"} todo`,

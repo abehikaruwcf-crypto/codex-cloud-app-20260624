@@ -24,6 +24,12 @@ Print the generated screenshot evidence packet with:
 npm run appstore:screenshot-packet
 ```
 
+The screenshot evidence packet is also included in:
+
+```bash
+npm run appstore:evidence
+```
+
 The App Store readiness audit also regenerates and validates this set:
 
 ```bash

@@ -54,6 +54,19 @@ function parseStatus(output) {
   };
 }
 
+function parseJsonOutput(output) {
+  const jsonStart = output.indexOf("{");
+  if (jsonStart === -1) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(output.slice(jsonStart));
+  } catch {
+    return null;
+  }
+}
+
 function remoteBranch(branch) {
   const result = run("git", ["ls-remote", "--heads", "origin", branch]);
   const sha = result.output.split(/\s+/)[0] || null;
@@ -141,7 +154,9 @@ const statusShort = run("git", ["status", "--short"]);
 const xcode = run("xcodebuild", ["-version"]);
 const releaseStatus = run("npm", ["run", "appstore:status"]);
 const publicUrls = run("npm", ["run", "appstore:public-urls"]);
+const screenshotPacket = run("npm", ["run", "appstore:screenshot-packet"]);
 const parsedStatus = parseStatus(releaseStatus.output);
+const parsedScreenshotPacket = parseJsonOutput(screenshotPacket.output);
 const pagesNotes = hasFile("docs/github-pages-workflow.md")
   ? read("docs/github-pages-workflow.md")
   : "";
@@ -184,10 +199,35 @@ const evidence = {
     publicUrlsReachable: publicUrls.ok,
     publicUrlCheckOutput: publicUrls.output,
   },
+  screenshots: {
+    command: "npm run appstore:screenshot-packet",
+    packetGenerated: screenshotPacket.ok && Boolean(parsedScreenshotPacket),
+    ready: parsedScreenshotPacket?.ready === true,
+    sourceDoc: parsedScreenshotPacket?.sourceDoc ?? null,
+    generationCommand: parsedScreenshotPacket?.generationCommand ?? null,
+    profiles:
+      parsedScreenshotPacket?.profiles?.map((profile) => ({
+        key: profile.key,
+        label: profile.label,
+        expectedSize: profile.expectedSize,
+        ready: profile.ready,
+        missing: profile.missing,
+        invalid: profile.invalid,
+        files: profile.files?.map((file) => ({
+          file: file.file,
+          path: file.path,
+          ok: file.ok,
+          exists: file.exists,
+          bytes: file.bytes,
+        })),
+      })) ?? [],
+  },
   evidenceTargets: {
     finalSignoff: "docs/app-review-final-signoff.md",
     testFlightChecklist: "docs/testflight-release-checklist.md",
     submissionPacket: "docs/app-store-submission-packet.md",
+    screenshotPacket: "npm run appstore:screenshot-packet",
+    screenshotDoc: "docs/app-store-screenshots.md",
     bundledPrivacyPage: "public/privacy.html",
     bundledSupportPage: "public/support.html",
     hostedPrivacyPageSource: "docs/privacy.html",
