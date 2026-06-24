@@ -149,6 +149,7 @@ fileExists("scripts/run-unit-tests.mjs", "Unit test runner");
 fileExists("scripts/validate-backup.mjs", "Backup validation CLI");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
 fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print script");
+fileExists("scripts/print-app-store-connect-packet.mjs", "App Store Connect packet script");
 fileExists("scripts/apply-release-inputs.mjs", "Release input application script");
 fileExists("scripts/verify-public-urls.mjs", "Public URL verification script");
 fileExists("scripts/verify-app-store-release.mjs", "App Store verification script");
@@ -205,6 +206,8 @@ requireText("docs/app-store-review-answers.md", "Sign-in required: No", "Review 
 requireText("docs/app-store-review-answers.md", "Expected rating: 4+", "Age rating draft");
 requireText("docs/app-store-review-answers.md", "custom cryptography", "Export compliance draft");
 requireText("docs/app-store-review-answers.md", "camera access is denied", "Review notes cover camera permission denial");
+requireText("docs/app-store-review-answers.md", "github.io/codex-cloud-app-20260624/support.html", "Review answers include final support URL");
+requireText("docs/app-store-review-answers.md", "npm run appstore:public-urls", "Review answers include public URL verification");
 requireText("docs/app-store-submission-packet.md", "app-store-review-answers.md", "Review answers linked from submission packet");
 requireText("docs/app-store-metadata.md", "Japanese Metadata Draft", "Japanese App Store metadata draft");
 requireText("docs/app-store-metadata.md", "小物を撮影して管理番号を確認", "Japanese subtitle draft");
@@ -212,6 +215,7 @@ requireText("docs/app-store-metadata.md", "管理番号,小物,チャーム,ア�
 requireText("docs/app-store-submission-packet.md", "Primary language: Japanese", "Submission packet primary language");
 requireText("docs/app-store-submission-packet.md", "iOS development region: `ja`", "Submission packet iOS development region");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:metadata", "Submission packet includes metadata print command");
+requireText("docs/app-store-submission-packet.md", "npm run appstore:connect-packet", "Submission packet includes App Store Connect packet command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:public-urls", "Submission packet includes public URL verification command");
 requireText("docs/app-store-submission-packet.md", "keywords 100 bytes", "Submission packet documents metadata limits");
 requireText("docs/app-store-submission-packet.md", "App Store Connect Entry Checklist", "Submission packet includes App Store Connect entry map");
@@ -237,6 +241,7 @@ requireText("package.json", "\"backup:validate\"", "Backup validation script ent
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
+requireText("package.json", "\"appstore:connect-packet\"", "App Store Connect packet script entry");
 requireText("package.json", "\"appstore:apply-inputs\"", "Release input application script entry");
 requireText("package.json", "\"appstore:public-urls\"", "Public URL verification script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
@@ -372,6 +377,18 @@ const metadataOk =
   metadata.output.includes('"subtitle": "小物を撮影して管理番号を確認"') &&
   metadata.output.includes('"maxBytes": 100');
 addCheck("App Store metadata print", metadataOk ? "pass" : "fail", metadata.output.split("\n").slice(-12).join("\n"));
+
+const connectPacket = run("npm", ["run", "appstore:connect-packet"]);
+const connectPacketOk =
+  connectPacket.ok &&
+  connectPacket.output.includes('"privacyPolicy": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html"') &&
+  connectPacket.output.includes('"support": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html"') &&
+  connectPacket.output.includes('"todo": 4');
+addCheck(
+  "App Store Connect packet print",
+  connectPacketOk ? "pass" : "fail",
+  connectPacket.output.split("\n").slice(-12).join("\n"),
+);
 
 const build = run("npm", ["run", "build"]);
 addCheck("Web production build", build.ok ? "pass" : "fail", build.output.split("\n").slice(-5).join("\n"));

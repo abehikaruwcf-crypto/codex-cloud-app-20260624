@@ -54,11 +54,11 @@ Before submission, confirm the final App Store Connect export compliance questio
 
 Required before submission:
 
-- Public support URL after hosting is enabled.
-- Public privacy policy URL after hosting is enabled.
+- Public support URL: `https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html`
+- Public privacy policy URL: `https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html`
 - Developer contact path for support requests, using a concrete `mailto:` link, email address, telephone contact, or legally required contact details.
 
-The repository currently includes `public/privacy.html`, `public/support.html`, and a GitHub Pages deployment template. Add the final hosted URLs and formal support contact before App Review submission.
+GitHub Pages is live from `pages-docs /docs`. Confirm both URLs with `npm run appstore:public-urls` before App Review submission. Add the final formal support and privacy contact before App Review submission.
 
 ## Final Manual Checks
 
