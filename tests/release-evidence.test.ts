@@ -47,3 +47,24 @@ test("release evidence includes hosted page sources and the current manual gate"
   assert.equal(evidence.publishing.publicUrlsReachable, true);
   assert.equal(evidence.nextStrictGate, "npm run appstore:verify -- --strict");
 });
+
+test("release evidence check allows manual TODOs by default and blocks strict mode", () => {
+  const defaultOutput = execFileSync("npm", ["run", "appstore:evidence-check"], {
+    cwd: repoRoot,
+    encoding: "utf8",
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+
+  assert.match(defaultOutput, /\[PASS\] Public App Store URLs/);
+  assert.match(defaultOutput, /\[TODO\] Final signoff readiness/);
+
+  assert.throws(
+    () =>
+      execFileSync("npm", ["run", "appstore:evidence-check", "--", "--strict"], {
+        cwd: repoRoot,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      }),
+    /Command failed/,
+  );
+});

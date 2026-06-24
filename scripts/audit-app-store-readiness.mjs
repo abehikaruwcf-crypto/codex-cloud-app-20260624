@@ -161,6 +161,7 @@ fileExists("scripts/apply-release-inputs.mjs", "Release input application script
 fileExists("scripts/verify-public-urls.mjs", "Public URL verification script");
 fileExists("scripts/verify-app-store-release.mjs", "App Store verification script");
 fileExists("scripts/generate-release-evidence.mjs", "Release evidence script");
+fileExists("scripts/check-release-evidence.mjs", "Release evidence check script");
 fileExists("scripts/set-release-version.mjs", "Release version script");
 fileExists("scripts/app-store-release-status.mjs", "Release status script");
 
@@ -273,6 +274,7 @@ requireText("package.json", "\"appstore:public-urls\"", "Public URL verification
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
 requireText("package.json", "\"appstore:verify\"", "App Store verification script entry");
 requireText("package.json", "\"appstore:evidence\"", "Release evidence script entry");
+requireText("package.json", "\"appstore:evidence-check\"", "Release evidence check script entry");
 requireText("package.json", "\"appstore:status\"", "Release status script entry");
 requireText("scripts/apply-release-inputs.mjs", "--support-contact", "Release input script accepts support contact");
 requireText("scripts/apply-release-inputs.mjs", "--privacy-contact", "Release input script accepts privacy contact");
@@ -290,6 +292,7 @@ requireText("tests/release-inputs-cli.test.ts", "pagesPrivacyPage", "Release inp
 requireText("tests/release-version-cli.test.ts", "keeps bundled and hosted support pages in sync", "Release version CLI Pages sync unit test exists");
 requireText("tests/release-evidence.test.ts", "exposes final signoff readiness", "Release evidence final signoff unit test exists");
 requireText("tests/release-evidence.test.ts", "includes hosted page sources", "Release evidence hosted source unit test exists");
+requireText("tests/release-evidence.test.ts", "blocks strict mode", "Release evidence strict check unit test exists");
 requireText("tests/release-status-cli.test.ts", "status is ready but evidence fields are blank", "Release status final signoff guard test exists");
 requireText("tests/release-status-cli.test.ts", "status and required evidence fields are filled", "Release status filled signoff test exists");
 requireText("tests/release-status-cli.test.ts", "exits nonzero while App Review TODOs remain", "Release status TODO-blocking test exists");
@@ -309,8 +312,12 @@ requireText("scripts/smoke-app-ui.mjs", "Dismissed restore confirmation should k
 requireText("scripts/verify-app-store-release.mjs", "appstore:status", "Verification script includes release status");
 requireText("scripts/verify-app-store-release.mjs", "appstore:public-urls", "Verification script includes public URL check");
 requireText("scripts/verify-app-store-release.mjs", "appstore:evidence", "Verification script includes release evidence");
+requireText("scripts/verify-app-store-release.mjs", "appstore:evidence-check", "Verification script includes release evidence check");
 requireText("scripts/verify-app-store-release.mjs", "--strict", "Verification script supports strict mode");
 requireText("scripts/verify-app-store-release.mjs", "Hard release verification passed", "Verification script allows manual TODOs");
+requireText("scripts/check-release-evidence.mjs", "Release evidence output did not include JSON", "Release evidence check parses evidence JSON");
+requireText("scripts/check-release-evidence.mjs", "Final signoff readiness", "Release evidence check verifies final signoff");
+requireText("scripts/check-release-evidence.mjs", "Full Xcode selected", "Release evidence check verifies Xcode");
 requireText("scripts/generate-release-evidence.mjs", "releaseStatus", "Release evidence includes status");
 requireText("scripts/generate-release-evidence.mjs", "finalSignoff", "Release evidence includes final signoff state");
 requireText("scripts/generate-release-evidence.mjs", "missingFields", "Release evidence includes missing final signoff fields");
@@ -370,6 +377,7 @@ requireText("README.md", "npm run appstore:screenshots:submission", "README incl
 requireText("README.md", "npm run appstore:signoff-draft", "README includes signoff draft command");
 requireText("README.md", "npm run appstore:preflight", "README includes App Store preflight command");
 requireText("README.md", "npm run appstore:evidence", "README includes evidence command");
+requireText("README.md", "npm run appstore:evidence-check", "README includes evidence check command");
 requireText("README.md", "npm run backup:validate", "README includes backup validation command");
 requireText("README.md", "npm run appstore:verify", "README includes verification command");
 requireText("README.md", "exits non-zero", "README explains release status failure behavior");
@@ -383,6 +391,7 @@ requireText("docs/app-review-final-signoff.md", "concrete support contact", "Fin
 requireText("docs/app-review-final-signoff.md", "concrete privacy contact", "Final signoff requires concrete privacy contact");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:status", "Final signoff includes release status evidence");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:evidence", "Final signoff includes evidence command");
+requireText("docs/app-review-final-signoff.md", "npm run appstore:evidence-check -- --strict", "Final signoff includes strict evidence check");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:signoff-draft", "Final signoff includes signoff draft command");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:preflight", "Final signoff includes preflight command");
 requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final signoff includes TODO resolution inputs");

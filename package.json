@@ -26,6 +26,7 @@
     "appstore:audit": "node scripts/audit-app-store-readiness.mjs",
     "appstore:verify": "node scripts/verify-app-store-release.mjs",
     "appstore:evidence": "node scripts/generate-release-evidence.mjs",
+    "appstore:evidence-check": "node scripts/check-release-evidence.mjs",
     "appstore:status": "node scripts/app-store-release-status.mjs"
   },
   "dependencies": {

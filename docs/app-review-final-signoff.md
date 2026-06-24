@@ -37,6 +37,7 @@ npm run appstore:preflight
 - App Review notes from [app-store-review-answers.md](app-store-review-answers.md) are entered in App Store Connect.
 - `npm run appstore:preflight` has been generated and reviewed against the App Store Connect entry screens.
 - `npm run appstore:evidence` has been generated on the release commit and reviewed against this signoff page.
+- `npm run appstore:evidence-check -- --strict` passes on the release commit.
 - `npm run appstore:status` reports `0 todo`.
 - `npm run appstore:audit` reports `0 fail`.
 - `npm run appstore:verify -- --strict` passes on the release commit.
