@@ -59,7 +59,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - `npm run appstore:xcode-packet` prints local Xcode archive readiness and the upload signoff field map.
 - `npm run appstore:signoff-draft` prints the current App Review signoff draft.
 - `npm run appstore:signoff-command` prints the final `appstore:apply-inputs` command with current repo evidence and placeholders for manual App Review values.
-- `npm run appstore:signoff-template` prints a JSON `release-inputs.json` template for final App Review evidence.
+- `npm run appstore:signoff-template` prints a JSON `release-inputs.json` template and field guide for final App Review evidence.
 - `npm run appstore:validate-inputs -- release-inputs.json` validates final release input values before applying them.
 - `npm run appstore:preflight` prints the App Store submission preflight packet and remaining manual TODOs.
 - `npm run appstore:apply-inputs -- --support-contact <contact> --privacy-contact <contact> --copyright-holder <holder>` applies final release contacts/copyright and can fill final signoff evidence; use `--inputs-file release-inputs.json` for the JSON template flow, and add `--mark-ready` only after every required field is present.

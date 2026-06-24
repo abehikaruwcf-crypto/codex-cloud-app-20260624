@@ -531,6 +531,8 @@ requireText("scripts/print-release-signoff-command.mjs", "npm run appstore:apply
 requireText("scripts/print-release-signoff-command.mjs", "--mark-ready", "Signoff command includes ready marker after placeholders");
 requireText("scripts/print-release-input-template.mjs", "release-inputs.json", "Signoff template prints JSON file name");
 requireText("scripts/print-release-input-template.mjs", "copyright-holder", "Signoff template includes copyright holder");
+requireText("scripts/print-release-input-template.mjs", "fieldGuide", "Signoff template includes field guide");
+requireText("scripts/print-release-input-template.mjs", "App Store Connect app information page", "Signoff template maps App Store Connect app ID source");
 requireText("scripts/print-release-input-template.mjs", "validateCommand", "Signoff template prints validation command");
 requireText("scripts/print-release-input-template.mjs", "appstore:apply-inputs -- --inputs-file", "Signoff template prints JSON apply command");
 requireText("scripts/print-app-store-submission-checklist.mjs", "remainingManualScreens", "Submission checklist reports manual screens");

@@ -27,6 +27,19 @@ test("release input template maps final signoff values to apply-inputs JSON", ()
   assert.equal(packet.template["support-url"], "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html");
   assert.equal(packet.template["copyright-holder"], "<copyright-holder>");
   assert.equal(packet.template["mark-ready"], false);
+  assert.deepEqual(
+    packet.fieldGuide.map((field: { key: string }) => field.key),
+    Object.keys(packet.template),
+  );
+  assert.ok(packet.fieldGuide.every((field: { purpose: string; source: string; example: unknown }) => field.purpose && field.source && "example" in field));
+  assert.equal(
+    packet.fieldGuide.find((field: { key: string }) => field.key === "app-store-connect-app-id")?.source,
+    "App Store Connect app information page after creating the app record.",
+  );
+  assert.equal(
+    packet.fieldGuide.find((field: { key: string }) => field.key === "strict-verification-result")?.source,
+    "npm run appstore:verify -- --strict",
+  );
   assert.ok(packet.placeholders.includes("support-contact"));
   assert.ok(packet.placeholders.includes("app-store-connect-app-id"));
   assert.ok(packet.placeholders.includes("copyright-holder"));
