@@ -104,6 +104,40 @@ h3 {
   line-height: 1.6;
 }
 
+.error-panel {
+  display: grid;
+  gap: 14px;
+  border: 1px solid rgba(138, 51, 40, 0.18);
+  border-radius: 8px;
+  padding: 18px;
+  background: #ffffff;
+}
+
+.error-panel p:not(.eyebrow) {
+  color: #5d6c73;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.error-panel div {
+  display: grid;
+  gap: 8px;
+}
+
+.error-panel button {
+  min-height: 46px;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #172026;
+  font-weight: 900;
+}
+
+.error-panel button:last-child {
+  color: #8a3328;
+  background: #f8e9e6;
+}
+
 .metrics-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));

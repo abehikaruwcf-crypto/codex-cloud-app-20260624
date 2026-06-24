@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
+import React, { ChangeEvent, Component, FormEvent, ReactNode, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   angleSuggestions,
@@ -20,6 +20,10 @@ const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
 const MAX_IMAGES_PER_ANGLE = 8;
 
 type AppShotMode = "onboarding" | "register" | "identify" | "library";
+
+type ErrorBoundaryState = {
+  hasError: boolean;
+};
 
 const angleSignatureOffsets: Record<string, Partial<ImageSignature>> = {
   表: { brightness: 0 },
@@ -122,6 +126,55 @@ function appShotMode(): AppShotMode | null {
   }
 
   return null;
+}
+
+function shouldShowSmokeError() {
+  return new URLSearchParams(window.location.search).get("smokeError") === "1";
+}
+
+class AppErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryState> {
+  state: ErrorBoundaryState = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    console.error("Charm ID render error", error);
+  }
+
+  resetLocalDataAndReload() {
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(DECISION_STORAGE_KEY);
+    window.location.href = window.location.pathname;
+  }
+
+  render() {
+    if (!this.state.hasError) {
+      return this.props.children;
+    }
+
+    return (
+      <main className="app-shell">
+        <section className="error-panel" role="alert">
+          <p className="eyebrow">Charm ID</p>
+          <h1>起動に失敗しました</h1>
+          <p>
+            一時的な読み込みエラー、または端末内データの破損が原因の可能性があります。
+            まずアプリを再起動し、改善しない場合は端末内データを初期化してください。
+          </p>
+          <div>
+            <button type="button" onClick={() => window.location.reload()}>
+              再読み込み
+            </button>
+            <button type="button" onClick={() => this.resetLocalDataAndReload()}>
+              端末内データを初期化
+            </button>
+          </div>
+        </section>
+      </main>
+    );
+  }
 }
 
 function demoDecisionLogs(): DecisionLog[] {
@@ -376,6 +429,10 @@ function onboardingDismissed() {
 }
 
 function App() {
+  if (shouldShowSmokeError()) {
+    throw new Error("Smoke test error boundary check");
+  }
+
   const shotMode = appShotMode();
   const [activeView, setActiveView] = useState<View>(
     shotMode === "register" ? "register" : shotMode === "library" ? "library" : "identify",
@@ -1110,6 +1167,8 @@ function App() {
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <AppErrorBoundary>
+      <App />
+    </AppErrorBoundary>
   </React.StrictMode>,
 );

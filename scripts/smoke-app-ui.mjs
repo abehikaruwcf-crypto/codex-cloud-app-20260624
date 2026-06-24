@@ -114,6 +114,15 @@ try {
   expect(fresh.onboardingTitle === "6方向登録と追加学習", "Fresh first launch should show onboarding.");
   expect(fresh.emptyLibrary?.includes("登録データがありません"), "Fresh empty library state should be present.");
 
+  await page.goto(`${baseUrl}/?smokeError=1`);
+  const errorState = await page.evaluate(() => ({
+    alertText: document.querySelector('[role="alert"]')?.textContent?.replace(/\s+/g, " ").trim() ?? "",
+    buttons: [...document.querySelectorAll(".error-panel button")].map((button) => button.textContent?.trim()),
+  }));
+  expect(errorState.alertText.includes("起動に失敗しました"), "Error boundary should show a recoverable startup failure.");
+  expect(errorState.buttons.includes("再読み込み"), "Error boundary should offer reload.");
+  expect(errorState.buttons.includes("端末内データを初期化"), "Error boundary should offer local data reset.");
+
   await page.goto(`${baseUrl}/?appshot=library`);
   const library = await readState(page);
   expect(library.count === "2件", "Library appshot should load two demo models.");
