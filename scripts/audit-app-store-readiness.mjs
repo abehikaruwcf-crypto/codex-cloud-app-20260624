@@ -188,6 +188,9 @@ requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation s
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
 requireText("package.json", "\"appstore:status\"", "Release status script entry");
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
+requireText("README.md", "npm run appstore:status", "README includes release status command");
+requireText("README.md", "docs/release-notes.md", "README links release notes");
+requireText("README.md", "public/support.html", "README references support page");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");
 

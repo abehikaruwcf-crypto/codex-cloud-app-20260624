@@ -9,7 +9,9 @@ npm install
 npm run dev
 npm run build
 npm run appstore:set-version -- 1.0 1
+npm run appstore:status
 npm run appstore:audit
+npm run ios:sync
 ```
 
 ## Product Direction
@@ -27,8 +29,27 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - [docs/app-store-roadmap.md](docs/app-store-roadmap.md) tracks the release path.
 - [docs/app-store-submission-packet.md](docs/app-store-submission-packet.md) consolidates App Store Connect inputs.
 - [docs/testflight-release-checklist.md](docs/testflight-release-checklist.md) covers the Xcode/TestFlight upload flow.
+- [docs/release-notes.md](docs/release-notes.md) contains the App Store What's New and TestFlight notes draft.
 - [docs/app-privacy-answers.md](docs/app-privacy-answers.md) documents the current local-only privacy answers.
-- `public/privacy.html` can be published through the GitHub Pages workflow template in [docs/github-pages-workflow.md](docs/github-pages-workflow.md) and used as the App Store privacy policy URL.
+- [docs/github-actions-app-store-readiness.md](docs/github-actions-app-store-readiness.md) contains the GitHub Actions readiness workflow template.
+- `public/privacy.html` and `public/support.html` can be published through the GitHub Pages workflow template in [docs/github-pages-workflow.md](docs/github-pages-workflow.md).
+
+Current release gate:
+
+```bash
+npm run appstore:status
+npm run appstore:audit
+npm run ios:sync
+```
+
+Known manual blockers before App Review:
+
+- Select full Xcode with `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`.
+- Select the Apple Developer Program team in Xcode.
+- Create the App Store Connect app record.
+- Publish final Privacy Policy and Support URLs.
+- Capture final App Store screenshots from the release build.
+- Run physical iPhone TestFlight validation.
 
 ## Codex Cloud
 
