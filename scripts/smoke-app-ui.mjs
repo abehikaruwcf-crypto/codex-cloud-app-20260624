@@ -98,6 +98,7 @@ async function readState(page) {
     privacyLink: document.querySelector('.app-info-panel a[href="/privacy.html"]')?.textContent?.trim() ?? null,
     supportLink: document.querySelector('.app-info-panel a[href="/support.html"]')?.textContent?.trim() ?? null,
     infoPanel: document.querySelector(".app-info-panel")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+    dataToolsText: document.querySelector(".data-tools")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     statusRole: document.querySelector(".status-message")?.getAttribute("role") ?? null,
     statusText: document.querySelector(".status-message")?.textContent?.trim() ?? null,
     librarySortValue: document.querySelector(".library-sort select")?.value ?? null,
@@ -164,6 +165,8 @@ try {
   expect(library.supportLink === "サポート", "Library should expose the support page link.");
   expect(library.infoPanel?.includes("端末内に保存"), "Library should explain local-only storage.");
   expect(library.infoPanel?.includes(`Version ${packageVersion}`), "Library should show the package version.");
+  expect(library.dataToolsText?.includes("リセット前や機種変更前"), "Library should explain backup before reset or migration.");
+  expect(library.dataToolsText?.includes("端末内データは、この画面から削除"), "Library should explain local data deletion.");
   await page.getByRole("button", { name: "詳細" }).first().click();
   const detailedLibrary = await readState(page);
   expect(detailedLibrary.libraryDetailImages === 6, "Library detail should render six angle images.");

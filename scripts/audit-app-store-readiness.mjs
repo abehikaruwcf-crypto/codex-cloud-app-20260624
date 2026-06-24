@@ -169,6 +169,8 @@ requireText("package.json", "\"version\"", "Package release version");
 requireText("public/privacy.html", "Charm ID Privacy Policy", "Privacy policy page title");
 requireText("public/support.html", "Charm ID Support", "Support page title");
 requireText("public/support.html", `Version ${packageVersion()}`, "Support page release version");
+requireText("public/support.html", "端末内データをリセット", "Support page explains local data reset");
+requireText("public/privacy.html", "端末内データをリセット", "Privacy page explains local data deletion");
 requireText("src/main.tsx", "APP_VERSION", "In-app release version display");
 requireText("src/main.tsx", 'href="/support.html"', "In-app support link");
 requireText("src/main.tsx", "追加学習しますか？", "Learning confirmation prompt");
