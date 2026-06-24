@@ -35,8 +35,8 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - Backup validation result:
 - Backup import result:
 - Strict verification result:
-- Final Privacy Policy URL:
-- Final Support URL:
+- Final Privacy Policy URL: https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html
+- Final Support URL: https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html
 - Support contact:
 - Privacy contact:
 - Signoff owner:

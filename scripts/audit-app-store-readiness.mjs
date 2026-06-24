@@ -139,6 +139,8 @@ fileExists("docs/testflight-release-checklist.md", "TestFlight release checklist
 fileExists("docs/app-review-final-signoff.md", "App Review final signoff");
 fileExists("public/privacy.html", "Public privacy policy page");
 fileExists("public/support.html", "Public support page");
+fileExists("docs/privacy.html", "Pages privacy policy page");
+fileExists("docs/support.html", "Pages support page");
 fileExists("docs/github-actions-app-store-readiness.md", "App Store readiness CI workflow template");
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
@@ -217,8 +219,8 @@ requireText("docs/github-actions-app-store-readiness.md", "macos-latest", "CI te
 requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:verify", "CI template runs verification gate");
 requireText("docs/github-actions-app-store-readiness.md", "-- --strict", "CI template documents strict verification");
 requireText("docs/github-pages-workflow.md", "gh-pages @", "Pages notes record published branch");
-requireText("docs/github-pages-workflow.md", "does not support GitHub Pages", "Pages notes record current plan blocker");
-requireText("docs/github-pages-workflow.md", "another public static host", "Pages notes include external hosting fallback");
+requireText("docs/github-pages-workflow.md", "Source: main /docs", "Pages notes record active Pages source");
+requireText("docs/github-pages-workflow.md", "github.io/codex-cloud-app-20260624/privacy.html", "Pages notes include final privacy URL");
 requireText("docs/github-pages-workflow.md", "/support.html", "Support page Pages URL");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
 requireText("docs/app-store-screenshots.md", "05-learning.jpg", "Screenshot docs include learning success shot");

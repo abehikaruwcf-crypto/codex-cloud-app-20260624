@@ -2,25 +2,25 @@
 
 ## Current Status
 
-The `gh-pages` branch has been created and pushed with the built static app:
+The repository is public and GitHub Pages is configured for a static public release page.
+The current App Store URL source is:
 
 ```text
-gh-pages @ a838c67 Publish Charm ID web build
+Source: main /docs
 ```
 
-GitHub Pages could not be enabled for the current private repository from this account plan:
+The `gh-pages` branch also exists with a built static app snapshot:
 
 ```text
-Your current plan does not support GitHub Pages for this repository.
+gh-pages @ 6060f23 Trigger GitHub Pages rebuild
 ```
 
-Before App Review, publish `privacy.html` and `support.html` through one of these paths:
+The final public URLs currently intended for App Store Connect are:
 
-- Make this repository public, then enable Pages from the `gh-pages` branch.
-- Upgrade or move the repository to a plan that supports Pages for private repositories.
-- Host the built `dist` output on another public static host such as Cloudflare Pages, Netlify, Vercel, S3, or a company website.
-
-The App Store Privacy Policy URL and Support URL must be final public URLs, not placeholders.
+```text
+https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html
+https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html
+```
 
 ## GitHub Actions Workflow Template
 
@@ -85,11 +85,11 @@ jobs:
 After enabling GitHub Pages with GitHub Actions, the privacy policy should be available at:
 
 ```text
-https://<owner>.github.io/<repo>/privacy.html
+https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html
 ```
 
 The App Store support page should be available at:
 
 ```text
-https://<owner>.github.io/<repo>/support.html
+https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html
 ```
