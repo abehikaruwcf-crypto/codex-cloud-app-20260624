@@ -14,6 +14,8 @@ function copyStatusFixture() {
     "package.json",
     "public/support.html",
     "public/privacy.html",
+    "docs/support.html",
+    "docs/privacy.html",
     "docs/github-pages-workflow.md",
     "docs/app-store-submission-packet.md",
     "docs/app-store-review-answers.md",

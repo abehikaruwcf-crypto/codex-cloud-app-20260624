@@ -13,6 +13,8 @@ function copyFixtureTree() {
   const paths = [
     "public/support.html",
     "public/privacy.html",
+    "docs/support.html",
+    "docs/privacy.html",
     "docs/github-pages-workflow.md",
     "docs/app-review-final-signoff.md",
   ];
@@ -107,6 +109,8 @@ test("release input CLI applies contacts, hosted URLs, and signoff evidence fiel
 
     const supportPage = readFileSync(join(fixtureRoot, "public/support.html"), "utf8");
     const privacyPage = readFileSync(join(fixtureRoot, "public/privacy.html"), "utf8");
+    const pagesSupportPage = readFileSync(join(fixtureRoot, "docs/support.html"), "utf8");
+    const pagesPrivacyPage = readFileSync(join(fixtureRoot, "docs/privacy.html"), "utf8");
     const hostingDocs = readFileSync(join(fixtureRoot, "docs/github-pages-workflow.md"), "utf8");
     const finalSignoff = readFileSync(join(fixtureRoot, "docs/app-review-final-signoff.md"), "utf8");
 
@@ -114,6 +118,10 @@ test("release input CLI applies contacts, hosted URLs, and signoff evidence fiel
     assert.doesNotMatch(supportPage, /正式なサポート連絡先/);
     assert.match(privacyPage, /mailto:privacy@example\.com/);
     assert.doesNotMatch(privacyPage, /具体的な連絡先/);
+    assert.match(pagesSupportPage, /mailto:support@example\.com/);
+    assert.doesNotMatch(pagesSupportPage, /正式なサポート連絡先/);
+    assert.match(pagesPrivacyPage, /mailto:privacy@example\.com/);
+    assert.doesNotMatch(pagesPrivacyPage, /具体的な連絡先/);
     assert.match(hostingDocs, /https:\/\/example\.com\/privacy\.html/);
     assert.match(hostingDocs, /https:\/\/example\.com\/support\.html/);
     assert.match(finalSignoff, /- Support contact: support@example\.com/);

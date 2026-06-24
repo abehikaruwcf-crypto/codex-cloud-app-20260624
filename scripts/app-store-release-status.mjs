@@ -58,6 +58,8 @@ const xcode = run("xcodebuild", ["-version"]);
 const xcodeSelected = xcode.ok && xcode.output.includes("Xcode");
 const supportPage = hasFile("public/support.html") ? readText("public/support.html") : "";
 const privacyPage = hasFile("public/privacy.html") ? readText("public/privacy.html") : "";
+const pagesSupportPage = hasFile("docs/support.html") ? readText("docs/support.html") : "";
+const pagesPrivacyPage = hasFile("docs/privacy.html") ? readText("docs/privacy.html") : "";
 const pagesWorkflow = hasFile("docs/github-pages-workflow.md") ? readText("docs/github-pages-workflow.md") : "";
 const finalSignoff = hasFile("docs/app-review-final-signoff.md")
   ? readText("docs/app-review-final-signoff.md")
@@ -68,8 +70,16 @@ const hasPrivacyPlaceholder =
   privacyPage.includes("アプリ提供元まで") || privacyPage.includes("お問い合わせは、アプリ提供元");
 const hasSupportContact = hasConcreteContact(supportPage);
 const hasPrivacyContact = hasConcreteContact(privacyPage);
-const formalSupportContactReady = !hasSupportPlaceholder && hasSupportContact;
-const privacyContactReady = !hasPrivacyPlaceholder && hasPrivacyContact;
+const pagesHasSupportPlaceholder =
+  pagesSupportPage.includes("正式なサポート連絡先") || pagesSupportPage.includes("配布元の担当者");
+const pagesHasPrivacyPlaceholder =
+  pagesPrivacyPage.includes("アプリ提供元まで") || pagesPrivacyPage.includes("お問い合わせは、アプリ提供元") || pagesPrivacyPage.includes("具体的な連絡先");
+const pagesHasSupportContact = hasConcreteContact(pagesSupportPage);
+const pagesHasPrivacyContact = hasConcreteContact(pagesPrivacyPage);
+const formalSupportContactReady =
+  !hasSupportPlaceholder && hasSupportContact && !pagesHasSupportPlaceholder && pagesHasSupportContact;
+const privacyContactReady =
+  !hasPrivacyPlaceholder && hasPrivacyContact && !pagesHasPrivacyPlaceholder && pagesHasPrivacyContact;
 const pagesBuildBlocked = /GitHub Pages build status:\s*(errored|failed)/i.test(pagesWorkflow);
 const hostedUrlsReady =
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/privacy.html") &&
@@ -115,15 +125,15 @@ const checks = [
     ok: formalSupportContactReady,
     title: "Formal support contact",
     detail: formalSupportContactReady
-      ? "public/support.html includes a concrete support contact."
-      : "Replace support-page placeholder with a concrete mailto, email address, or telephone contact.",
+      ? "public/support.html and docs/support.html include a concrete support contact."
+      : "Replace support-page placeholders with a concrete mailto, email address, or telephone contact.",
   },
   {
     ok: privacyContactReady,
     title: "Privacy policy contact",
     detail: privacyContactReady
-      ? "public/privacy.html includes a concrete privacy contact."
-      : "Replace privacy-page placeholder with a concrete mailto, email address, or telephone contact.",
+      ? "public/privacy.html and docs/privacy.html include a concrete privacy contact."
+      : "Replace privacy-page placeholders with a concrete mailto, email address, or telephone contact.",
   },
   {
     ok: hostedUrlsReady,
@@ -179,8 +189,8 @@ const manualBlockers = [
 
 const nextInputs = [
   "Run npm run appstore:apply-inputs -- --support-contact <contact> --privacy-contact <contact> after contacts are finalized.",
-  "public/support.html: replace the placeholder with a concrete app support contact.",
-  "public/privacy.html: replace the placeholder with a concrete privacy contact.",
+  "public/support.html and docs/support.html: replace the placeholder with a concrete app support contact.",
+  "public/privacy.html and docs/privacy.html: replace the placeholder with a concrete privacy contact.",
   ...(hostedUrlsReady
     ? []
     : [

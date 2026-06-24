@@ -100,35 +100,41 @@ function replaceOrThrow(content, search, replacement, label) {
 }
 
 function updateSupportPage(contact) {
-  const path = "public/support.html";
-  let content = read(path);
   const href = htmlEscape(contactHref(contact));
   const label = htmlEscape(contact);
   const replacement = `          Charm IDのサポート窓口は <a href="${href}">${label}</a> です。アプリの不具合、データ管理、App Store配布に関する問い合わせはこちらへご連絡ください。`;
+  const paths = ["public/support.html", "docs/support.html"];
 
-  content = replaceOrThrow(
-    content,
-    "          App Store公開前に、正式なサポート連絡先としてメールアドレス、電話番号、または法令上必要な連絡先をこのページに追加します。\n          TestFlightや社内検証中の問い合わせは、配布元の担当者へ連絡してください。",
-    replacement,
-    "support contact placeholder",
-  );
-  write(path, content);
+  for (const path of paths) {
+    let content = read(path);
+
+    content = replaceOrThrow(
+      content,
+      "          App Store公開前に、正式なサポート連絡先としてメールアドレス、電話番号、または法令上必要な連絡先をこのページに追加します。\n          TestFlightや社内検証中の問い合わせは、配布元の担当者へ連絡してください。",
+      replacement,
+      `${path} support contact placeholder`,
+    );
+    write(path, content);
+  }
 }
 
 function updatePrivacyPage(contact) {
-  const path = "public/privacy.html";
-  let content = read(path);
   const href = htmlEscape(contactHref(contact));
   const label = htmlEscape(contact);
   const replacement = `          本ポリシーに関する問い合わせ先は <a href="${href}">${label}</a> です。`;
+  const paths = ["public/privacy.html", "docs/privacy.html"];
 
-  content = replaceOrThrow(
-    content,
-    "          App Store公開前に、本ポリシーに関する具体的な連絡先としてメールアドレス、電話番号、または法令上必要な連絡先をこのページに追加します。",
-    replacement,
-    "privacy contact placeholder",
-  );
-  write(path, content);
+  for (const path of paths) {
+    let content = read(path);
+
+    content = replaceOrThrow(
+      content,
+      "          App Store公開前に、本ポリシーに関する具体的な連絡先としてメールアドレス、電話番号、または法令上必要な連絡先をこのページに追加します。",
+      replacement,
+      `${path} privacy contact placeholder`,
+    );
+    write(path, content);
+  }
 }
 
 function updateHostingDocs(privacyUrl, supportUrl) {
@@ -162,6 +168,8 @@ function updateFinalSignoff({ supportContact, privacyContact, privacyUrl, suppor
 const requiredFiles = [
   "public/support.html",
   "public/privacy.html",
+  "docs/support.html",
+  "docs/privacy.html",
   "docs/github-pages-workflow.md",
   "docs/app-review-final-signoff.md",
 ];

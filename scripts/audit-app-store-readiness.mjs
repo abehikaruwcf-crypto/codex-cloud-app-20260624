@@ -278,9 +278,13 @@ requireText("scripts/apply-release-inputs.mjs", "--privacy-url", "Release input 
 requireText("scripts/apply-release-inputs.mjs", "--support-url", "Release input script accepts support URL");
 requireText("scripts/apply-release-inputs.mjs", "--dry-run", "Release input script supports dry run");
 requireText("scripts/apply-release-inputs.mjs", "https URL", "Release input script requires HTTPS URLs");
+requireText("scripts/apply-release-inputs.mjs", "docs/support.html", "Release input script updates Pages support page");
+requireText("scripts/apply-release-inputs.mjs", "docs/privacy.html", "Release input script updates Pages privacy page");
 requireText("tests/release-inputs-cli.test.ts", "release input CLI validates dry-run inputs", "Release input CLI dry-run unit test exists");
 requireText("tests/release-inputs-cli.test.ts", "rejects non-https public URLs", "Release input CLI URL validation test exists");
 requireText("tests/release-inputs-cli.test.ts", "applies contacts, hosted URLs, and signoff evidence fields", "Release input CLI apply test exists");
+requireText("tests/release-inputs-cli.test.ts", "pagesSupportPage", "Release input CLI verifies Pages support contact update");
+requireText("tests/release-inputs-cli.test.ts", "pagesPrivacyPage", "Release input CLI verifies Pages privacy contact update");
 requireText("tests/release-status-cli.test.ts", "status is ready but evidence fields are blank", "Release status final signoff guard test exists");
 requireText("tests/release-status-cli.test.ts", "status and required evidence fields are filled", "Release status filled signoff test exists");
 requireText("tests/release-status-cli.test.ts", "exits nonzero while App Review TODOs remain", "Release status TODO-blocking test exists");
@@ -345,8 +349,10 @@ requireText("scripts/app-store-release-status.mjs", "Publishing status", "Releas
 requireText("scripts/app-store-release-status.mjs", "gh-pages branch", "Release status reports Pages branch readiness");
 requireText("scripts/app-store-release-status.mjs", "Pages-capable plan", "Release status reports hosting plan decision");
 requireText("scripts/app-store-release-status.mjs", "appstore:apply-inputs", "Release status points to input application command");
-requireText("scripts/app-store-release-status.mjs", "public/privacy.html: replace the placeholder", "Release status points to privacy contact input");
-requireText("scripts/app-store-release-status.mjs", "public/support.html: replace the placeholder", "Release status points to support contact input");
+requireText("scripts/app-store-release-status.mjs", "public/privacy.html and docs/privacy.html: replace the placeholder", "Release status points to privacy contact input");
+requireText("scripts/app-store-release-status.mjs", "public/support.html and docs/support.html: replace the placeholder", "Release status points to support contact input");
+requireText("scripts/app-store-release-status.mjs", "docs/privacy.html", "Release status checks Pages privacy contact");
+requireText("scripts/app-store-release-status.mjs", "docs/support.html", "Release status checks Pages support contact");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
 requireText("README.md", "npm run appstore:metadata", "README includes metadata print command");
 requireText("README.md", "npm run appstore:connect-packet", "README includes App Store Connect packet command");
