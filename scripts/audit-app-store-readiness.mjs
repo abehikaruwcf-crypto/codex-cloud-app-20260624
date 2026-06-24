@@ -261,6 +261,7 @@ requireText("scripts/app-store-release-status.mjs", "public/privacy.html: replac
 requireText("scripts/app-store-release-status.mjs", "public/support.html: replace the placeholder", "Release status points to support contact input");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
 requireText("README.md", "npm run appstore:metadata", "README includes metadata print command");
+requireText("README.md", "npm run backup:validate", "README includes backup validation command");
 requireText("README.md", "exits non-zero", "README explains release status failure behavior");
 requireText("README.md", "app-review-final-signoff.md", "README links final signoff");
 requireText("README.md", "docs/release-notes.md", "README links release notes");
@@ -273,11 +274,15 @@ requireText("docs/app-review-final-signoff.md", "concrete privacy contact", "Fin
 requireText("docs/app-review-final-signoff.md", "npm run appstore:status", "Final signoff includes release status evidence");
 requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final signoff includes TODO resolution inputs");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:apply-inputs", "Final signoff documents release input application command");
+requireText("docs/app-review-final-signoff.md", "Backup validation file", "Final signoff records backup validation file");
+requireText("docs/app-review-final-signoff.md", "Backup import result", "Final signoff records backup import result");
 requireText("docs/app-review-final-signoff.md", "Formal support contact", "Final signoff maps support contact TODO");
 requireText("docs/app-review-final-signoff.md", "Privacy policy contact", "Final signoff maps privacy contact TODO");
 requireText("docs/privacy-policy-draft.md", "Concrete contact information", "Privacy policy draft requires concrete contact");
 requireText("docs/app-store-review-answers.md", "concrete `mailto:` link", "Review answers require concrete support contact");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");
+requireText("docs/testflight-release-checklist.md", "npm run backup:validate", "TestFlight checklist includes backup validation");
+requireText("docs/testflight-release-checklist.md", "Exported backup filename", "TestFlight checklist records backup evidence");
 requireText("docs/testflight-release-checklist.md", "Status: Ready for App Review", "TestFlight checklist includes final signoff ready marker");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");
 requireText("docs/testflight-release-checklist.md", "Camera permission denial and retry path", "TestFlight checklist covers camera permission denial");

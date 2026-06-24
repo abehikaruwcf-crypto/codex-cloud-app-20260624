@@ -7,6 +7,7 @@ Use this checklist once full Xcode is installed and selected.
 ```bash
 npm install
 npm run appstore:set-version -- 1.0 1
+npm run backup:validate -- tests/fixtures/valid-backup.json
 npm run appstore:status
 npm run ios:sync
 npm run appstore:audit
@@ -50,9 +51,16 @@ Run on a physical iPhone:
 - Identify flow with one and multiple angles.
 - Correct-result selection and learning confirmation.
 - Backup export.
-- Backup import.
+- Validate the exported backup JSON with `npm run backup:validate -- <exported-backup.json>`.
+- Backup import after CLI validation.
 - Reset local data.
 - Camera permission denial and retry path.
+
+Record backup evidence:
+
+- Exported backup filename:
+- `npm run backup:validate` result:
+- Import result on physical iPhone:
 
 ## 4. Archive
 
@@ -82,6 +90,7 @@ After processing:
 - Capture final screenshots at required Apple sizes.
 - Publish privacy policy URL.
 - Complete [app-review-final-signoff.md](app-review-final-signoff.md) and mark `Status: Ready for App Review`.
+- Confirm final backup validation evidence is recorded in [app-review-final-signoff.md](app-review-final-signoff.md).
 - Confirm `npm run appstore:status` reports `0 todo`.
 - Re-run `npm run appstore:audit`.
 - Confirm no new SDK or cloud feature changed privacy answers.
