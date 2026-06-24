@@ -92,6 +92,8 @@ fileExists("docs/app-store-metadata.md", "App Store metadata draft");
 fileExists("docs/app-privacy-answers.md", "App privacy answers draft");
 fileExists("docs/privacy-policy-draft.md", "Privacy policy draft");
 fileExists("docs/app-store-screenshots.md", "Screenshot documentation");
+fileExists("docs/app-store-submission-packet.md", "Submission packet");
+fileExists("docs/testflight-release-checklist.md", "TestFlight release checklist");
 
 plistCheck("ios/App/App/Info.plist", "Info.plist is valid");
 plistCheck("ios/App/App/PrivacyInfo.xcprivacy", "Privacy manifest is valid");

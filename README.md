@@ -8,6 +8,7 @@ Mobile-first app concept for identifying physical charms from smartphone camera 
 npm install
 npm run dev
 npm run build
+npm run appstore:audit
 ```
 
 ## Product Direction
@@ -19,6 +20,13 @@ The app should support two main workflows:
 - Improve matching over time by adding user-confirmed identification photos back into the selected charm model.
 
 See [docs/product-requirements.md](docs/product-requirements.md) for the current requirements draft.
+
+## App Store Release Prep
+
+- [docs/app-store-roadmap.md](docs/app-store-roadmap.md) tracks the release path.
+- [docs/app-store-submission-packet.md](docs/app-store-submission-packet.md) consolidates App Store Connect inputs.
+- [docs/testflight-release-checklist.md](docs/testflight-release-checklist.md) covers the Xcode/TestFlight upload flow.
+- [docs/app-privacy-answers.md](docs/app-privacy-answers.md) documents the current local-only privacy answers.
 
 ## Codex Cloud
 

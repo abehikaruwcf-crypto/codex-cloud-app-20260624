@@ -23,6 +23,7 @@ Possible later variants:
 - Matching logic is isolated behind a replaceable matching engine.
 - Branded placeholder app icon and splash artwork are installed in the iOS asset catalog.
 - App Store readiness audit script is available through `npm run appstore:audit`.
+- Submission and TestFlight handoff docs are available in [app-store-submission-packet.md](app-store-submission-packet.md) and [testflight-release-checklist.md](testflight-release-checklist.md).
 
 ## Release-Quality Gaps
 
@@ -63,6 +64,7 @@ Possible later variants:
 - App privacy answers.
 - Privacy manifest validation.
 - Demo account or review instructions if login is required.
+- TestFlight checklist and App Store Connect submission packet.
 
 ## Proposed Milestones
 
@@ -93,6 +95,7 @@ The audit checks:
 - Web production build.
 - Capacitor iOS doctor.
 - Xcode availability.
+- Submission packet and TestFlight checklist docs.
 
 Known current warning:
 
