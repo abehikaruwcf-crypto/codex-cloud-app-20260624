@@ -95,6 +95,7 @@ async function readState(page) {
     completedIdentifyAngles: document.querySelectorAll(".compact-capture-protocol .angle-capture.is-complete").length,
     emptyLibrary: document.querySelector(".library-empty")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     privacyLink: document.querySelector('.app-info-panel a[href="/privacy.html"]')?.textContent?.trim() ?? null,
+    supportLink: document.querySelector('.app-info-panel a[href="/support.html"]')?.textContent?.trim() ?? null,
     infoPanel: document.querySelector(".app-info-panel")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     statusRole: document.querySelector(".status-message")?.getAttribute("role") ?? null,
     statusText: document.querySelector(".status-message")?.textContent?.trim() ?? null,
@@ -159,6 +160,7 @@ try {
   expect(library.activeHeading === "登録一覧", "Library appshot should open the library view.");
   expect(library.libraryCards === 2, "Library appshot should render two library cards.");
   expect(library.privacyLink === "プライバシーポリシー", "Library should expose the privacy policy link.");
+  expect(library.supportLink === "サポート", "Library should expose the support page link.");
   expect(library.infoPanel?.includes("端末内に保存"), "Library should explain local-only storage.");
   await page.getByRole("button", { name: "詳細" }).first().click();
   const detailedLibrary = await readState(page);

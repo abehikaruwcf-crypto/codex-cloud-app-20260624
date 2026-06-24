@@ -1326,6 +1326,9 @@ function App() {
           <a href="/privacy.html" target="_blank" rel="noreferrer">
             プライバシーポリシー
           </a>
+          <a href="/support.html" target="_blank" rel="noreferrer">
+            サポート
+          </a>
         </div>
 
         {decisionLogs.length > 0 ? (

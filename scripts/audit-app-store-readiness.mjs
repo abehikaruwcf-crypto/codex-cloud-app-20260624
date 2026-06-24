@@ -165,6 +165,7 @@ requireText("ios/App/App/Info.plist", "Charm ID", "Display name");
 requireText("package.json", "\"version\"", "Package release version");
 requireText("public/privacy.html", "Charm ID Privacy Policy", "Privacy policy page title");
 requireText("public/support.html", "Charm ID Support", "Support page title");
+requireText("src/main.tsx", 'href="/support.html"', "In-app support link");
 requireText("docs/app-store-review-answers.md", "Sign-in required: No", "Review sign-in answer");
 requireText("docs/app-store-review-answers.md", "Expected rating: 4+", "Age rating draft");
 requireText("docs/app-store-review-answers.md", "custom cryptography", "Export compliance draft");
