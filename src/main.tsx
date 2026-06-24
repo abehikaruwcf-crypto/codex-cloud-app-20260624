@@ -698,14 +698,28 @@ function App() {
   }
 
   function deleteCharm(charmId: string) {
-    const confirmed = window.confirm("この登録データを削除します。元に戻せません。実行しますか？");
+    const targetCharm = charms.find((charm) => charm.id === charmId);
 
-    if (!confirmed) {
+    if (!targetCharm) {
+      setMessage("削除対象の登録データが見つかりませんでした。");
+      return;
+    }
+
+    const typedManagementNumber = window.prompt(
+      `${targetCharm.managementNumber} を削除します。元に戻せません。削除する管理番号を入力してください。`,
+    );
+
+    if (
+      normalizeManagementNumber(typedManagementNumber ?? "") !==
+      normalizeManagementNumber(targetCharm.managementNumber)
+    ) {
+      setMessage("管理番号が一致しないため削除を中止しました。");
       return;
     }
 
     setCharms((current) => current.filter((charm) => charm.id !== charmId));
     setSelectedLibraryCharmId((current) => (current === charmId ? "" : current));
+    setMessage(`${targetCharm.managementNumber} を削除しました。`);
   }
 
   function clearQueryImages() {
@@ -864,11 +878,12 @@ function App() {
   }
 
   function resetLocalData() {
-    const confirmed = window.confirm(
-      "端末内の登録データ、学習写真、判定履歴を削除します。元に戻せません。実行しますか？",
+    const typedReset = window.prompt(
+      "端末内の登録データ、学習写真、判定履歴をすべて削除します。元に戻せません。実行するには RESET と入力してください。",
     );
 
-    if (!confirmed) {
+    if (typedReset !== "RESET") {
+      setMessage("RESET が入力されなかったため、端末内データのリセットを中止しました。");
       return;
     }
 
@@ -878,6 +893,7 @@ function App() {
     setDecisionLogs([]);
     setQueryImages([]);
     setImportSummary("");
+    setSelectedLibraryCharmId("");
     setMessage("端末内データをリセットしました。");
   }
 

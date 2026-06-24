@@ -165,6 +165,14 @@ try {
   expect(detailedLibrary.libraryDetailImages === 6, "Library detail should render six angle images.");
   expect(detailedLibrary.libraryDetailText?.includes("登録日"), "Library detail should show registration metadata.");
   expect(detailedLibrary.libraryDetailText?.includes("追加学習"), "Library detail should show learned image metadata.");
+  page.once("dialog", async (dialog) => {
+    expect(dialog.type() === "prompt", "Library deletion should require typed management number confirmation.");
+    await dialog.accept("WRONG");
+  });
+  await page.getByRole("button", { name: "削除" }).first().click();
+  await page.getByText("管理番号が一致しないため削除を中止しました。").waitFor({ timeout: 3000 });
+  const cancelledDeletionLibrary = await readState(page);
+  expect(cancelledDeletionLibrary.libraryCards === 2, "Wrong deletion confirmation should keep the model.");
   await page.getByPlaceholder("例: CH-001").fill("ch-002");
   const searchedLibrary = await readState(page);
   expect(searchedLibrary.libraryCards === 1, "Library search should filter to one model.");
@@ -201,6 +209,30 @@ try {
   );
   await page.locator('input[accept="application/json,.json"]').setInputFiles(duplicateBackupPath);
   await page.getByText("バックアップに重複した管理番号があります: CH-900").waitFor({ timeout: 3000 });
+  page.once("dialog", async (dialog) => {
+    expect(dialog.type() === "prompt", "Local reset should require typed RESET confirmation.");
+    await dialog.accept("NO");
+  });
+  await page.getByRole("button", { name: "端末内データをリセット" }).click();
+  await page.getByText("RESET が入力されなかったため、端末内データのリセットを中止しました。").waitFor({
+    timeout: 3000,
+  });
+  const cancelledResetLibrary = await readState(page);
+  expect(cancelledResetLibrary.libraryCards === 2, "Wrong reset confirmation should keep local models.");
+  page.once("dialog", async (dialog) => {
+    await dialog.accept("CH-001");
+  });
+  await page.getByRole("button", { name: "削除" }).first().click();
+  await page.getByText("CH-001 を削除しました。").waitFor({ timeout: 3000 });
+  const deletedLibrary = await readState(page);
+  expect(deletedLibrary.libraryCards === 1, "Matching deletion confirmation should remove one model.");
+  page.once("dialog", async (dialog) => {
+    await dialog.accept("RESET");
+  });
+  await page.getByRole("button", { name: "端末内データをリセット" }).click();
+  await page.getByText("端末内データをリセットしました。").waitFor({ timeout: 3000 });
+  const resetLibrary = await readState(page);
+  expect(resetLibrary.libraryCards === 0, "Matching reset confirmation should clear local models.");
 
   await page.goto(`${baseUrl}/?appshot=identify`);
   const identify = await readState(page);
