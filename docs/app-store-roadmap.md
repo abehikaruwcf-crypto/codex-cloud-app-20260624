@@ -94,6 +94,7 @@ The audit checks:
 - Generated development screenshots.
 - Web production build.
 - Capacitor iOS doctor.
+- Browser-based UI smoke test for first launch, library, identify, and register states.
 - Xcode availability.
 - Submission packet and TestFlight checklist docs.
 
