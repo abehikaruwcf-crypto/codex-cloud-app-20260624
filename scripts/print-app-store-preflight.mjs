@@ -26,6 +26,11 @@ const requiredSteps = [
     expected: ['"sourceDoc": "docs/app-accessibility-answers.md"', "Do not claim yet"],
   },
   {
+    name: "Screenshot evidence packet",
+    script: "appstore:screenshot-packet",
+    expected: ['"sourceDoc": "docs/app-store-screenshots.md"', '"generationCommand"', '"profiles"'],
+  },
+  {
     name: "TestFlight evidence packet",
     script: "appstore:testflight-packet",
     expected: ['"sourceDoc": "docs/testflight-release-checklist.md"', '"backupValidationCommand"', '"signoffCommandFragment"'],
@@ -126,6 +131,7 @@ const preflight = {
     hardGate: "npm run appstore:verify",
     strictGate: "npm run appstore:verify -- --strict",
     status: "npm run appstore:status",
+    screenshotPacket: "npm run appstore:screenshot-packet",
     testflightPacket: "npm run appstore:testflight-packet",
     signoffCommand: "npm run appstore:signoff-command",
   },

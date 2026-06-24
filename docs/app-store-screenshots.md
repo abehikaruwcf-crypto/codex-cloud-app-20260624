@@ -18,6 +18,12 @@ Generate App Store submission-size review assets with:
 npm run appstore:screenshots:submission
 ```
 
+Print the generated screenshot evidence packet with:
+
+```bash
+npm run appstore:screenshot-packet
+```
+
 The App Store readiness audit also regenerates and validates this set:
 
 ```bash

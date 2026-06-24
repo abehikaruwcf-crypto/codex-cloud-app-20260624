@@ -24,6 +24,12 @@ Generate the physical iPhone TestFlight evidence field map with:
 npm run appstore:testflight-packet
 ```
 
+Generate the App Store screenshot evidence packet with:
+
+```bash
+npm run appstore:screenshot-packet
+```
+
 Generate the current submission preflight packet with:
 
 ```bash

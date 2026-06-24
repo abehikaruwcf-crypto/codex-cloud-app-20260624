@@ -134,6 +134,12 @@ Generate App Store submission-size review assets with:
 npm run appstore:screenshots:submission
 ```
 
+Print the generated screenshot evidence packet with:
+
+```bash
+npm run appstore:screenshot-packet
+```
+
 `npm run appstore:audit` also regenerates the development screenshot set before validating image dimensions and file size.
 
 Final App Store screenshots still need to be reviewed against the release build before submission. The repository can now generate 6.9 inch `1320 x 2868` and 6.5 inch `1242 x 2688` portrait JPEG sets that match accepted App Store screenshot dimensions.
@@ -189,6 +195,7 @@ Use this table as the direct entry map for App Store Connect.
 | What's New | Run `npm run appstore:metadata` and copy `japaneseListing.whatsNew`. |
 | Full transfer packet | Run `npm run appstore:connect-packet`. |
 | Submission preflight packet | Run `npm run appstore:preflight`. |
+| Screenshot evidence packet | Run `npm run appstore:screenshot-packet` after `npm run appstore:screenshots:submission`. |
 | Xcode upload steps | Use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md). |
 | Final signoff draft | Run `npm run appstore:signoff-draft`. |
 | Final signoff apply command | Run `npm run appstore:signoff-command`, replace placeholders, then run the printed command after all manual checks pass. |
