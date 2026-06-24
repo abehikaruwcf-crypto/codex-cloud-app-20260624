@@ -66,6 +66,8 @@ async function readState(page) {
     completedRegisterAngles: document.querySelectorAll(".register-form .angle-card.is-complete").length,
     completedIdentifyAngles: document.querySelectorAll(".compact-capture-protocol .angle-capture.is-complete").length,
     emptyLibrary: document.querySelector(".library-empty")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+    privacyLink: document.querySelector('.app-info-panel a[href="/privacy.html"]')?.textContent?.trim() ?? null,
+    infoPanel: document.querySelector(".app-info-panel")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     topCandidate: document.querySelector(".match-summary h3")?.textContent?.trim() ?? null,
     qualityText: document.querySelector(".training-meter strong")?.textContent?.trim() ?? null,
   }));
@@ -113,6 +115,8 @@ try {
   expect(library.count === "2件", "Library appshot should load two demo models.");
   expect(library.activeHeading === "登録一覧", "Library appshot should open the library view.");
   expect(library.libraryCards === 2, "Library appshot should render two library cards.");
+  expect(library.privacyLink === "プライバシーポリシー", "Library should expose the privacy policy link.");
+  expect(library.infoPanel?.includes("端末内に保存"), "Library should explain local-only storage.");
 
   await page.goto(`${baseUrl}/?appshot=identify`);
   const identify = await readState(page);

@@ -1041,6 +1041,20 @@ function App() {
           {importSummary ? <strong>{importSummary}</strong> : null}
         </div>
 
+        <div className="app-info-panel">
+          <h3>このアプリについて</h3>
+          <p>
+            現在のバージョンでは、写真・管理番号・判定履歴はこの端末内に保存されます。
+            外部サーバーへのアップロードや広告トラッキングは行いません。
+          </p>
+          <p>
+            照合エンジンは公開前検証用のプロトタイプです。候補を確定する前に、管理番号を目視で確認してください。
+          </p>
+          <a href="/privacy.html" target="_blank" rel="noreferrer">
+            プライバシーポリシー
+          </a>
+        </div>
+
         {decisionLogs.length > 0 ? (
           <div className="decision-list">
             <h3>最近の判定</h3>
