@@ -23,6 +23,7 @@ Possible later variants:
 - Matching logic is isolated behind a replaceable matching engine.
 - Branded placeholder app icon and splash artwork are installed in the iOS asset catalog.
 - App Store readiness audit script is available through `npm run appstore:audit`.
+- GitHub Actions App Store readiness CI template is available in [github-actions-app-store-readiness.md](github-actions-app-store-readiness.md).
 - Release version sync is available through `npm run appstore:set-version -- <version> <build>`.
 - Submission and TestFlight handoff docs are available in [app-store-submission-packet.md](app-store-submission-packet.md) and [testflight-release-checklist.md](testflight-release-checklist.md).
 
@@ -99,6 +100,7 @@ The audit checks:
 - Xcode availability.
 - Package/Xcode release version sync.
 - Submission packet and TestFlight checklist docs.
+- GitHub Actions CI workflow template presence.
 
 Known current warning:
 

@@ -84,6 +84,8 @@ Recommended final screenshot set:
 
 ## Binary
 
+Before archiving, install the [App Store Readiness GitHub Actions template](github-actions-app-store-readiness.md) and confirm the workflow is green on the release commit.
+
 Archive from Xcode after running:
 
 ```bash

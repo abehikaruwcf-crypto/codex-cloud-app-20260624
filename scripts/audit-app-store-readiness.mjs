@@ -137,6 +137,7 @@ fileExists("docs/app-store-submission-packet.md", "Submission packet");
 fileExists("docs/testflight-release-checklist.md", "TestFlight release checklist");
 fileExists("public/privacy.html", "Public privacy policy page");
 fileExists("public/support.html", "Public support page");
+fileExists("docs/github-actions-app-store-readiness.md", "App Store readiness CI workflow template");
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
@@ -173,6 +174,8 @@ requireText("docs/app-store-review-answers.md", "Sign-in required: No", "Review 
 requireText("docs/app-store-review-answers.md", "Expected rating: 4+", "Age rating draft");
 requireText("docs/app-store-review-answers.md", "custom cryptography", "Export compliance draft");
 requireText("docs/app-store-submission-packet.md", "app-store-review-answers.md", "Review answers linked from submission packet");
+requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:audit", "CI template runs App Store audit");
+requireText("docs/github-actions-app-store-readiness.md", "macos-latest", "CI template runs on macOS");
 requireText("docs/github-pages-workflow.md", "/support.html", "Support page Pages URL");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
