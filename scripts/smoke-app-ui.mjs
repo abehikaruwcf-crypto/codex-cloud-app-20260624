@@ -230,6 +230,39 @@ try {
   );
   await page.locator('input[accept="application/json,.json"]').setInputFiles(duplicateBackupPath);
   await page.getByText("バックアップに重複した管理番号があります: CH-900").waitFor({ timeout: 3000 });
+  const validBackupPath = join(tmpdir(), `charm-id-valid-backup-${Date.now()}.json`);
+  writeFileSync(
+    validBackupPath,
+    JSON.stringify({
+      version: 1,
+      exportedAt: "2026-06-25T00:00:00.000Z",
+      charms: [backupCharm("restore-1", "CH-901")],
+      decisionLogs: [],
+    }),
+  );
+  page.once("dialog", async (dialog) => {
+    expect(dialog.type() === "confirm", "Backup restore should require replacement confirmation.");
+    expect(
+      dialog.message().includes("現在の端末内データを置き換えます"),
+      "Backup restore confirmation should warn about replacing local data.",
+    );
+    await dialog.dismiss();
+  });
+  await page.locator('input[accept="application/json,.json"]').setInputFiles(validBackupPath);
+  await page.getByText("バックアップ復元を中止しました。現在の端末内データは変更していません。").waitFor({
+    timeout: 3000,
+  });
+  const cancelledImportLibrary = await readState(page);
+  expect(cancelledImportLibrary.libraryCards === 2, "Dismissed restore confirmation should keep existing models.");
+  page.once("dialog", async (dialog) => {
+    await dialog.accept();
+  });
+  await page.locator('input[accept="application/json,.json"]').setInputFiles(validBackupPath);
+  await page.getByText("バックアップを復元しました。").waitFor({ timeout: 3000 });
+  const importedLibrary = await readState(page);
+  expect(importedLibrary.libraryCards === 1, "Accepted restore confirmation should replace local models.");
+  expect(importedLibrary.libraryCardTitles.includes("CH-901"), "Restored backup should show imported management number.");
+  await page.goto(`${baseUrl}/?appshot=library`);
   page.once("dialog", async (dialog) => {
     expect(dialog.type() === "prompt", "Local reset should require typed RESET confirmation.");
     await dialog.accept("NO");

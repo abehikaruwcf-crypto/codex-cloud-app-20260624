@@ -726,6 +726,19 @@ function App() {
         return;
       }
 
+      const hasExistingData = charms.length > 0 || decisionLogs.length > 0;
+
+      if (hasExistingData) {
+        const confirmed = window.confirm(
+          `バックアップ内の${backup.charms.length}件のモデルと${backup.decisionLogs.length}件の判定履歴で、現在の端末内データを置き換えます。続行しますか？`,
+        );
+
+        if (!confirmed) {
+          setMessage("バックアップ復元を中止しました。現在の端末内データは変更していません。");
+          return;
+        }
+      }
+
       setCharms(backup.charms);
       setDecisionLogs(backup.decisionLogs);
       setQueryImages([]);

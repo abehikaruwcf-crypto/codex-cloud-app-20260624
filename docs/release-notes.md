@@ -23,7 +23,7 @@ Please test first launch, demo data, six-angle registration, camera-based identi
 - Candidate ranking from the local matching engine.
 - Human-confirmed learning with confirmation before adding new examples.
 - Registered library with search, sorting, and detail view.
-- Local JSON backup export/import with validation.
+- Local JSON backup export/import with validation and replacement confirmation.
 - Duplicate management number prevention.
 - Local reset and destructive action safeguards.
 - Privacy policy and support pages.

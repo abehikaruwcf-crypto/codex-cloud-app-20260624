@@ -52,6 +52,8 @@ Run on a physical iPhone:
 - Backup export.
 - Validate the exported backup JSON with `npm run backup:validate -- <exported-backup.json>`.
 - Backup import after CLI validation.
+- Backup import cancellation keeps existing local data when the replacement confirmation is dismissed.
+- Backup import replacement succeeds only after accepting the replacement confirmation.
 - Reset local data.
 - Camera permission denial and retry path.
 
