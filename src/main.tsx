@@ -370,10 +370,18 @@ function normalizeCharm(value: unknown): Charm | null {
     return null;
   }
 
+  const managementNumber =
+    typeof value.managementNumber === "string"
+      ? normalizeManagementNumber(value.managementNumber)
+      : "";
+
+  if (!managementNumber) {
+    return null;
+  }
+
   return {
     id: typeof value.id === "string" ? value.id : makeId("charm"),
-    managementNumber:
-      typeof value.managementNumber === "string" ? value.managementNumber : "UNKNOWN",
+    managementNumber,
     note: typeof value.note === "string" ? value.note : "",
     images,
     createdAt: typeof value.createdAt === "string" ? value.createdAt : new Date().toISOString(),
@@ -406,6 +414,34 @@ function normalizeBackupPayload(value: unknown): BackupPayload | null {
       typeof value.exportedAt === "string" ? value.exportedAt : new Date().toISOString(),
     version: 1,
   };
+}
+
+function validateBackupPayload(value: unknown, backup: BackupPayload) {
+  if (isRecord(value) && typeof value.version === "number" && value.version > 1) {
+    return `未対応のバックアップ形式です。version ${value.version} は読み込めません。`;
+  }
+
+  const seenManagementNumbers = new Set<string>();
+
+  for (const charm of backup.charms) {
+    const normalizedManagementNumber = normalizeManagementNumber(charm.managementNumber);
+
+    if (seenManagementNumbers.has(normalizedManagementNumber)) {
+      return `バックアップに重複した管理番号があります: ${normalizedManagementNumber}`;
+    }
+
+    seenManagementNumbers.add(normalizedManagementNumber);
+
+    const missingRequiredAngles = missingAngles(charm.images);
+
+    if (missingRequiredAngles.length > 0) {
+      return `${normalizedManagementNumber} の6方向写真が不足しています: ${missingRequiredAngles
+        .map((angle) => angle.label)
+        .join(" / ")}`;
+    }
+  }
+
+  return null;
 }
 
 function loadCharms() {
@@ -740,6 +776,13 @@ function App() {
 
       if (!backup) {
         setMessage("バックアップJSONを読み込めませんでした。形式を確認してください。");
+        return;
+      }
+
+      const validationError = validateBackupPayload(parsed, backup);
+
+      if (validationError) {
+        setMessage(validationError);
         return;
       }
 

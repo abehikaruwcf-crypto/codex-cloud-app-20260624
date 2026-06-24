@@ -1,5 +1,8 @@
 import { spawn } from "node:child_process";
+import { writeFileSync } from "node:fs";
 import { createServer } from "node:net";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { chromium } from "playwright";
 
@@ -54,6 +57,27 @@ function expect(condition, message) {
   if (!condition) {
     throw new Error(message);
   }
+}
+
+function backupImage(angleLabel) {
+  return {
+    id: `backup-${angleLabel}`,
+    imageUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3C/svg%3E",
+    angleLabel,
+    signature: { red: 0, green: 0, blue: 0, brightness: 0 },
+    source: "registration",
+    createdAt: "2026-06-25T00:00:00.000Z",
+  };
+}
+
+function backupCharm(id, managementNumber) {
+  return {
+    id,
+    managementNumber,
+    note: "",
+    createdAt: "2026-06-25T00:00:00.000Z",
+    images: ["表", "裏", "右側面", "左側面", "上側面", "下側面"].map(backupImage),
+  };
 }
 
 async function readState(page) {
@@ -131,6 +155,18 @@ try {
   expect(library.libraryCards === 2, "Library appshot should render two library cards.");
   expect(library.privacyLink === "プライバシーポリシー", "Library should expose the privacy policy link.");
   expect(library.infoPanel?.includes("端末内に保存"), "Library should explain local-only storage.");
+  const duplicateBackupPath = join(tmpdir(), `charm-id-duplicate-backup-${Date.now()}.json`);
+  writeFileSync(
+    duplicateBackupPath,
+    JSON.stringify({
+      version: 1,
+      exportedAt: "2026-06-25T00:00:00.000Z",
+      charms: [backupCharm("duplicate-1", "CH-900"), backupCharm("duplicate-2", "ch-900")],
+      decisionLogs: [],
+    }),
+  );
+  await page.locator('input[accept="application/json,.json"]').setInputFiles(duplicateBackupPath);
+  await page.getByText("バックアップに重複した管理番号があります: CH-900").waitFor({ timeout: 3000 });
 
   await page.goto(`${baseUrl}/?appshot=identify`);
   const identify = await readState(page);
