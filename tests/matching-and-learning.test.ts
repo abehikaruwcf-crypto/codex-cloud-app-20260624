@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import {
+  createBackupPayload,
   normalizeBackupPayload,
   normalizeManagementNumber,
   validateBackupPayload,
@@ -226,4 +227,31 @@ test("backup validation rejects future backup versions before import", () => {
 
 test("management number normalization collapses spaces for duplicate checks", () => {
   assert.equal(normalizeManagementNumber(" ch   050 "), "CH 050");
+});
+
+test("backup export payload validates the current six-angle dataset before download", () => {
+  const payload = createBackupPayload(
+    [
+      charm(
+        "complete",
+        "CH-060",
+        captureAngles.map((angle) => image(`complete-${angle.id}`, angle.label, gold)),
+      ),
+    ],
+    [
+      {
+        id: "decision-1",
+        managementNumber: "CH-060",
+        decision: "confirmed",
+        score: 99,
+        learnedImages: 1,
+        createdAt: "2026-06-25T09:00:00.000Z",
+      },
+    ],
+    { now: () => "2026-06-25T09:30:00.000Z" },
+  );
+
+  assert.equal(payload.version, 1);
+  assert.equal(payload.exportedAt, "2026-06-25T09:30:00.000Z");
+  assert.equal(validateBackupPayload(payload, payload), null);
 });

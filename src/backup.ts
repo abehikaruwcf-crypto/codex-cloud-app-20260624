@@ -12,6 +12,10 @@ type BackupNormalizeOptions = {
   now: () => string;
 };
 
+type BackupCreateOptions = {
+  now: () => string;
+};
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
@@ -136,6 +140,19 @@ export function normalizeBackupPayload(
     charms,
     decisionLogs,
     exportedAt: typeof value.exportedAt === "string" ? value.exportedAt : options.now(),
+    version: 1,
+  };
+}
+
+export function createBackupPayload(
+  charms: Charm[],
+  decisionLogs: DecisionLog[],
+  options: BackupCreateOptions,
+): BackupPayload {
+  return {
+    charms,
+    decisionLogs,
+    exportedAt: options.now(),
     version: 1,
   };
 }

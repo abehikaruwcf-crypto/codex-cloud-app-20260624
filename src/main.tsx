@@ -2,6 +2,7 @@ import React, { ChangeEvent, Component, FormEvent, ReactNode, useEffect, useMemo
 import { createRoot } from "react-dom/client";
 import packageJson from "../package.json";
 import {
+  createBackupPayload,
   missingAngles,
   normalizeBackupPayload,
   normalizeManagementNumber,
@@ -9,7 +10,6 @@ import {
 } from "./backup";
 import {
   angleSuggestions,
-  BackupPayload,
   Candidate,
   captureAngles,
   Charm,
@@ -716,11 +716,17 @@ function App() {
   }
 
   function exportDataset() {
-    const payload = JSON.stringify(
-      { charms, decisionLogs, exportedAt: new Date().toISOString(), version: 1 },
-      null,
-      2,
-    );
+    const backup = createBackupPayload(charms, decisionLogs, {
+      now: () => new Date().toISOString(),
+    });
+    const validationError = validateBackupPayload(backup, backup);
+
+    if (validationError) {
+      setMessage(`バックアップを書き出せませんでした。${validationError}`);
+      return;
+    }
+
+    const payload = JSON.stringify(backup, null, 2);
     const blob = new Blob([payload], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
