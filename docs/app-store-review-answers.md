@@ -22,6 +22,12 @@ If camera access is denied during review, the capture screens show recovery guid
 
 ## Age Rating Draft
 
+Use [app-age-rating-answers.md](app-age-rating-answers.md) as the source draft. Print the current questionnaire packet with:
+
+```bash
+npm run appstore:rating
+```
+
 Expected rating: 4+
 
 Current content assumptions:

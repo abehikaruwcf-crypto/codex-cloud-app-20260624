@@ -119,6 +119,7 @@ const publicUrlsResult = run("npm", ["run", "appstore:public-urls"]);
 const statusResult = run("npm", ["run", "appstore:status"]);
 const metadata = metadataResult.ok ? JSON.parse(metadataResult.output.slice(metadataResult.output.indexOf("{"))) : null;
 const releaseNotes = read("docs/release-notes.md");
+const ageRatingAnswers = read("docs/app-age-rating-answers.md");
 const privacyAnswers = read("docs/app-privacy-answers.md");
 const accessibilityAnswers = read("docs/app-accessibility-answers.md");
 const reviewAnswers = read("docs/app-store-review-answers.md");
@@ -168,6 +169,12 @@ const packet = {
     signInRequired: metadata.review.signInRequired,
     demoAccountRequired: metadata.review.demoAccountRequired,
     notes: metadata.review.notes,
+    ageRating: {
+      expectedRating: metadata.identity.ageRatingExpectation,
+      answers: "docs/app-age-rating-answers.md",
+      questionnaireDraft: section(ageRatingAnswers, "## Questionnaire Draft"),
+      capabilityNotes: section(ageRatingAnswers, "## Capability Notes"),
+    },
     exportCompliance: "No custom cryptography; confirm final App Store Connect answers before submission.",
     contentRights: section(reviewAnswers, "## Content Rights Draft"),
   },
@@ -202,6 +209,7 @@ const packet = {
     "docs/app-store-submission-packet.md",
     "docs/app-store-metadata.md",
     "docs/app-store-review-answers.md",
+    "docs/app-age-rating-answers.md",
     "docs/app-privacy-answers.md",
     "docs/app-accessibility-answers.md",
     "docs/release-notes.md",

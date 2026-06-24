@@ -13,6 +13,7 @@ npm run backup:validate -- tests/fixtures/valid-backup.json
 npm run appstore:status
 npm run appstore:metadata
 npm run appstore:connect-packet
+npm run appstore:rating
 npm run appstore:accessibility
 npm run appstore:screenshots:submission
 npm run appstore:signoff-draft
@@ -38,6 +39,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - [docs/app-store-submission-packet.md](docs/app-store-submission-packet.md) consolidates App Store Connect inputs.
 - `npm run appstore:metadata` prints the current App Store Connect listing values as JSON.
 - `npm run appstore:connect-packet` prints the complete App Store Connect transfer packet.
+- `npm run appstore:rating` prints the current App Store age rating questionnaire draft.
 - `npm run appstore:accessibility` prints the current Accessibility Nutrition Labels draft.
 - `npm run appstore:screenshots:submission` generates 6.9 inch and 6.5 inch App Store screenshot-size review assets.
 - `npm run appstore:signoff-draft` prints the current App Review signoff draft.
@@ -64,6 +66,7 @@ Known manual blockers before App Review:
 - Select full Xcode with `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`.
 - Select the Apple Developer Program team in Xcode.
 - Create the App Store Connect app record.
+- Confirm App Store Connect calculates the expected age rating from the release build answers.
 - Review Accessibility Nutrition Labels after physical iPhone testing.
 - Publish final Privacy Policy and Support URLs.
 - Replace the support-page placeholder with the final support contact.

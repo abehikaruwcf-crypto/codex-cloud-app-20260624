@@ -93,6 +93,12 @@ Do not claim an accessibility feature in App Store Connect until the uploaded Te
 
 Use [app-store-review-answers.md](app-store-review-answers.md) for App Review information, age rating assumptions, export compliance notes, content rights notes, and final manual checks.
 
+Use [app-age-rating-answers.md](app-age-rating-answers.md) for the age rating questionnaire. Print the current age rating packet with:
+
+```bash
+npm run appstore:rating
+```
+
 Suggested review note:
 
 ```text
@@ -160,6 +166,7 @@ Use this table as the direct entry map for App Store Connect.
 | Category | Business |
 | Secondary category | Productivity |
 | Age rating expectation | 4+ |
+| Age rating questionnaire | Use [app-age-rating-answers.md](app-age-rating-answers.md) or run `npm run appstore:rating`. |
 | Privacy Policy URL | `https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html` |
 | Support URL | `https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html` |
 | Promotional text | Run `npm run appstore:metadata` and copy `japaneseListing.promotionalText`. |

@@ -16,6 +16,7 @@
     "appstore:screenshots:submission": "node scripts/generate-app-store-screenshots.mjs --profile=submission",
     "appstore:metadata": "node scripts/print-app-store-metadata.mjs",
     "appstore:connect-packet": "node scripts/print-app-store-connect-packet.mjs",
+    "appstore:rating": "node scripts/print-app-age-rating-answers.mjs",
     "appstore:accessibility": "node scripts/print-app-accessibility-answers.mjs",
     "appstore:signoff-draft": "node scripts/print-app-review-signoff-draft.mjs",
     "appstore:apply-inputs": "node scripts/apply-release-inputs.mjs",

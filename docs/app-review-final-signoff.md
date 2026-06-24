@@ -24,6 +24,7 @@ npm run appstore:signoff-draft
 - TestFlight build is uploaded and processed in App Store Connect.
 - Xcode archive and upload followed [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md).
 - Physical iPhone TestFlight validation completed against the uploaded build.
+- Age rating answers from [app-age-rating-answers.md](app-age-rating-answers.md) match the uploaded build and App Store Connect result.
 - Exported backup from the release build validates with `npm run backup:validate -- <exported-backup.json>` and imports successfully on a physical iPhone.
 - App Privacy answers from [app-privacy-answers.md](app-privacy-answers.md) match the uploaded build.
 - Accessibility Nutrition Labels from [app-accessibility-answers.md](app-accessibility-answers.md) match the tested release build.
@@ -46,6 +47,7 @@ npm run appstore:signoff-draft
 - Public URL verification result:
 - Strict verification result:
 - Accessibility label result:
+- Age rating result:
 - Final Privacy Policy URL: https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html
 - Final Support URL: https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html
 - Support contact:
