@@ -748,7 +748,11 @@ function App() {
         </div>
       </section>
 
-      {message ? <p className="status-message">{message}</p> : null}
+      {message ? (
+        <p className="status-message" role="status" aria-live="polite">
+          {message}
+        </p>
+      ) : null}
 
       {showOnboarding ? (
         <section className="onboarding-card">
@@ -863,6 +867,7 @@ function App() {
                       type="file"
                       accept="image/*"
                       capture="environment"
+                      aria-label={`${angle.label}の識別写真を撮影`}
                       onChange={(event) => identifyImage(event, angle.label)}
                     />
                   </label>
@@ -884,6 +889,7 @@ function App() {
                     type="file"
                     accept="image/*"
                     capture="environment"
+                    aria-label={`${angle.label}の識別写真を撮影`}
                     onChange={(event) => identifyImage(event, angle.label)}
                   />
                 </label>
@@ -958,6 +964,7 @@ function App() {
                       type="file"
                       accept="image/*"
                       capture="environment"
+                      aria-label={`${angle.label}の登録写真を撮影`}
                       onChange={(event) => addImages(event, angle.label)}
                     />
                   </label>
@@ -1030,7 +1037,12 @@ function App() {
           </button>
           <label className="import-action">
             バックアップを読み込む
-            <input type="file" accept="application/json,.json" onChange={importDataset} />
+            <input
+              type="file"
+              accept="application/json,.json"
+              aria-label="バックアップJSONを読み込む"
+              onChange={importDataset}
+            />
           </label>
           <button className="danger-action" type="button" onClick={resetLocalData}>
             端末内データをリセット

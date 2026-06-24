@@ -68,6 +68,10 @@ async function readState(page) {
     emptyLibrary: document.querySelector(".library-empty")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     privacyLink: document.querySelector('.app-info-panel a[href="/privacy.html"]')?.textContent?.trim() ?? null,
     infoPanel: document.querySelector(".app-info-panel")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+    statusRole: document.querySelector(".status-message")?.getAttribute("role") ?? null,
+    identifyFileLabels: [...document.querySelectorAll('.view.is-active input[type="file"]')]
+      .map((input) => input.getAttribute("aria-label"))
+      .filter(Boolean),
     topCandidate: document.querySelector(".match-summary h3")?.textContent?.trim() ?? null,
     qualityText: document.querySelector(".training-meter strong")?.textContent?.trim() ?? null,
   }));
@@ -124,12 +128,20 @@ try {
   expect(identify.completedIdentifyAngles === 2, "Identify appshot should include two query angles.");
   expect(identify.candidateCards >= 2, "Identify appshot should render ranked candidates.");
   expect(identify.topCandidate === "CH-001", "Identify appshot should rank CH-001 first.");
+  expect(
+    identify.identifyFileLabels.includes("表の識別写真を撮影"),
+    "Identify file inputs should expose accessible labels.",
+  );
 
   await page.goto(`${baseUrl}/?appshot=register`);
   const register = await readState(page);
   expect(register.activeHeading === "チャーム登録", "Register appshot should open the register view.");
   expect(register.completedRegisterAngles === 6, "Register appshot should include six completed angles.");
   expect(register.qualityText === "96%", "Register appshot should show complete six-angle quality.");
+  expect(
+    register.identifyFileLabels.includes("表の登録写真を撮影"),
+    "Register file inputs should expose accessible labels.",
+  );
 
   await browser.close();
   console.log("UI smoke test passed.");
