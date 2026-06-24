@@ -62,6 +62,17 @@ Static public pages included in the build:
 - Privacy Policy: `public/privacy.html`
 - Support: `public/support.html`
 
+Final public URLs for App Store Connect:
+
+- Privacy Policy URL: `https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html`
+- Support URL: `https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html`
+
+Verify the URLs before submission:
+
+```bash
+npm run appstore:public-urls
+```
+
 ## Review Notes
 
 Use [app-store-review-answers.md](app-store-review-answers.md) for App Review information, age rating assumptions, export compliance notes, content rights notes, and final manual checks.
@@ -112,12 +123,37 @@ Use Xcode Organizer to upload the archive to App Store Connect.
 
 Before submitting for App Review, complete [app-review-final-signoff.md](app-review-final-signoff.md) and confirm `npm run appstore:status` reports `0 todo`.
 
+## App Store Connect Entry Checklist
+
+Use this table as the direct entry map for App Store Connect.
+
+| App Store Connect field | Value or source |
+| --- | --- |
+| Name | `Charm ID` |
+| Subtitle | `小物を撮影して管理番号を確認` |
+| Bundle ID | `com.wcf.charmid` |
+| SKU | `charm-id-ios` |
+| Primary language | Japanese |
+| Category | Business |
+| Secondary category | Productivity |
+| Age rating expectation | 4+ |
+| Privacy Policy URL | `https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html` |
+| Support URL | `https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html` |
+| Promotional text | Run `npm run appstore:metadata` and copy `japaneseListing.promotionalText`. |
+| Description | Run `npm run appstore:metadata` and copy `japaneseListing.description`. |
+| Keywords | Run `npm run appstore:metadata` and copy `japaneseListing.keywords`. |
+| What's New | Run `npm run appstore:metadata` and copy `japaneseListing.whatsNew`. |
+| App Review notes | Use [app-store-review-answers.md](app-store-review-answers.md). |
+| TestFlight notes | Use [release-notes.md](release-notes.md). |
+| App Privacy answers | Use [app-privacy-answers.md](app-privacy-answers.md). |
+| Export compliance | No custom cryptography; confirm in App Store Connect before upload/submission. |
+
 ## Current Blocking Items
 
 - Full Xcode is not active on this Mac, so archive/upload validation cannot run here yet.
 - Apple Developer Program team must be selected in Xcode.
 - App Store Connect app record must be created.
-- Final screenshots and public URLs are still required after GitHub Pages or another host is enabled.
+- Formal support and privacy contacts must be added to the public pages.
+- Final screenshots must be captured from the release build.
 - Final App Review signoff must be completed in [app-review-final-signoff.md](app-review-final-signoff.md).
-- `public/privacy.html` and `public/support.html` are ready to publish.
-- A GitHub Pages workflow template is included in [github-pages-workflow.md](github-pages-workflow.md). Once GitHub Pages is enabled for this repository, the pages should be available at `/privacy.html` and `/support.html` on the Pages site.
+- GitHub Pages is live from `pages-docs /docs`; confirm with `npm run appstore:public-urls` before submission.
