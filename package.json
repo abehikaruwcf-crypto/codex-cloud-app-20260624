@@ -15,6 +15,7 @@
     "appstore:screenshots": "node scripts/generate-app-store-screenshots.mjs",
     "appstore:screenshots:submission": "node scripts/generate-app-store-screenshots.mjs --profile=submission",
     "appstore:screenshot-packet": "node scripts/print-screenshot-evidence-packet.mjs",
+    "appstore:xcode-packet": "node scripts/print-xcode-evidence-packet.mjs",
     "appstore:metadata": "node scripts/print-app-store-metadata.mjs",
     "appstore:connect-packet": "node scripts/print-app-store-connect-packet.mjs",
     "appstore:rating": "node scripts/print-app-age-rating-answers.mjs",

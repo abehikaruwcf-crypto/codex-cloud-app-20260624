@@ -16,6 +16,17 @@ Expected result:
 - `xcodebuild -version` prints an Xcode version, not the Command Line Tools error.
 - `npm run appstore:status` no longer reports `Full Xcode selected` as TODO.
 
+Print the current Xcode archive evidence packet with:
+
+```bash
+npm run appstore:xcode-packet
+```
+
+Expected result:
+
+- `readyForArchive` is `true` after full Xcode is selected and the project prerequisites are present.
+- The packet lists the signoff fields needed after the App Store Connect upload: `app-store-connect-app-id`, `uploaded-build`, and `strict-verification-result`.
+
 ## 2. Prepare the Release Commit
 
 Run:
@@ -23,6 +34,7 @@ Run:
 ```bash
 npm install
 npm run appstore:set-version -- 1.0 1
+npm run appstore:xcode-packet
 npm run appstore:verify
 npm run ios:sync
 ```

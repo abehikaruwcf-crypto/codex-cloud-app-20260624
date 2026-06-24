@@ -30,6 +30,12 @@ Generate the App Store screenshot evidence packet with:
 npm run appstore:screenshot-packet
 ```
 
+Generate the current Xcode archive evidence packet with:
+
+```bash
+npm run appstore:xcode-packet
+```
+
 Generate the current submission preflight packet with:
 
 ```bash

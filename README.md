@@ -16,6 +16,7 @@ npm run appstore:connect-packet
 npm run appstore:rating
 npm run appstore:accessibility
 npm run appstore:screenshots:submission
+npm run appstore:xcode-packet
 npm run appstore:signoff-draft
 npm run appstore:preflight
 npm run appstore:evidence
@@ -46,6 +47,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - `npm run appstore:testflight-packet` prints the physical iPhone TestFlight QA evidence fields needed for final signoff.
 - `npm run appstore:screenshots:submission` generates 6.9 inch and 6.5 inch App Store screenshot-size review assets.
 - `npm run appstore:screenshot-packet` prints the generated App Store screenshot asset evidence.
+- `npm run appstore:xcode-packet` prints local Xcode archive readiness and the upload signoff field map.
 - `npm run appstore:signoff-draft` prints the current App Review signoff draft.
 - `npm run appstore:signoff-command` prints the final `appstore:apply-inputs` command with current repo evidence and placeholders for manual App Review values.
 - `npm run appstore:preflight` prints the App Store submission preflight packet and remaining manual TODOs.

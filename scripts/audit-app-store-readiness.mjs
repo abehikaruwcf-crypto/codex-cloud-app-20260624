@@ -152,6 +152,7 @@ fileExists("scripts/run-unit-tests.mjs", "Unit test runner");
 fileExists("scripts/validate-backup.mjs", "Backup validation CLI");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
 fileExists("scripts/print-screenshot-evidence-packet.mjs", "Screenshot evidence packet script");
+fileExists("scripts/print-xcode-evidence-packet.mjs", "Xcode evidence packet script");
 fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print script");
 fileExists("scripts/print-app-store-connect-packet.mjs", "App Store Connect packet script");
 fileExists("scripts/print-app-age-rating-answers.mjs", "App age rating answers print script");
@@ -261,6 +262,7 @@ requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:screenshots:submission\"", "Submission screenshot script entry");
 requireText("package.json", "\"appstore:screenshot-packet\"", "Screenshot evidence packet script entry");
+requireText("package.json", "\"appstore:xcode-packet\"", "Xcode evidence packet script entry");
 requireText("scripts/generate-app-store-screenshots.mjs", "iphone-6-9", "Screenshot generation includes 6.9 inch profile");
 requireText("scripts/generate-app-store-screenshots.mjs", "1320, height: 2868", "Screenshot generation validates 6.9 inch output");
 requireText("scripts/generate-app-store-screenshots.mjs", "iphone-6-5", "Screenshot generation includes 6.5 inch profile");
@@ -269,6 +271,7 @@ requireText("docs/app-store-screenshots.md", "npm run appstore:screenshots:submi
 requireText("docs/app-store-screenshots.md", "npm run appstore:screenshot-packet", "Screenshot docs include evidence packet command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:screenshots:submission", "Submission packet includes submission screenshot command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:screenshot-packet", "Submission packet includes screenshot evidence command");
+requireText("docs/app-store-submission-packet.md", "npm run appstore:xcode-packet", "Submission packet includes Xcode evidence command");
 requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
 requireText("package.json", "\"appstore:connect-packet\"", "App Store Connect packet script entry");
 requireText("package.json", "\"appstore:rating\"", "App age rating script entry");
@@ -312,6 +315,7 @@ requireText("tests/release-status-cli.test.ts", "exits nonzero while App Review 
 requireText("tests/app-store-preflight.test.ts", "App Store preflight stays parseable", "App Store preflight JSON unit test exists");
 requireText("tests/app-store-preflight.test.ts", "confirms every submission packet substep", "App Store preflight substep unit test exists");
 requireText("tests/screenshot-evidence-packet.test.ts", "maps App Store image sets", "Screenshot evidence packet unit test exists");
+requireText("tests/xcode-evidence-packet.test.ts", "maps archive prerequisites to signoff fields", "Xcode evidence packet unit test exists");
 requireText("tests/testflight-evidence-packet.test.ts", "maps physical QA to signoff fields", "TestFlight evidence packet unit test exists");
 requireText("tests/release-signoff-command.test.ts", "release signoff command packet keeps placeholders explicit", "Release signoff command unit test exists");
 requireText("tests/matching-and-learning.test.ts", "matching ranks the closest charm", "Matching ranking unit test exists");
@@ -413,6 +417,7 @@ requireText("docs/app-review-final-signoff.md", "npm run appstore:evidence", "Fi
 requireText("docs/app-review-final-signoff.md", "npm run appstore:evidence-check -- --strict", "Final signoff includes strict evidence check");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:signoff-draft", "Final signoff includes signoff draft command");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:preflight", "Final signoff includes preflight command");
+requireText("docs/app-review-final-signoff.md", "npm run appstore:xcode-packet", "Final signoff includes Xcode evidence command");
 requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final signoff includes TODO resolution inputs");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:apply-inputs", "Final signoff documents release input application command");
 requireText("docs/app-review-final-signoff.md", "Backup validation file", "Final signoff records backup validation file");
@@ -443,6 +448,7 @@ requireText("docs/testflight-release-checklist.md", "Camera permission denial an
 requireText("docs/testflight-release-checklist.md", "xcode-app-store-upload-guide.md", "TestFlight checklist links Xcode upload guide");
 requireText("docs/app-store-submission-packet.md", "app-review-final-signoff.md", "Submission packet links final signoff");
 requireText("docs/xcode-app-store-upload-guide.md", "sudo xcode-select -s /Applications/Xcode.app/Contents/Developer", "Xcode guide selects full Xcode");
+requireText("docs/xcode-app-store-upload-guide.md", "npm run appstore:xcode-packet", "Xcode guide includes evidence packet");
 requireText("docs/xcode-app-store-upload-guide.md", "Product > Archive", "Xcode guide covers archive");
 requireText("docs/xcode-app-store-upload-guide.md", "Distribute App", "Xcode guide covers upload");
 requireText("docs/xcode-app-store-upload-guide.md", "npm run appstore:connect-packet", "Xcode guide uses transfer packet");
@@ -453,6 +459,9 @@ requireText("scripts/print-app-review-signoff-draft.mjs", "npm run appstore:stat
 requireText("scripts/print-screenshot-evidence-packet.mjs", "generationCommand", "Screenshot packet records generation command");
 requireText("scripts/print-screenshot-evidence-packet.mjs", "1320x2868", "Screenshot packet validates 6.9 inch size");
 requireText("scripts/print-screenshot-evidence-packet.mjs", "1242x2688", "Screenshot packet validates 6.5 inch size");
+requireText("scripts/print-xcode-evidence-packet.mjs", "readyForArchive", "Xcode packet records archive readiness");
+requireText("scripts/print-xcode-evidence-packet.mjs", "app-store-connect-app-id", "Xcode packet maps App Store Connect app ID signoff");
+requireText("scripts/print-xcode-evidence-packet.mjs", "uploaded-build", "Xcode packet maps uploaded build signoff");
 requireText("scripts/print-testflight-evidence-packet.mjs", "backupValidationCommand", "TestFlight packet records backup validation command");
 requireText("scripts/print-testflight-evidence-packet.mjs", "signoffCommandFragment", "TestFlight packet maps evidence to signoff command fragment");
 requireText("scripts/print-release-signoff-command.mjs", "replacePlaceholdersBeforeUse", "Signoff command lists placeholder inputs");
@@ -462,6 +471,7 @@ requireText("scripts/print-app-store-preflight.mjs", "appstore:connect-packet", 
 requireText("scripts/print-app-store-preflight.mjs", "appstore:rating", "Preflight includes age rating packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:accessibility", "Preflight includes accessibility packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:screenshot-packet", "Preflight includes screenshot evidence packet");
+requireText("scripts/print-app-store-preflight.mjs", "appstore:xcode-packet", "Preflight includes Xcode evidence packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:testflight-packet", "Preflight includes TestFlight evidence packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-draft", "Preflight includes signoff draft");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-command", "Preflight includes signoff command");

@@ -156,11 +156,18 @@ Recommended final screenshot set:
 
 Before archiving, install the [App Store Readiness GitHub Actions template](github-actions-app-store-readiness.md) and confirm the workflow is green on the release commit.
 
+Print the current Xcode archive evidence packet with:
+
+```bash
+npm run appstore:xcode-packet
+```
+
 Archive from Xcode after running:
 
 ```bash
 npm install
 npm run appstore:status
+npm run appstore:xcode-packet
 npm run ios:sync
 npm run appstore:audit
 open ios/App/App.xcodeproj
@@ -196,7 +203,7 @@ Use this table as the direct entry map for App Store Connect.
 | Full transfer packet | Run `npm run appstore:connect-packet`. |
 | Submission preflight packet | Run `npm run appstore:preflight`. |
 | Screenshot evidence packet | Run `npm run appstore:screenshot-packet` after `npm run appstore:screenshots:submission`. |
-| Xcode upload steps | Use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md). |
+| Xcode upload steps | Use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md) and run `npm run appstore:xcode-packet`. |
 | Final signoff draft | Run `npm run appstore:signoff-draft`. |
 | Final signoff apply command | Run `npm run appstore:signoff-command`, replace placeholders, then run the printed command after all manual checks pass. |
 | App Review notes | Use [app-store-review-answers.md](app-store-review-answers.md). |

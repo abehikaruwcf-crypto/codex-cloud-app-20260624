@@ -31,6 +31,15 @@ const requiredSteps = [
     expected: ['"sourceDoc": "docs/app-store-screenshots.md"', '"generationCommand"', '"profiles"'],
   },
   {
+    name: "Xcode evidence packet",
+    script: "appstore:xcode-packet",
+    expected: [
+      '"sourceDoc": "docs/xcode-app-store-upload-guide.md"',
+      '"readyForArchive"',
+      "sudo xcode-select -s /Applications/Xcode.app/Contents/Developer",
+    ],
+  },
+  {
     name: "TestFlight evidence packet",
     script: "appstore:testflight-packet",
     expected: ['"sourceDoc": "docs/testflight-release-checklist.md"', '"backupValidationCommand"', '"signoffCommandFragment"'],
@@ -132,6 +141,7 @@ const preflight = {
     strictGate: "npm run appstore:verify -- --strict",
     status: "npm run appstore:status",
     screenshotPacket: "npm run appstore:screenshot-packet",
+    xcodePacket: "npm run appstore:xcode-packet",
     testflightPacket: "npm run appstore:testflight-packet",
     signoffCommand: "npm run appstore:signoff-command",
   },
