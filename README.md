@@ -17,6 +17,7 @@ npm run appstore:rating
 npm run appstore:accessibility
 npm run appstore:screenshots:submission
 npm run appstore:signoff-draft
+npm run appstore:preflight
 npm run appstore:evidence
 npm run appstore:audit
 npm run appstore:verify
@@ -43,6 +44,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - `npm run appstore:accessibility` prints the current Accessibility Nutrition Labels draft.
 - `npm run appstore:screenshots:submission` generates 6.9 inch and 6.5 inch App Store screenshot-size review assets.
 - `npm run appstore:signoff-draft` prints the current App Review signoff draft.
+- `npm run appstore:preflight` prints the App Store submission preflight packet and remaining manual TODOs.
 - `npm run appstore:evidence` prints a JSON release evidence snapshot for final signoff.
 - `npm run backup:validate -- <backup.json>` validates exported Charm ID backup files before migration, TestFlight QA, or support review.
 - [docs/testflight-release-checklist.md](docs/testflight-release-checklist.md) covers the Xcode/TestFlight upload flow.

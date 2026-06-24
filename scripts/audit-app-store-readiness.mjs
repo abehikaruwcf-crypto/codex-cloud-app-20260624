@@ -156,6 +156,7 @@ fileExists("scripts/print-app-store-connect-packet.mjs", "App Store Connect pack
 fileExists("scripts/print-app-age-rating-answers.mjs", "App age rating answers print script");
 fileExists("scripts/print-app-accessibility-answers.mjs", "App accessibility answers print script");
 fileExists("scripts/print-app-review-signoff-draft.mjs", "App Review signoff draft script");
+fileExists("scripts/print-app-store-preflight.mjs", "App Store preflight print script");
 fileExists("scripts/apply-release-inputs.mjs", "Release input application script");
 fileExists("scripts/verify-public-urls.mjs", "Public URL verification script");
 fileExists("scripts/verify-app-store-release.mjs", "App Store verification script");
@@ -223,6 +224,7 @@ requireText("docs/app-store-submission-packet.md", "Primary language: Japanese",
 requireText("docs/app-store-submission-packet.md", "iOS development region: `ja`", "Submission packet iOS development region");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:metadata", "Submission packet includes metadata print command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:connect-packet", "Submission packet includes App Store Connect packet command");
+requireText("docs/app-store-submission-packet.md", "npm run appstore:preflight", "Submission packet includes App Store preflight command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:rating", "Submission packet includes age rating command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:accessibility", "Submission packet includes accessibility command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:signoff-draft", "Submission packet includes signoff draft command");
@@ -263,6 +265,7 @@ requireText("package.json", "\"appstore:connect-packet\"", "App Store Connect pa
 requireText("package.json", "\"appstore:rating\"", "App age rating script entry");
 requireText("package.json", "\"appstore:accessibility\"", "App accessibility script entry");
 requireText("package.json", "\"appstore:signoff-draft\"", "App Review signoff draft script entry");
+requireText("package.json", "\"appstore:preflight\"", "App Store preflight script entry");
 requireText("package.json", "\"appstore:apply-inputs\"", "Release input application script entry");
 requireText("package.json", "\"appstore:public-urls\"", "Public URL verification script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
@@ -349,6 +352,7 @@ requireText("README.md", "npm run appstore:rating", "README includes age rating 
 requireText("README.md", "npm run appstore:accessibility", "README includes accessibility command");
 requireText("README.md", "npm run appstore:screenshots:submission", "README includes submission screenshot command");
 requireText("README.md", "npm run appstore:signoff-draft", "README includes signoff draft command");
+requireText("README.md", "npm run appstore:preflight", "README includes App Store preflight command");
 requireText("README.md", "npm run appstore:evidence", "README includes evidence command");
 requireText("README.md", "npm run backup:validate", "README includes backup validation command");
 requireText("README.md", "npm run appstore:verify", "README includes verification command");
@@ -364,6 +368,7 @@ requireText("docs/app-review-final-signoff.md", "concrete privacy contact", "Fin
 requireText("docs/app-review-final-signoff.md", "npm run appstore:status", "Final signoff includes release status evidence");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:evidence", "Final signoff includes evidence command");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:signoff-draft", "Final signoff includes signoff draft command");
+requireText("docs/app-review-final-signoff.md", "npm run appstore:preflight", "Final signoff includes preflight command");
 requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final signoff includes TODO resolution inputs");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:apply-inputs", "Final signoff documents release input application command");
 requireText("docs/app-review-final-signoff.md", "Backup validation file", "Final signoff records backup validation file");
@@ -396,6 +401,11 @@ requireText("docs/xcode-app-store-upload-guide.md", "npm run appstore:verify -- 
 requireText("scripts/print-app-review-signoff-draft.mjs", "App Review Signoff Draft", "Signoff draft prints heading");
 requireText("scripts/print-app-review-signoff-draft.mjs", "npm run appstore:public-urls", "Signoff draft records public URL check");
 requireText("scripts/print-app-review-signoff-draft.mjs", "npm run appstore:status", "Signoff draft records release status");
+requireText("scripts/print-app-store-preflight.mjs", "appstore:connect-packet", "Preflight includes App Store Connect packet");
+requireText("scripts/print-app-store-preflight.mjs", "appstore:rating", "Preflight includes age rating packet");
+requireText("scripts/print-app-store-preflight.mjs", "appstore:accessibility", "Preflight includes accessibility packet");
+requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-draft", "Preflight includes signoff draft");
+requireText("scripts/print-app-store-preflight.mjs", "expectedManualTodoCount: 4", "Preflight records expected manual TODO count");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",

@@ -12,6 +12,12 @@ Generate a current copy/paste draft with:
 npm run appstore:signoff-draft
 ```
 
+Generate the current submission preflight packet with:
+
+```bash
+npm run appstore:preflight
+```
+
 ## Required Evidence
 
 - Full Xcode selected and `xcodebuild -version` reports Xcode.
@@ -29,6 +35,7 @@ npm run appstore:signoff-draft
 - App Privacy answers from [app-privacy-answers.md](app-privacy-answers.md) match the uploaded build.
 - Accessibility Nutrition Labels from [app-accessibility-answers.md](app-accessibility-answers.md) match the tested release build.
 - App Review notes from [app-store-review-answers.md](app-store-review-answers.md) are entered in App Store Connect.
+- `npm run appstore:preflight` has been generated and reviewed against the App Store Connect entry screens.
 - `npm run appstore:evidence` has been generated on the release commit and reviewed against this signoff page.
 - `npm run appstore:status` reports `0 todo`.
 - `npm run appstore:audit` reports `0 fail`.

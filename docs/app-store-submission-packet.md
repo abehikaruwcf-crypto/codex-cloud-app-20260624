@@ -44,6 +44,12 @@ Print the complete App Store Connect transfer packet with:
 npm run appstore:connect-packet
 ```
 
+Print the combined submission preflight packet with:
+
+```bash
+npm run appstore:preflight
+```
+
 The metadata export validates current App Store Connect field limits used for this release: app name 30 characters, subtitle 30 characters, promotional text 170 characters, description 4000 characters, keywords 100 bytes, and What's New 4000 characters.
 
 Before final submission, replace generic prototype wording with final customer-facing language and confirm whether the public listing should target charms only or broader small-item inventory.
@@ -174,6 +180,7 @@ Use this table as the direct entry map for App Store Connect.
 | Keywords | Run `npm run appstore:metadata` and copy `japaneseListing.keywords`. |
 | What's New | Run `npm run appstore:metadata` and copy `japaneseListing.whatsNew`. |
 | Full transfer packet | Run `npm run appstore:connect-packet`. |
+| Submission preflight packet | Run `npm run appstore:preflight`. |
 | Xcode upload steps | Use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md). |
 | Final signoff draft | Run `npm run appstore:signoff-draft`. |
 | App Review notes | Use [app-store-review-answers.md](app-store-review-answers.md). |
