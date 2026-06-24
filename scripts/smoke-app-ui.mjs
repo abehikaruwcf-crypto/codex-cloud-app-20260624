@@ -121,7 +121,11 @@ async function readState(page) {
     qualityMeterLabel: document.querySelector(".training-meter meter")?.getAttribute("aria-label") ?? null,
     topCandidate: document.querySelector(".match-summary h3")?.textContent?.trim() ?? null,
     qualityText: document.querySelector(".training-meter strong")?.textContent?.trim() ?? null,
-    firstRegisterImageUrl: document.querySelector(".register-form .angle-card.is-complete img")?.getAttribute("src") ?? null,
+    frontRegisterImageUrl:
+      [...document.querySelectorAll(".register-form .angle-card")]
+        .find((card) => card.querySelector("span")?.textContent?.trim() === "表")
+        ?.querySelector("img")
+        ?.getAttribute("src") ?? null,
   }));
 }
 
@@ -364,10 +368,19 @@ try {
   expect(register.qualityMeterLabel === "登録品質", "Register quality meter should expose an accessible label.");
   const smokePngPath = writeSmokePng("charm-id-smoke-register");
   await page.getByLabel("表の登録写真を撮影").setInputFiles(smokePngPath);
-  await page.locator(".register-form .angle-card.is-complete img").first().waitFor({ timeout: 3000 });
+  await page.waitForFunction(
+    () =>
+      [...document.querySelectorAll(".register-form .angle-card")]
+        .find((card) => card.querySelector("span")?.textContent?.trim() === "表")
+        ?.querySelector("img")
+        ?.getAttribute("src")
+        ?.startsWith("data:image/jpeg"),
+    null,
+    { timeout: 3000 },
+  );
   const compressedRegister = await readState(page);
   expect(
-    compressedRegister.firstRegisterImageUrl?.startsWith("data:image/jpeg"),
+    compressedRegister.frontRegisterImageUrl?.startsWith("data:image/jpeg"),
     "Uploaded register images should be resized and JPEG-compressed before storage.",
   );
   await page.getByPlaceholder("例: CH-1042").fill(" ch-001 ");
