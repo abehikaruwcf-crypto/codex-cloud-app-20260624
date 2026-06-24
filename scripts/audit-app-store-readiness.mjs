@@ -288,6 +288,8 @@ requireText("tests/release-inputs-cli.test.ts", "applies contacts, hosted URLs, 
 requireText("tests/release-inputs-cli.test.ts", "pagesSupportPage", "Release input CLI verifies Pages support contact update");
 requireText("tests/release-inputs-cli.test.ts", "pagesPrivacyPage", "Release input CLI verifies Pages privacy contact update");
 requireText("tests/release-version-cli.test.ts", "keeps bundled and hosted support pages in sync", "Release version CLI Pages sync unit test exists");
+requireText("tests/release-evidence.test.ts", "exposes final signoff readiness", "Release evidence final signoff unit test exists");
+requireText("tests/release-evidence.test.ts", "includes hosted page sources", "Release evidence hosted source unit test exists");
 requireText("tests/release-status-cli.test.ts", "status is ready but evidence fields are blank", "Release status final signoff guard test exists");
 requireText("tests/release-status-cli.test.ts", "status and required evidence fields are filled", "Release status filled signoff test exists");
 requireText("tests/release-status-cli.test.ts", "exits nonzero while App Review TODOs remain", "Release status TODO-blocking test exists");
@@ -310,6 +312,8 @@ requireText("scripts/verify-app-store-release.mjs", "appstore:evidence", "Verifi
 requireText("scripts/verify-app-store-release.mjs", "--strict", "Verification script supports strict mode");
 requireText("scripts/verify-app-store-release.mjs", "Hard release verification passed", "Verification script allows manual TODOs");
 requireText("scripts/generate-release-evidence.mjs", "releaseStatus", "Release evidence includes status");
+requireText("scripts/generate-release-evidence.mjs", "finalSignoff", "Release evidence includes final signoff state");
+requireText("scripts/generate-release-evidence.mjs", "missingFields", "Release evidence includes missing final signoff fields");
 requireText("scripts/generate-release-evidence.mjs", "publicUrlsReachable", "Release evidence includes public URL reachability");
 requireText("scripts/generate-release-evidence.mjs", "remoteGhPages", "Release evidence includes Pages branch");
 requireText("scripts/generate-release-evidence.mjs", "nextStrictGate", "Release evidence includes strict gate");

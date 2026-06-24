@@ -80,6 +80,58 @@ function iosVersionEvidence() {
   };
 }
 
+function signoffValue(content, label) {
+  const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = content.match(new RegExp(`^- ${escapedLabel}:[^\\S\\r\\n]*(.*)$`, "m"));
+  return match?.[1]?.trim() ?? "";
+}
+
+function finalSignoffEvidence() {
+  const path = "docs/app-review-final-signoff.md";
+  if (!hasFile(path)) {
+    return {
+      path,
+      exists: false,
+      status: null,
+      ready: false,
+      missingFields: [],
+      filledFields: [],
+    };
+  }
+
+  const content = read(path);
+  const status = content.match(/^Status:\s*(.+)$/m)?.[1]?.trim() ?? null;
+  const requiredFields = [
+    "Release commit",
+    "Evidence report generated",
+    "App Store Connect app ID",
+    "Uploaded build",
+    "TestFlight device",
+    "Backup validation file",
+    "Backup validation result",
+    "Backup import result",
+    "Public URL verification result",
+    "Strict verification result",
+    "Final Privacy Policy URL",
+    "Final Support URL",
+    "Support contact",
+    "Privacy contact",
+    "Signoff owner",
+    "Signoff date",
+  ];
+  const filledFields = requiredFields.filter((field) => Boolean(signoffValue(content, field)));
+  const missingFields = requiredFields.filter((field) => !filledFields.includes(field));
+
+  return {
+    path,
+    exists: true,
+    status,
+    ready: status === "Ready for App Review" && missingFields.length === 0,
+    missingFields,
+    filledFields,
+  };
+}
+
 const packageJson = hasFile("package.json") ? JSON.parse(read("package.json")) : {};
 const head = run("git", ["rev-parse", "HEAD"]);
 const branch = run("git", ["branch", "--show-current"]);
@@ -114,6 +166,7 @@ const evidence = {
     todo: parsedStatus.todo,
     todoItems: parsedStatus.checks.filter((check) => check.status === "TODO"),
   },
+  finalSignoff: finalSignoffEvidence(),
   xcode: {
     selected: xcode.ok && xcode.output.includes("Xcode"),
     output: xcode.output,
