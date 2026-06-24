@@ -12,6 +12,12 @@ Regenerate the current development set with:
 npm run appstore:screenshots
 ```
 
+The App Store readiness audit also regenerates and validates this set:
+
+```bash
+npm run appstore:audit
+```
+
 Current set:
 
 1. `01-onboarding.jpg` - first-run explanation and demo data call to action.

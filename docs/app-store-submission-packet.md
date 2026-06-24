@@ -70,6 +70,8 @@ Regenerate the development review set with:
 npm run appstore:screenshots
 ```
 
+`npm run appstore:audit` also regenerates the development screenshot set before validating image dimensions and file size.
+
 Final App Store screenshots still need to be captured from a physical iPhone or iOS Simulator at Apple-required dimensions before submission.
 
 Recommended final screenshot set:

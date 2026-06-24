@@ -191,6 +191,13 @@ pngInfo(
   "Splash 2732px PNG",
 );
 
+const screenshots = run("npm", ["run", "appstore:screenshots"]);
+addCheck(
+  "Generated App Store screenshots",
+  screenshots.ok ? "pass" : "fail",
+  screenshots.output.split("\n").slice(-8).join("\n"),
+);
+
 for (const name of ["01-onboarding", "02-library", "03-identify", "04-register"]) {
   screenshotInfo(`outputs/app-store-screenshots/${name}.jpg`, `Screenshot ${name}`);
 }
