@@ -359,6 +359,8 @@ requireText("tests/screenshot-evidence-packet.test.ts", "maps App Store image se
 requireText("tests/xcode-evidence-packet.test.ts", "maps archive prerequisites to signoff fields", "Xcode evidence packet unit test exists");
 requireText("tests/testflight-evidence-packet.test.ts", "maps physical QA to signoff fields", "TestFlight evidence packet unit test exists");
 requireText("tests/release-handoff-packet.test.ts", "maps remaining release work to owners and inputs", "Release handoff packet unit test exists");
+requireText("scripts/print-release-handoff-packet.mjs", "inputChecklist", "Release handoff packet includes input checklist");
+requireText("scripts/print-release-handoff-packet.mjs", "needs-input", "Release handoff packet marks missing inputs");
 requireText("tests/release-signoff-command.test.ts", "release signoff command packet keeps placeholders explicit", "Release signoff command unit test exists");
 requireText("tests/release-input-template.test.ts", "maps final signoff values to apply-inputs JSON", "Release input template unit test exists");
 requireText("tests/matching-and-learning.test.ts", "matching ranks the closest charm", "Matching ranking unit test exists");

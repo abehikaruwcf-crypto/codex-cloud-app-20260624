@@ -44,6 +44,22 @@ test("release handoff packet includes final input template and strict verificati
   assert.ok(packet.releaseInputs.placeholders.includes("support-contact"));
   assert.ok(packet.releaseInputs.placeholders.includes("copyright-holder"));
   assert.ok(packet.releaseInputs.template["privacy-url"].endsWith("/privacy.html"));
+  assert.deepEqual(
+    packet.releaseInputs.inputChecklist.map((item: { key: string }) => item.key),
+    Object.keys(packet.releaseInputs.template),
+  );
+  assert.equal(
+    packet.releaseInputs.inputChecklist.find((item: { key: string }) => item.key === "support-contact")?.status,
+    "needs-input",
+  );
+  assert.equal(
+    packet.releaseInputs.inputChecklist.find((item: { key: string }) => item.key === "privacy-url")?.status,
+    "pre-filled",
+  );
+  assert.equal(
+    packet.releaseInputs.inputChecklist.find((item: { key: string }) => item.key === "uploaded-build")?.source,
+    "App Store Connect build picker after Xcode upload finishes processing.",
+  );
   assert.ok(packet.requiredManualWork[1].inputs.includes("uploaded-build"));
   assert.ok(packet.requiredManualWork[2].inputs.includes("backup-validation-result"));
   assert.equal(packet.requiredManualWork[3].privacyAnswers.dataCollected, "No");

@@ -51,6 +51,24 @@ const xcodePacket = parseJsonOutput(run("appstore:xcode-packet").output, "appsto
 const testflightPacket = parseJsonOutput(run("appstore:testflight-packet").output, "appstore:testflight-packet");
 const privacyPacket = parseJsonOutput(run("appstore:privacy").output, "appstore:privacy");
 
+function isPlaceholder(value) {
+  return typeof value === "string" && /^<.+>$/.test(value.trim());
+}
+
+const inputChecklist = (signoffTemplate.fieldGuide ?? []).map((field) => {
+  const value = signoffTemplate.template[field.key];
+
+  return {
+    key: field.key,
+    status: isPlaceholder(value) ? "needs-input" : "pre-filled",
+    purpose: field.purpose,
+    source: field.source,
+    example: field.example,
+    blocksTodo: field.blocksTodo ?? null,
+    currentValue: field.key === "mark-ready" ? value : isPlaceholder(value) ? null : value,
+  };
+});
+
 const packet = {
   generatedAt: new Date().toISOString(),
   purpose: "Manual handoff packet for moving Charm ID from current release prep to 0 App Review TODOs.",
@@ -104,6 +122,7 @@ const packet = {
     readyCommand: signoffTemplate.readyCommand,
     placeholders: signoffTemplate.placeholders,
     template: signoffTemplate.template,
+    inputChecklist,
   },
   verification: [
     "npm run appstore:apply-inputs -- --inputs-file release-inputs.json",
