@@ -498,6 +498,7 @@ function App() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
   const [importSummary, setImportSummary] = useState("");
+  const [librarySearch, setLibrarySearch] = useState("");
 
   useEffect(() => {
     if (shotMode) {
@@ -528,6 +529,13 @@ function App() {
   const missingDraftAngles = missingAngles(draftImages);
   const missingQueryAngles = missingAngles(queryImages);
   const selectedCorrectionTarget = charms.find((charm) => charm.id === correctionTargetId);
+  const normalizedLibrarySearch = normalizeManagementNumber(librarySearch);
+  const filteredCharms = normalizedLibrarySearch
+    ? charms.filter((charm) => {
+        const searchableText = normalizeManagementNumber(`${charm.managementNumber} ${charm.note}`);
+        return searchableText.includes(normalizedLibrarySearch);
+      })
+    : charms;
 
   async function addImages(event: ChangeEvent<HTMLInputElement>, angleLabel: string) {
     const files = Array.from(event.target.files ?? []);
@@ -1109,9 +1117,20 @@ function App() {
           </div>
         </div>
 
+        <label className="library-search">
+          管理番号を検索
+          <input
+            value={librarySearch}
+            onChange={(event) => setLibrarySearch(event.target.value)}
+            placeholder="例: CH-001"
+            inputMode="search"
+            type="search"
+          />
+        </label>
+
         <div className="library-list">
-          {charms.length > 0 ? (
-            charms.map((charm) => (
+          {charms.length > 0 && filteredCharms.length > 0 ? (
+            filteredCharms.map((charm) => (
               <article className="library-card" key={charm.id}>
                 <div className="library-main">
                   <img src={charm.images[0]?.imageUrl} alt="" />
@@ -1131,6 +1150,14 @@ function App() {
                 </button>
               </article>
             ))
+          ) : charms.length > 0 ? (
+            <div className="empty-state library-empty">
+              <strong>一致する登録がありません</strong>
+              <span>検索語を短くするか、管理番号・メモを確認してください。</span>
+              <button type="button" onClick={() => setLibrarySearch("")}>
+                検索をクリア
+              </button>
+            </div>
           ) : (
             <div className="empty-state library-empty">
               <strong>登録データがありません</strong>

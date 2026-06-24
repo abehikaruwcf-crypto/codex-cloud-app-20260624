@@ -86,6 +86,8 @@ async function readState(page) {
     count: document.querySelector(".count-badge")?.textContent?.trim() ?? "",
     onboardingTitle: document.querySelector(".onboarding-card h2")?.textContent?.trim() ?? null,
     libraryCards: document.querySelectorAll(".library-card").length,
+    libraryCardTitles: [...document.querySelectorAll(".library-card h3")].map((heading) => heading.textContent?.trim()),
+    libraryEmptyText: document.querySelector(".library-empty")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     candidateCards: document.querySelectorAll(".candidate-card").length,
     completedRegisterAngles: document.querySelectorAll(".register-form .angle-card.is-complete").length,
     completedIdentifyAngles: document.querySelectorAll(".compact-capture-protocol .angle-capture.is-complete").length,
@@ -155,6 +157,17 @@ try {
   expect(library.libraryCards === 2, "Library appshot should render two library cards.");
   expect(library.privacyLink === "プライバシーポリシー", "Library should expose the privacy policy link.");
   expect(library.infoPanel?.includes("端末内に保存"), "Library should explain local-only storage.");
+  await page.getByPlaceholder("例: CH-001").fill("ch-002");
+  const searchedLibrary = await readState(page);
+  expect(searchedLibrary.libraryCards === 1, "Library search should filter to one model.");
+  expect(searchedLibrary.libraryCardTitles.includes("CH-002"), "Library search should match management numbers case-insensitively.");
+  await page.getByPlaceholder("例: CH-001").fill("missing");
+  const emptySearchLibrary = await readState(page);
+  expect(emptySearchLibrary.libraryCards === 0, "Library search should hide non-matching models.");
+  expect(emptySearchLibrary.libraryEmptyText?.includes("一致する登録がありません"), "Library search should show a no-results state.");
+  await page.getByRole("button", { name: "検索をクリア" }).click();
+  const clearedSearchLibrary = await readState(page);
+  expect(clearedSearchLibrary.libraryCards === 2, "Library search clear should restore the full list.");
   const duplicateBackupPath = join(tmpdir(), `charm-id-duplicate-backup-${Date.now()}.json`);
   writeFileSync(
     duplicateBackupPath,
