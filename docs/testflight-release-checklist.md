@@ -71,6 +71,7 @@ After processing:
 - Create or open the `Charm ID` app record.
 - Select the uploaded build.
 - Add TestFlight internal testers.
+- Add TestFlight notes from [release-notes.md](release-notes.md).
 - Fill encryption export compliance.
 - Fill App Privacy answers from [app-privacy-answers.md](app-privacy-answers.md).
 - Add review notes from [app-store-submission-packet.md](app-store-submission-packet.md).

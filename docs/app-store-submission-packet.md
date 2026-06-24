@@ -17,6 +17,7 @@ This packet consolidates the current App Store Connect inputs for the local-only
 - Marketing version: `1.0`
 - Build number: `1`
 - Release type: Manual release after App Review approval.
+- Release notes: [release-notes.md](release-notes.md)
 
 ## App Store Metadata
 
@@ -27,6 +28,7 @@ Use [app-store-metadata.md](app-store-metadata.md) as the source draft for:
 - Description
 - Keywords
 - Review notes
+- What's New text from [release-notes.md](release-notes.md)
 
 Before final submission, replace generic prototype wording with final customer-facing language and confirm whether the public listing should target charms only or broader small-item inventory.
 

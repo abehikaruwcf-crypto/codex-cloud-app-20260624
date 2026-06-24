@@ -132,6 +132,7 @@ fileExists("docs/app-store-metadata.md", "App Store metadata draft");
 fileExists("docs/app-privacy-answers.md", "App privacy answers draft");
 fileExists("docs/app-store-review-answers.md", "App Store review answers draft");
 fileExists("docs/privacy-policy-draft.md", "Privacy policy draft");
+fileExists("docs/release-notes.md", "Release notes");
 fileExists("docs/app-store-screenshots.md", "Screenshot documentation");
 fileExists("docs/app-store-submission-packet.md", "Submission packet");
 fileExists("docs/testflight-release-checklist.md", "TestFlight release checklist");
@@ -175,6 +176,9 @@ requireText("docs/app-store-review-answers.md", "Sign-in required: No", "Review 
 requireText("docs/app-store-review-answers.md", "Expected rating: 4+", "Age rating draft");
 requireText("docs/app-store-review-answers.md", "custom cryptography", "Export compliance draft");
 requireText("docs/app-store-submission-packet.md", "app-store-review-answers.md", "Review answers linked from submission packet");
+requireText("docs/release-notes.md", "App Store What's New Draft", "Release notes include What's New");
+requireText("docs/release-notes.md", "TestFlight Notes Draft", "Release notes include TestFlight notes");
+requireText("docs/app-store-submission-packet.md", "release-notes.md", "Submission packet links release notes");
 requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:audit", "CI template runs App Store audit");
 requireText("docs/github-actions-app-store-readiness.md", "macos-latest", "CI template runs on macOS");
 requireText("docs/github-pages-workflow.md", "/support.html", "Support page Pages URL");
