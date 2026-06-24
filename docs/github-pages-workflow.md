@@ -1,4 +1,28 @@
-# GitHub Pages Workflow Template
+# GitHub Pages Publishing Notes
+
+## Current Status
+
+The `gh-pages` branch has been created and pushed with the built static app:
+
+```text
+gh-pages @ a838c67 Publish Charm ID web build
+```
+
+GitHub Pages could not be enabled for the current private repository from this account plan:
+
+```text
+Your current plan does not support GitHub Pages for this repository.
+```
+
+Before App Review, publish `privacy.html` and `support.html` through one of these paths:
+
+- Make this repository public, then enable Pages from the `gh-pages` branch.
+- Upgrade or move the repository to a plan that supports Pages for private repositories.
+- Host the built `dist` output on another public static host such as Cloudflare Pages, Netlify, Vercel, S3, or a company website.
+
+The App Store Privacy Policy URL and Support URL must be final public URLs, not placeholders.
+
+## GitHub Actions Workflow Template
 
 GitHub rejected direct workflow creation from the current OAuth token because it does not have `workflow` scope.
 

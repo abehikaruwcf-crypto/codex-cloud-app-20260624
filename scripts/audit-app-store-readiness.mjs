@@ -205,6 +205,9 @@ requireText("docs/release-notes.md", "TestFlight Notes Draft", "Release notes in
 requireText("docs/app-store-submission-packet.md", "release-notes.md", "Submission packet links release notes");
 requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:audit", "CI template runs App Store audit");
 requireText("docs/github-actions-app-store-readiness.md", "macos-latest", "CI template runs on macOS");
+requireText("docs/github-pages-workflow.md", "gh-pages @", "Pages notes record published branch");
+requireText("docs/github-pages-workflow.md", "does not support GitHub Pages", "Pages notes record current plan blocker");
+requireText("docs/github-pages-workflow.md", "another public static host", "Pages notes include external hosting fallback");
 requireText("docs/github-pages-workflow.md", "/support.html", "Support page Pages URL");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
 requireText("docs/app-store-screenshots.md", "05-learning.jpg", "Screenshot docs include learning success shot");
