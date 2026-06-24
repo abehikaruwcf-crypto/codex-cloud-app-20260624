@@ -248,6 +248,12 @@ h3 {
   line-height: 1.65;
 }
 
+.onboarding-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
 .onboarding-card button {
   min-height: 46px;
   border: 0;
@@ -255,6 +261,12 @@ h3 {
   color: #ffffff;
   background: #3a6f68;
   font-weight: 900;
+}
+
+.onboarding-card .secondary-onboarding-action {
+  color: #172026;
+  border: 1px solid rgba(23, 32, 38, 0.14);
+  background: #ffffff;
 }
 
 .match-summary {

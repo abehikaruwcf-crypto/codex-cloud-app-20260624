@@ -34,13 +34,16 @@ The app can be used without login in the initial version. Data is stored locally
 
 The camera is used to capture item photos for registration and identification.
 
+Use "デモデータで試す" on the first screen to load sample models with all six capture angles.
+
 ## Screenshot Plan
 
-1. Register an item with six guided angles.
-2. Identify an item from the camera.
-3. Review matching candidates.
-4. Confirm the correct item and add learning examples.
-5. Browse the registered library.
+1. First-run onboarding with the demo data call to action.
+2. Register an item with six guided angles.
+3. Identify an item from the camera.
+4. Review matching candidates.
+5. Confirm the correct item and add learning examples.
+6. Browse the registered library with six-angle demo models.
 
 ## Required Before Submission
 

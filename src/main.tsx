@@ -19,41 +19,97 @@ const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
 const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
 const MAX_IMAGES_PER_ANGLE = 8;
 
+const angleSignatureOffsets: Record<string, Partial<ImageSignature>> = {
+  表: { brightness: 0 },
+  裏: { brightness: -12 },
+  右側面: { red: -10, green: -8, blue: -6, brightness: -18 },
+  左側面: { red: -7, green: -6, blue: -4, brightness: -15 },
+  上側面: { red: 8, green: 8, blue: 6, brightness: 12 },
+  下側面: { red: -14, green: -12, blue: -10, brightness: -22 },
+};
+
+function clampChannel(value: number) {
+  return Math.max(0, Math.min(255, Math.round(value)));
+}
+
+function signatureWithOffset(base: ImageSignature, angleLabel: string): ImageSignature {
+  const offset = angleSignatureOffsets[angleLabel] ?? {};
+
+  return {
+    red: clampChannel(base.red + (offset.red ?? 0)),
+    green: clampChannel(base.green + (offset.green ?? 0)),
+    blue: clampChannel(base.blue + (offset.blue ?? 0)),
+    brightness: clampChannel(base.brightness + (offset.brightness ?? 0)),
+  };
+}
+
+function svgDataUrl(svg: string) {
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
+function demoCharmImage(
+  charmId: string,
+  angleLabel: string,
+  palette: { background: string; fill: string; accent: string; shape: "circle" | "diamond" },
+  baseSignature: ImageSignature,
+): CharmImage {
+  const sideScale = angleLabel.includes("側面") ? 0.58 : 1;
+  const shape =
+    palette.shape === "circle"
+      ? `<ellipse cx="240" cy="238" rx="${112 * sideScale}" ry="126" fill="${palette.fill}"/>`
+      : `<path d="M240 98 L362 240 L240 382 L118 240Z" transform="scale(${sideScale} 1) translate(${(1 - sideScale) * 240} 0)" fill="${palette.fill}"/>`;
+  const svg = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="480" height="480" viewBox="0 0 480 480">
+      <rect width="480" height="480" rx="40" fill="${palette.background}"/>
+      <circle cx="240" cy="92" r="34" fill="${palette.accent}"/>
+      <circle cx="240" cy="92" r="16" fill="#ffffff"/>
+      ${shape}
+      <circle cx="240" cy="240" r="48" fill="#ffffff" opacity="0.92"/>
+      <text x="240" y="420" text-anchor="middle" font-family="Arial" font-size="34" font-weight="700" fill="#172026">${angleLabel}</text>
+    </svg>
+  `;
+
+  return {
+    id: `${charmId}-${angleLabel}`,
+    imageUrl: svgDataUrl(svg),
+    angleLabel,
+    signature: signatureWithOffset(baseSignature, angleLabel),
+    source: "registration",
+    createdAt: new Date().toISOString(),
+  };
+}
+
+function createDemoCharm(
+  id: string,
+  managementNumber: string,
+  note: string,
+  palette: { background: string; fill: string; accent: string; shape: "circle" | "diamond" },
+  baseSignature: ImageSignature,
+): Charm {
+  return {
+    id,
+    managementNumber,
+    note,
+    createdAt: new Date().toISOString(),
+    images: captureAngles.map((angle) => demoCharmImage(id, angle.label, palette, baseSignature)),
+  };
+}
+
 const sampleCharms: Charm[] = [
-  {
-    id: "sample-1",
-    managementNumber: "CH-001",
-    note: "サンプル: ゴールド系",
-    createdAt: new Date().toISOString(),
-    images: [
-      {
-        id: "sample-1-img",
-        angleLabel: "表",
-        source: "registration",
-        createdAt: new Date().toISOString(),
-        imageUrl:
-          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Crect width='480' height='480' fill='%23f7efe0'/%3E%3Ccircle cx='240' cy='240' r='132' fill='%23d4a944'/%3E%3Ccircle cx='240' cy='240' r='66' fill='%23fff7d7'/%3E%3C/svg%3E",
-        signature: { red: 212, green: 169, blue: 68, brightness: 150 },
-      },
-    ],
-  },
-  {
-    id: "sample-2",
-    managementNumber: "CH-002",
-    note: "サンプル: シルバー系",
-    createdAt: new Date().toISOString(),
-    images: [
-      {
-        id: "sample-2-img",
-        angleLabel: "表",
-        source: "registration",
-        createdAt: new Date().toISOString(),
-        imageUrl:
-          "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Crect width='480' height='480' fill='%23edf1f4'/%3E%3Cpath d='M240 88 378 240 240 392 102 240Z' fill='%23a6b1ba'/%3E%3Ccircle cx='240' cy='240' r='62' fill='%23f9fbfc'/%3E%3C/svg%3E",
-        signature: { red: 166, green: 177, blue: 186, brightness: 176 },
-      },
-    ],
-  },
+  createDemoCharm(
+    "sample-1",
+    "CH-001",
+    "デモ: ゴールドリング型",
+    { background: "#f7efe0", fill: "#d4a944", accent: "#b9912f", shape: "circle" },
+    { red: 212, green: 169, blue: 68, brightness: 150 },
+  ),
+  createDemoCharm(
+    "sample-2",
+    "CH-002",
+    "デモ: シルバーダイヤ型",
+    { background: "#edf1f4", fill: "#a6b1ba", accent: "#77858f", shape: "diamond" },
+    { red: 166, green: 177, blue: 186, brightness: 176 },
+  ),
 ];
 
 function makeId(prefix: string) {
@@ -574,6 +630,27 @@ function App() {
     setShowOnboarding(false);
   }
 
+  function loadDemoDataset() {
+    setCharms(sampleCharms);
+    setDecisionLogs([
+      {
+        id: "demo-decision-1",
+        managementNumber: "CH-001",
+        decision: "confirmed",
+        score: 91,
+        learnedImages: 2,
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+    setQueryImages([]);
+    setCorrectionTargetId("");
+    setImportSummary("");
+    localStorage.setItem(ONBOARDING_STORAGE_KEY, "true");
+    setShowOnboarding(false);
+    setMessage("デモデータを読み込みました。登録一覧と識別フローを試せます。");
+    setActiveView("library");
+  }
+
   function resetLocalData() {
     const confirmed = window.confirm(
       "端末内の登録データ、学習写真、判定履歴を削除します。元に戻せません。実行しますか？",
@@ -629,9 +706,14 @@ function App() {
               その撮影画像が追加学習されます。
             </p>
           </div>
-          <button type="button" onClick={dismissOnboarding}>
-            はじめる
-          </button>
+          <div className="onboarding-actions">
+            <button type="button" onClick={loadDemoDataset}>
+              デモデータで試す
+            </button>
+            <button className="secondary-onboarding-action" type="button" onClick={dismissOnboarding}>
+              空ではじめる
+            </button>
+          </div>
         </section>
       ) : null}
 
