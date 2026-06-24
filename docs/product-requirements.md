@@ -10,26 +10,27 @@ Build a mobile-first web app that identifies a physical charm from a smartphone 
 
 1. User creates a new charm record.
 2. User enters the charm's management number.
-3. User captures or uploads multiple images of the same charm from different angles.
+3. User captures six required images of the same charm: front, back, right side, left side, top side, and bottom side.
 4. App stores the management number and training/reference images together.
 
 ### Identify a charm
 
 1. User opens the identification camera.
-2. User captures or uploads an image of an unknown charm.
-3. App compares the image against registered charm data.
-4. App displays the most likely management number and confidence/candidate ranking.
-5. User can confirm the result or mark it as incorrect.
+2. User captures a first image of an unknown charm, usually the front.
+3. If confidence is low, app prompts the user to add another angle such as back or side.
+4. App compares the captured angles against registered charm data angle-by-angle.
+5. App displays the most likely management number and confidence/candidate ranking.
+6. User can confirm the result or mark it as incorrect.
 
 ## MVP Scope
 
 - Mobile-first React/Vite UI.
 - Charm registration form with management number input.
-- Multi-image capture/upload for each charm.
+- Six-direction capture protocol for each charm.
 - Charm list/detail view.
 - Identify screen for camera/upload.
 - Local or simple backend-backed storage of charm records and images.
-- Similarity-based matching prototype.
+- Similarity-based matching prototype that can use one or more captured angles.
 - Result screen showing top candidate and confidence.
 
 ## Out Of Scope For First MVP
@@ -55,7 +56,7 @@ Start with a browser-based prototype:
 type Charm = {
   id: string;
   managementNumber: string;
-  images: CharmImage[];
+  images: CharmImage[]; // one each for front, back, right side, left side, top side, bottom side
   createdAt: string;
   updatedAt: string;
 };
@@ -64,7 +65,7 @@ type CharmImage = {
   id: string;
   charmId: string;
   imageUrl: string;
-  angleLabel?: string;
+  angleLabel: "表" | "裏" | "右側面" | "左側面" | "上側面" | "下側面";
   embedding?: number[];
   createdAt: string;
 };
@@ -93,4 +94,18 @@ type IdentificationResult = {
 2. Add three primary tabs: Register, Identify, Library.
 3. Implement local mock data and image upload/camera capture UI.
 4. Add a placeholder matcher that returns candidate charms from the registered library.
-5. Add a clear ML integration boundary for a real image-similarity model.
+5. Match first by the same captured angle when possible, then fall back to all images.
+6. Add a clear ML integration boundary for a real image-similarity model.
+
+## 3D Direction
+
+The first practical version should not attempt full 3D model generation. Instead, it should enforce a 3D-like capture protocol:
+
+- Front
+- Back
+- Right side
+- Left side
+- Top side
+- Bottom side
+
+This gives the matching layer multi-angle evidence without requiring heavy photogrammetry. Full 3D reconstruction can be evaluated later after enough real charm data is collected.

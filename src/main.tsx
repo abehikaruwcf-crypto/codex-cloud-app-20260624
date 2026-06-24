@@ -31,6 +31,7 @@ type Candidate = {
   charm: Charm;
   score: number;
   bestImage?: CharmImage;
+  matchedAngles: number;
 };
 
 type DecisionLog = {
@@ -44,6 +45,15 @@ type DecisionLog = {
 const STORAGE_KEY = "charm-id-camera-app-charms";
 const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
 
+const captureAngles = [
+  { id: "front", label: "表", hint: "正面の模様や刻印が見える向き" },
+  { id: "back", label: "裏", hint: "裏側の形状や留め具が見える向き" },
+  { id: "right", label: "右側面", hint: "厚みと右側の輪郭" },
+  { id: "left", label: "左側面", hint: "厚みと左側の輪郭" },
+  { id: "top", label: "上側面", hint: "上部の金具や穴の形" },
+  { id: "bottom", label: "下側面", hint: "下部の輪郭や装飾" },
+];
+
 const sampleCharms: Charm[] = [
   {
     id: "sample-1",
@@ -53,7 +63,7 @@ const sampleCharms: Charm[] = [
     images: [
       {
         id: "sample-1-img",
-        angleLabel: "正面",
+        angleLabel: "表",
         createdAt: new Date().toISOString(),
         imageUrl:
           "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Crect width='480' height='480' fill='%23f7efe0'/%3E%3Ccircle cx='240' cy='240' r='132' fill='%23d4a944'/%3E%3Ccircle cx='240' cy='240' r='66' fill='%23fff7d7'/%3E%3C/svg%3E",
@@ -69,7 +79,7 @@ const sampleCharms: Charm[] = [
     images: [
       {
         id: "sample-2-img",
-        angleLabel: "正面",
+        angleLabel: "表",
         createdAt: new Date().toISOString(),
         imageUrl:
           "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Crect width='480' height='480' fill='%23edf1f4'/%3E%3Cpath d='M240 88 378 240 240 392 102 240Z' fill='%23a6b1ba'/%3E%3Ccircle cx='240' cy='240' r='62' fill='%23f9fbfc'/%3E%3C/svg%3E",
@@ -79,7 +89,7 @@ const sampleCharms: Charm[] = [
   },
 ];
 
-const angleSuggestions = ["正面", "裏面", "左斜め", "右斜め", "上部", "刻印"];
+const angleSuggestions = captureAngles.map((angle) => angle.label);
 
 function makeId(prefix: string) {
   return `${prefix}-${crypto.randomUUID()}`;
@@ -151,19 +161,36 @@ function scoreSignature(query: ImageSignature, reference: ImageSignature) {
   return Math.max(0, Math.round(100 - (distance / 441) * 100));
 }
 
-function findCandidates(query: ImageSignature, charms: Charm[]): Candidate[] {
+function findCandidates(queries: CharmImage[], charms: Charm[]): Candidate[] {
   return charms
     .map((charm) => {
-      const scoredImages = charm.images.map((image) => ({
-        image,
-        score: scoreSignature(query, image.signature),
-      }));
-      const best = scoredImages.sort((first, second) => second.score - first.score)[0];
+      const scoredQueries = queries.map((query) => {
+        const sameAngleImages = charm.images.filter((image) => image.angleLabel === query.angleLabel);
+        const comparableImages = sameAngleImages.length > 0 ? sameAngleImages : charm.images;
+        const best = comparableImages
+          .map((image) => ({
+            image,
+            score: scoreSignature(query.signature, image.signature),
+          }))
+          .sort((first, second) => second.score - first.score)[0];
+
+        return best;
+      });
+
+      const validScores = scoredQueries.filter(Boolean);
+      const best = [...validScores].sort((first, second) => second.score - first.score)[0];
+      const averageScore =
+        validScores.length === 0
+          ? 0
+          : Math.round(
+              validScores.reduce((total, score) => total + score.score, 0) / validScores.length,
+            );
 
       return {
         charm,
-        score: best?.score ?? 0,
+        score: averageScore,
         bestImage: best?.image,
+        matchedAngles: validScores.length,
       };
     })
     .sort((first, second) => second.score - first.score)
@@ -183,11 +210,17 @@ function confidenceLabel(score: number) {
 }
 
 function qualityScore(images: CharmImage[]) {
-  const angleCount = new Set(images.map((image) => image.angleLabel)).size;
-  const imageScore = Math.min(images.length, 6) * 12;
-  const angleScore = Math.min(angleCount, 6) * 5;
+  const requiredAngleCount = captureAngles.filter((angle) =>
+    images.some((image) => image.angleLabel === angle.label),
+  ).length;
+  const angleScore = requiredAngleCount * 16;
+  const bonusScore = Math.min(images.length - requiredAngleCount, 2) * 2;
 
-  return Math.min(100, imageScore + angleScore);
+  return Math.max(0, Math.min(100, angleScore + bonusScore));
+}
+
+function missingAngles(images: CharmImage[]) {
+  return captureAngles.filter((angle) => !images.some((image) => image.angleLabel === angle.label));
 }
 
 function loadDecisions() {
@@ -224,8 +257,7 @@ function App() {
   const [managementNumber, setManagementNumber] = useState("");
   const [note, setNote] = useState("");
   const [draftImages, setDraftImages] = useState<CharmImage[]>([]);
-  const [queryImage, setQueryImage] = useState<string | null>(null);
-  const [querySignature, setQuerySignature] = useState<ImageSignature | null>(null);
+  const [queryImages, setQueryImages] = useState<CharmImage[]>([]);
   const [decisionLogs, setDecisionLogs] = useState<DecisionLog[]>(loadDecisions);
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
@@ -239,17 +271,19 @@ function App() {
   }, [decisionLogs]);
 
   const candidates = useMemo(() => {
-    if (!querySignature) {
+    if (queryImages.length === 0) {
       return [];
     }
 
-    return findCandidates(querySignature, charms);
-  }, [charms, querySignature]);
+    return findCandidates(queryImages, charms);
+  }, [charms, queryImages]);
 
   const topCandidate = candidates[0];
   const currentQualityScore = qualityScore(draftImages);
+  const missingDraftAngles = missingAngles(draftImages);
+  const missingQueryAngles = missingAngles(queryImages);
 
-  async function addImages(event: ChangeEvent<HTMLInputElement>) {
+  async function addImages(event: ChangeEvent<HTMLInputElement>, angleLabel: string) {
     const files = Array.from(event.target.files ?? []);
 
     if (files.length === 0) {
@@ -269,13 +303,16 @@ function App() {
             id: makeId("image"),
             imageUrl,
             signature,
-            angleLabel: angleSuggestions[(draftImages.length + index) % angleSuggestions.length],
+            angleLabel,
             createdAt: new Date().toISOString(),
           };
         }),
       );
 
-      setDraftImages((current) => [...current, ...nextImages]);
+      setDraftImages((current) => [
+        ...current.filter((image) => image.angleLabel !== angleLabel),
+        ...nextImages.slice(0, 1),
+      ]);
     } catch {
       setMessage("画像を読み込めませんでした。別の写真でもう一度試してください。");
     } finally {
@@ -284,7 +321,7 @@ function App() {
     }
   }
 
-  async function identifyImage(event: ChangeEvent<HTMLInputElement>) {
+  async function identifyImage(event: ChangeEvent<HTMLInputElement>, angleLabel: string) {
     const file = event.target.files?.[0];
 
     if (!file) {
@@ -297,8 +334,17 @@ function App() {
     try {
       const imageUrl = await fileToDataUrl(file);
       const signature = await signatureFromImage(imageUrl);
-      setQueryImage(imageUrl);
-      setQuerySignature(signature);
+      const nextImage = {
+        id: makeId("query"),
+        imageUrl,
+        signature,
+        angleLabel,
+        createdAt: new Date().toISOString(),
+      };
+      setQueryImages((current) => [
+        ...current.filter((image) => image.angleLabel !== angleLabel),
+        nextImage,
+      ]);
       setActiveView("identify");
     } catch {
       setMessage("識別用の画像を読み込めませんでした。");
@@ -316,8 +362,10 @@ function App() {
       return;
     }
 
-    if (draftImages.length < 2) {
-      setMessage("識別精度を上げるため、最低2枚の写真を登録してください。");
+    if (missingDraftAngles.length > 0) {
+      setMessage(
+        `6方向撮影が未完了です: ${missingDraftAngles.map((angle) => angle.label).join(" / ")}`,
+      );
       return;
     }
 
@@ -350,6 +398,11 @@ function App() {
 
   function deleteCharm(charmId: string) {
     setCharms((current) => current.filter((charm) => charm.id !== charmId));
+  }
+
+  function clearQueryImages() {
+    setQueryImages([]);
+    setMessage("識別用の撮影をリセットしました。");
   }
 
   function logDecision(candidate: Candidate, decision: DecisionLog["decision"]) {
@@ -400,8 +453,8 @@ function App() {
           <p>判定履歴</p>
         </div>
         <div>
-          <span>{topCandidate ? `${topCandidate.score}%` : "-"}</span>
-          <p>最新候補</p>
+          <span>{queryImages.length}/6</span>
+          <p>識別撮影</p>
         </div>
       </section>
 
@@ -411,31 +464,47 @@ function App() {
         <div className="section-head">
           <div>
             <h2>撮影して識別</h2>
-            <p>iPhoneの背面カメラで撮影し、登録済み写真から候補を出します。</p>
+            <p>まず表を撮影し、迷う場合は裏や側面を追加して候補を絞ります。</p>
           </div>
         </div>
 
-        <label className="camera-button">
-          <span>カメラで撮影</span>
-          <input
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={identifyImage}
-          />
-        </label>
+        <div className="capture-protocol">
+          {captureAngles.map((angle) => {
+            const image = queryImages.find((query) => query.angleLabel === angle.label);
 
-        {queryImage ? (
+            return (
+              <label className={image ? "angle-capture is-complete" : "angle-capture"} key={angle.id}>
+                <span>{angle.label}</span>
+                <small>{image ? "撮影済み" : angle.hint}</small>
+                {image ? <img src={image.imageUrl} alt={`${angle.label}の識別写真`} /> : null}
+                <input
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={(event) => identifyImage(event, angle.label)}
+                />
+              </label>
+            );
+          })}
+        </div>
+
+        {queryImages.length > 0 ? (
           <div className="result-layout">
-            <img className="query-preview" src={queryImage} alt="識別対象のチャーム" />
             {topCandidate ? (
               <article className="match-summary">
                 <div>
                   <p>最有力候補</p>
                   <h3>{topCandidate.charm.managementNumber}</h3>
+                  <span>{topCandidate.matchedAngles}方向で照合</span>
                 </div>
                 <strong>{confidenceLabel(topCandidate.score)}</strong>
               </article>
+            ) : null}
+            {topCandidate && topCandidate.score < 84 && missingQueryAngles.length > 0 ? (
+              <div className="next-shot">
+                <strong>追加撮影推奨</strong>
+                <p>{missingQueryAngles[0].label}を撮ると候補を絞りやすくなります。</p>
+              </div>
             ) : null}
             <div className="result-list">
               {candidates.length > 0 ? (
@@ -445,7 +514,7 @@ function App() {
                     <div>
                       <h3>{candidate.charm.managementNumber}</h3>
                       <p>
-                        {candidate.score}%一致 / {confidenceLabel(candidate.score)}
+                        {candidate.score}%一致 / {candidate.matchedAngles}方向
                       </p>
                     </div>
                     {candidate.bestImage ? (
@@ -465,13 +534,16 @@ function App() {
                 <p className="empty-state">登録済みチャームがありません。</p>
               )}
             </div>
+            <button className="secondary-action" type="button" onClick={clearQueryImages}>
+              識別撮影をリセット
+            </button>
           </div>
         ) : (
           <div className="empty-state identify-guide">
             <strong>撮影のコツ</strong>
-            <span>チャームを画面中央に置く</span>
-            <span>背景は無地に近づける</span>
-            <span>明るさを揃えて撮る</span>
+            <span>まず表を撮影する</span>
+            <span>候補が割れたら裏・側面を追加する</span>
+            <span>同じ背景と明るさで撮る</span>
           </div>
         )}
       </section>
@@ -480,7 +552,7 @@ function App() {
         <div className="section-head">
           <div>
             <h2>チャーム登録</h2>
-            <p>管理番号と複数角度の写真を保存します。</p>
+            <p>管理番号と6方向の写真を保存します。</p>
           </div>
         </div>
 
@@ -511,41 +583,38 @@ function App() {
               <strong>{currentQualityScore}%</strong>
             </div>
             <meter min="0" max="100" value={currentQualityScore} />
-            <p>最低2枚、できれば正面・裏面・斜めの3方向以上を登録してください。</p>
+            <p>
+              {missingDraftAngles.length === 0
+                ? "6方向が揃っています。識別用の参照データとして登録できます。"
+                : `未撮影: ${missingDraftAngles.map((angle) => angle.label).join(" / ")}`}
+            </p>
           </div>
 
-          <label className="camera-button secondary">
-            <span>写真を追加</span>
-            <input
-              type="file"
-              accept="image/*"
-              capture="environment"
-              multiple
-              onChange={addImages}
-            />
-          </label>
+          <div className="capture-protocol">
+            {captureAngles.map((angle) => {
+              const image = draftImages.find((draftImage) => draftImage.angleLabel === angle.label);
 
-          <div className="photo-grid">
-            {draftImages.map((image) => (
-              <figure key={image.id}>
-                <img src={image.imageUrl} alt={image.angleLabel} />
-                <figcaption>
-                  <select
-                    value={image.angleLabel}
-                    onChange={(event) => updateDraftAngle(image.id, event.target.value)}
-                  >
-                    {angleSuggestions.map((angle) => (
-                      <option key={angle} value={angle}>
-                        {angle}
-                      </option>
-                    ))}
-                  </select>
-                  <button type="button" onClick={() => removeDraftImage(image.id)}>
-                    削除
-                  </button>
-                </figcaption>
-              </figure>
-            ))}
+              return (
+                <div className={image ? "angle-card is-complete" : "angle-card"} key={angle.id}>
+                  <label>
+                    <span>{angle.label}</span>
+                    <small>{angle.hint}</small>
+                    {image ? <img src={image.imageUrl} alt={`${angle.label}の登録写真`} /> : null}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={(event) => addImages(event, angle.label)}
+                    />
+                  </label>
+                  {image ? (
+                    <button type="button" onClick={() => removeDraftImage(image.id)}>
+                      撮り直す
+                    </button>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
 
           <button className="primary-action" type="submit" disabled={isProcessing}>
@@ -570,7 +639,12 @@ function App() {
                 <div>
                   <h3>{charm.managementNumber}</h3>
                   <p>{charm.note || "メモなし"}</p>
-                  <span>{charm.images.length}枚登録</span>
+                  <span>
+                    {captureAngles.filter((angle) =>
+                      charm.images.some((image) => image.angleLabel === angle.label),
+                    ).length}
+                    /6方向登録
+                  </span>
                 </div>
               </div>
               <button type="button" onClick={() => deleteCharm(charm.id)}>

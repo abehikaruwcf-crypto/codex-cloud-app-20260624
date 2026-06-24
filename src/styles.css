@@ -21,6 +21,7 @@ body {
 
 button,
 input,
+select,
 textarea {
   font: inherit;
 }
@@ -157,7 +158,8 @@ h3 {
 }
 
 .camera-button,
-.primary-action {
+.primary-action,
+.secondary-action {
   display: flex;
   width: 100%;
   min-height: 56px;
@@ -170,6 +172,12 @@ h3 {
   font-weight: 800;
   text-align: center;
   text-decoration: none;
+}
+
+.secondary-action {
+  color: #172026;
+  border: 1px solid rgba(23, 32, 38, 0.14);
+  background: #ffffff;
 }
 
 .camera-button {
@@ -232,6 +240,14 @@ h3 {
   font-size: 1.36rem;
 }
 
+.match-summary span {
+  display: block;
+  margin-top: 4px;
+  color: #607078;
+  font-size: 0.84rem;
+  font-weight: 800;
+}
+
 .match-summary strong {
   min-width: 62px;
   border-radius: 8px;
@@ -239,6 +255,21 @@ h3 {
   color: #ffffff;
   background: #3a6f68;
   text-align: center;
+}
+
+.next-shot {
+  display: grid;
+  gap: 4px;
+  border: 1px solid rgba(196, 138, 38, 0.28);
+  border-radius: 8px;
+  padding: 13px;
+  color: #6e4b12;
+  background: #fff7e7;
+}
+
+.next-shot p {
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 .result-list,
@@ -334,6 +365,90 @@ h3 {
   border-radius: 8px;
   padding: 10px 12px;
   background: #ffffff;
+}
+
+.capture-protocol {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.angle-capture,
+.angle-card {
+  position: relative;
+  min-height: 142px;
+  overflow: hidden;
+  border: 1px solid rgba(23, 32, 38, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.angle-capture {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 12px;
+}
+
+.angle-card label {
+  display: grid;
+  min-height: 142px;
+  align-content: start;
+  gap: 6px;
+  padding: 12px;
+}
+
+.angle-capture span,
+.angle-card span {
+  color: #172026;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.angle-capture small,
+.angle-card small {
+  color: #607078;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.angle-capture img,
+.angle-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.15;
+  margin-top: 4px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: #dce4e7;
+}
+
+.angle-capture input,
+.angle-card input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.angle-capture.is-complete,
+.angle-card.is-complete {
+  border-color: rgba(58, 111, 104, 0.32);
+  background: #f8fcfb;
+}
+
+.angle-card button {
+  position: relative;
+  z-index: 2;
+  width: calc(100% - 18px);
+  min-height: 38px;
+  margin: 0 9px 9px;
+  border: 0;
+  border-radius: 8px;
+  color: #172026;
+  background: #edf4f2;
+  font-size: 0.84rem;
+  font-weight: 900;
 }
 
 .register-form label {

@@ -14,8 +14,8 @@ npm run build
 
 The app should support two main workflows:
 
-- Register a charm by entering a management number and capturing multiple images from different angles.
-- Identify a charm by taking a camera photo and matching it against the registered charm dataset.
+- Register a charm by entering a management number and capturing six fixed angles: front, back, right side, left side, top side, and bottom side.
+- Identify a charm by taking one or more angle-specific camera photos and matching them against the registered charm dataset.
 
 See [docs/product-requirements.md](docs/product-requirements.md) for the current requirements draft.
 
@@ -32,9 +32,9 @@ Read docs/product-requirements.md first. Then implement the first MVP UI:
 
 1. Replace the current landing page with a mobile-first app shell.
 2. Add Register, Identify, and Library views.
-3. Implement management number input and multi-image capture/upload UI.
-4. Add a mock charm dataset and a placeholder matching result flow.
-5. Keep the matching layer isolated so it can later be replaced with real image similarity or model inference.
+3. Implement management number input and six-direction capture UI.
+4. Add a mock charm dataset and a placeholder multi-angle matching result flow.
+5. Keep the matching layer isolated so it can later be replaced with real image similarity, model inference, or optional 3D reconstruction.
 
 Run npm run build before finishing and summarize the changed files.
 ```
