@@ -13,6 +13,7 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - App Store Connect app record exists for Bundle ID `com.wcf.charmid`.
 - Final hosted Privacy Policy URL opens publicly and includes a concrete privacy contact such as a `mailto:` link, email address, or telephone contact.
 - Final hosted Support URL opens publicly and includes a concrete support contact such as a `mailto:` link, email address, or telephone contact.
+- `npm run appstore:public-urls` confirms the final Privacy Policy and Support URLs return HTTP 200 and expected page titles.
 - Final App Store screenshots are captured from the release build at Apple-supported sizes.
 - TestFlight build is uploaded and processed in App Store Connect.
 - Physical iPhone TestFlight validation completed against the uploaded build.
@@ -34,6 +35,7 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - Backup validation file:
 - Backup validation result:
 - Backup import result:
+- Public URL verification result:
 - Strict verification result:
 - Final Privacy Policy URL: https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html
 - Final Support URL: https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html
@@ -56,6 +58,5 @@ npm run appstore:apply-inputs -- --support-contact support@example.com --privacy
 | --- | --- | --- |
 | Formal support contact | A concrete `mailto:` link, email address, or telephone contact for app support. | `public/support.html` |
 | Privacy policy contact | A concrete `mailto:` link, email address, or telephone contact for privacy inquiries. | `public/privacy.html` |
-| Hosted privacy/support URLs | Final public URLs for `/privacy.html` and `/support.html` after GitHub Pages or another host is enabled. | `docs/github-pages-workflow.md`, App Store Connect, and this signoff page |
 | Full Xcode selected | Output of `xcodebuild -version` after selecting full Xcode. | This signoff page |
 | Final App Review signoff | Filled release commit, App Store Connect app ID, uploaded build, physical iPhone TestFlight result, final URLs, contacts, owner, and date. | This signoff page |

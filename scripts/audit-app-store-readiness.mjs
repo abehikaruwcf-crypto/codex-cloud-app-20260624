@@ -319,6 +319,7 @@ requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final
 requireText("docs/app-review-final-signoff.md", "npm run appstore:apply-inputs", "Final signoff documents release input application command");
 requireText("docs/app-review-final-signoff.md", "Backup validation file", "Final signoff records backup validation file");
 requireText("docs/app-review-final-signoff.md", "Backup import result", "Final signoff records backup import result");
+requireText("docs/app-review-final-signoff.md", "Public URL verification result", "Final signoff records public URL verification");
 requireText("docs/app-review-final-signoff.md", "Strict verification result", "Final signoff records strict verification result");
 requireText("docs/app-review-final-signoff.md", "Formal support contact", "Final signoff maps support contact TODO");
 requireText("docs/app-review-final-signoff.md", "Privacy policy contact", "Final signoff maps privacy contact TODO");
@@ -328,6 +329,7 @@ requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "
 requireText("docs/testflight-release-checklist.md", "npm run appstore:evidence", "TestFlight checklist includes evidence command");
 requireText("docs/testflight-release-checklist.md", "npm run backup:validate", "TestFlight checklist includes backup validation");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:verify", "TestFlight checklist includes verification command");
+requireText("docs/testflight-release-checklist.md", "npm run appstore:public-urls", "TestFlight checklist includes public URL verification");
 requireText("docs/testflight-release-checklist.md", "Exported backup filename", "TestFlight checklist records backup evidence");
 requireText("docs/testflight-release-checklist.md", "Status: Ready for App Review", "TestFlight checklist includes final signoff ready marker");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");

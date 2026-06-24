@@ -86,6 +86,7 @@ function fillSignoffFields(content: string) {
     "Backup validation file": "charm-id-backup-2026-06-25.json",
     "Backup validation result": "passed",
     "Backup import result": "passed on physical iPhone",
+    "Public URL verification result": "passed with npm run appstore:public-urls",
     "Strict verification result": "passed",
     "Final Privacy Policy URL": "https://example.com/privacy.html",
     "Final Support URL": "https://example.com/support.html",

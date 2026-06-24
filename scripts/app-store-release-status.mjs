@@ -84,6 +84,7 @@ const requiredSignoffFields = [
   "Backup validation file",
   "Backup validation result",
   "Backup import result",
+  "Public URL verification result",
   "Strict verification result",
   "Final Privacy Policy URL",
   "Final Support URL",
