@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "test:unit": "node scripts/run-unit-tests.mjs",
+    "backup:validate": "node scripts/validate-backup.mjs",
     "ios:sync": "npm run build && npx cap sync ios",
     "ios:open": "npx cap open ios",
     "appstore:set-version": "node scripts/set-release-version.mjs",

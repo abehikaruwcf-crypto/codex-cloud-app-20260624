@@ -143,6 +143,7 @@ fileExists("docs/github-actions-app-store-readiness.md", "App Store readiness CI
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
 fileExists("scripts/run-unit-tests.mjs", "Unit test runner");
+fileExists("scripts/validate-backup.mjs", "Backup validation CLI");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
 fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print script");
 fileExists("scripts/apply-release-inputs.mjs", "Release input application script");
@@ -214,6 +215,7 @@ requireText("docs/github-pages-workflow.md", "/support.html", "Support page Page
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
 requireText("docs/app-store-screenshots.md", "05-learning.jpg", "Screenshot docs include learning success shot");
 requireText("package.json", "\"test:unit\"", "Unit test script entry");
+requireText("package.json", "\"backup:validate\"", "Backup validation script entry");
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
@@ -231,6 +233,10 @@ requireText("tests/matching-and-learning.test.ts", "learning merge keeps the lat
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects duplicate management numbers", "Backup duplicate validation unit test exists");
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects incomplete six-angle models", "Backup angle validation unit test exists");
 requireText("src/backup.ts", "validateBackupPayload", "Backup validation module exists");
+requireText("scripts/validate-backup.mjs", "Backup validation passed", "Backup validation CLI reports success");
+requireText("tests/backup-cli.test.ts", "backup validation CLI accepts", "Backup validation CLI success test exists");
+requireText("tests/backup-cli.test.ts", "rejects duplicate normalized management numbers", "Backup validation CLI failure test exists");
+requireText("tests/fixtures/valid-backup.json", "\"managementNumber\": \"CH-900\"", "Valid backup fixture exists");
 requireText("scripts/print-app-store-metadata.mjs", "fieldLimits", "Metadata print includes field limits");
 requireText("scripts/print-app-store-metadata.mjs", "maxBytes: 100", "Metadata print validates keyword byte limit");
 requireText("scripts/print-app-store-metadata.mjs", "used > max", "Metadata print fails on field limit overflow");

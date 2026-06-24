@@ -4,19 +4,23 @@ import { build } from "esbuild";
 
 const root = process.cwd();
 const outdir = join(root, "work", "unit-tests");
-const outfile = join(outdir, "charm-id-unit-tests.mjs");
+const testFiles = ["matching-and-learning.test.ts", "backup-cli.test.ts"];
 
 mkdirSync(outdir, { recursive: true });
 
-await build({
-  entryPoints: [join(root, "tests", "matching-and-learning.test.ts")],
-  outfile,
-  bundle: true,
-  platform: "node",
-  format: "esm",
-  sourcemap: "inline",
-  logLevel: "silent",
-  external: ["node:assert/strict", "node:test"],
-});
+for (const testFile of testFiles) {
+  const outfile = join(outdir, testFile.replace(/\.ts$/, ".mjs"));
 
-await import(`file://${outfile}?v=${Date.now()}`);
+  await build({
+    entryPoints: [join(root, "tests", testFile)],
+    outfile,
+    bundle: true,
+    platform: "node",
+    format: "esm",
+    sourcemap: "inline",
+    logLevel: "silent",
+    external: ["node:assert/strict", "node:test", "node:child_process"],
+  });
+
+  await import(`file://${outfile}?v=${Date.now()}`);
+}

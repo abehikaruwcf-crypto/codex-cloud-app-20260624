@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-25T09:00:00.000Z",
+  "charms": [
+    {
+      "id": "fixture-charm-1",
+      "managementNumber": "CH-900",
+      "note": "Fixture charm",
+      "createdAt": "2026-06-25T09:00:00.000Z",
+      "images": [
+        {
+          "id": "fixture-front",
+          "imageUrl": "data:test/front",
+          "angleLabel": "表",
+          "signature": { "red": 220, "green": 174, "blue": 72, "brightness": 155 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-back",
+          "imageUrl": "data:test/back",
+          "angleLabel": "裏",
+          "signature": { "red": 208, "green": 162, "blue": 66, "brightness": 143 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-right",
+          "imageUrl": "data:test/right",
+          "angleLabel": "右側面",
+          "signature": { "red": 210, "green": 166, "blue": 66, "brightness": 137 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-left",
+          "imageUrl": "data:test/left",
+          "angleLabel": "左側面",
+          "signature": { "red": 213, "green": 168, "blue": 68, "brightness": 140 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-top",
+          "imageUrl": "data:test/top",
+          "angleLabel": "上側面",
+          "signature": { "red": 228, "green": 182, "blue": 78, "brightness": 167 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-bottom",
+          "imageUrl": "data:test/bottom",
+          "angleLabel": "下側面",
+          "signature": { "red": 206, "green": 162, "blue": 62, "brightness": 133 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-learned-front",
+          "imageUrl": "data:test/learned-front",
+          "angleLabel": "表",
+          "signature": { "red": 219, "green": 173, "blue": 73, "brightness": 155 },
+          "source": "confirmed-identification",
+          "createdAt": "2026-06-25T10:00:00.000Z"
+        }
+      ]
+    }
+  ],
+  "decisionLogs": [
+    {
+      "id": "fixture-decision-1",
+      "managementNumber": "CH-900",
+      "decision": "confirmed",
+      "score": 92,
+      "learnedImages": 1,
+      "createdAt": "2026-06-25T10:00:00.000Z"
+    }
+  ]
+}

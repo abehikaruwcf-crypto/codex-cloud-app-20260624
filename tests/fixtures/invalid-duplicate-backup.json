@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-25T09:00:00.000Z",
+  "charms": [
+    {
+      "id": "fixture-charm-1",
+      "managementNumber": "CH-901",
+      "images": [
+        { "id": "a-front", "imageUrl": "data:test/front", "angleLabel": "表", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "a-back", "imageUrl": "data:test/back", "angleLabel": "裏", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "a-right", "imageUrl": "data:test/right", "angleLabel": "右側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "a-left", "imageUrl": "data:test/left", "angleLabel": "左側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "a-top", "imageUrl": "data:test/top", "angleLabel": "上側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "a-bottom", "imageUrl": "data:test/bottom", "angleLabel": "下側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" }
+      ]
+    },
+    {
+      "id": "fixture-charm-2",
+      "managementNumber": " ch-901 ",
+      "images": [
+        { "id": "b-front", "imageUrl": "data:test/front", "angleLabel": "表", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "b-back", "imageUrl": "data:test/back", "angleLabel": "裏", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "b-right", "imageUrl": "data:test/right", "angleLabel": "右側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "b-left", "imageUrl": "data:test/left", "angleLabel": "左側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "b-top", "imageUrl": "data:test/top", "angleLabel": "上側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "b-bottom", "imageUrl": "data:test/bottom", "angleLabel": "下側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" }
+      ]
+    }
+  ],
+  "decisionLogs": []
+}
