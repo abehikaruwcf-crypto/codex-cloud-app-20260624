@@ -44,12 +44,28 @@ test("release evidence includes hosted page sources and the current manual gate"
   assert.equal(evidence.evidenceTargets.bundledSupportPage, "public/support.html");
   assert.equal(evidence.evidenceTargets.hostedPrivacyPageSource, "docs/privacy.html");
   assert.equal(evidence.evidenceTargets.hostedSupportPageSource, "docs/support.html");
+  assert.equal(evidence.evidenceTargets.privacyDoc, "docs/app-privacy-answers.md");
+  assert.equal(evidence.evidenceTargets.privacyManifest, "ios/App/App/PrivacyInfo.xcprivacy");
+  assert.equal(evidence.evidenceTargets.privacyPacket, "npm run appstore:privacy");
   assert.equal(evidence.evidenceTargets.screenshotDoc, "docs/app-store-screenshots.md");
   assert.equal(evidence.evidenceTargets.screenshotPacket, "npm run appstore:screenshot-packet");
   assert.equal(evidence.evidenceTargets.xcodePacket, "npm run appstore:xcode-packet");
   assert.equal(evidence.releaseStatus.todo, 5);
   assert.equal(evidence.publishing.publicUrlsReachable, true);
   assert.equal(evidence.nextStrictGate, "npm run appstore:verify -- --strict");
+});
+
+test("release evidence includes App Privacy packet", () => {
+  const evidence = runEvidence();
+
+  assert.equal(evidence.privacy.command, "npm run appstore:privacy");
+  assert.equal(evidence.privacy.packetGenerated, true);
+  assert.equal(evidence.privacy.sourceDoc, "docs/app-privacy-answers.md");
+  assert.equal(evidence.privacy.privacyManifest, "ios/App/App/PrivacyInfo.xcprivacy");
+  assert.equal(evidence.privacy.appStoreConnectAnswers.dataCollected, "No");
+  assert.equal(evidence.privacy.appStoreConnectAnswers.tracking, "No");
+  assert.equal(evidence.privacy.manifestChecks.trackingDeclaredFalse, true);
+  assert.equal(evidence.privacy.manifestChecks.collectedDataTypesEmpty, true);
 });
 
 test("release evidence includes screenshot readiness packet", () => {
@@ -90,6 +106,7 @@ test("release evidence check allows manual TODOs by default and blocks strict mo
   });
 
   assert.match(defaultOutput, /\[PASS\] Public App Store URLs/);
+  assert.match(defaultOutput, /\[PASS\] App Privacy evidence packet/);
   assert.match(defaultOutput, /\[PASS\] Screenshot evidence packet/);
   assert.match(defaultOutput, /\[PASS\] Xcode evidence packet/);
   assert.match(defaultOutput, /\[TODO\] Final signoff readiness/);

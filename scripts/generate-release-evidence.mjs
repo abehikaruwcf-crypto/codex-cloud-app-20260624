@@ -155,9 +155,11 @@ const statusShort = run("git", ["status", "--short"]);
 const xcode = run("xcodebuild", ["-version"]);
 const releaseStatus = run("npm", ["run", "appstore:status"]);
 const publicUrls = run("npm", ["run", "appstore:public-urls"]);
+const privacyPacket = run("npm", ["run", "appstore:privacy"]);
 const screenshotPacket = run("npm", ["run", "appstore:screenshot-packet"]);
 const xcodePacket = run("npm", ["run", "appstore:xcode-packet"]);
 const parsedStatus = parseStatus(releaseStatus.output);
+const parsedPrivacyPacket = parseJsonOutput(privacyPacket.output);
 const parsedScreenshotPacket = parseJsonOutput(screenshotPacket.output);
 const parsedXcodePacket = parseJsonOutput(xcodePacket.output);
 const pagesNotes = hasFile("docs/github-pages-workflow.md")
@@ -210,6 +212,14 @@ const evidence = {
     publicUrlsReachable: publicUrls.ok,
     publicUrlCheckOutput: publicUrls.output,
   },
+  privacy: {
+    command: "npm run appstore:privacy",
+    packetGenerated: privacyPacket.ok && Boolean(parsedPrivacyPacket),
+    sourceDoc: parsedPrivacyPacket?.sourceDoc ?? null,
+    privacyManifest: parsedPrivacyPacket?.privacyManifest ?? null,
+    appStoreConnectAnswers: parsedPrivacyPacket?.appStoreConnectAnswers ?? null,
+    manifestChecks: parsedPrivacyPacket?.manifestChecks ?? null,
+  },
   screenshots: {
     command: "npm run appstore:screenshot-packet",
     packetGenerated: screenshotPacket.ok && Boolean(parsedScreenshotPacket),
@@ -237,6 +247,9 @@ const evidence = {
     finalSignoff: "docs/app-review-final-signoff.md",
     testFlightChecklist: "docs/testflight-release-checklist.md",
     submissionPacket: "docs/app-store-submission-packet.md",
+    privacyPacket: "npm run appstore:privacy",
+    privacyDoc: "docs/app-privacy-answers.md",
+    privacyManifest: "ios/App/App/PrivacyInfo.xcprivacy",
     screenshotPacket: "npm run appstore:screenshot-packet",
     xcodePacket: "npm run appstore:xcode-packet",
     screenshotDoc: "docs/app-store-screenshots.md",

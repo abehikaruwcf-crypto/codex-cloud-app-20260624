@@ -62,6 +62,18 @@ addCheck(
 );
 addCheck(
   checks,
+  evidence.privacy?.packetGenerated === true &&
+    evidence.privacy?.appStoreConnectAnswers?.dataCollected === "No" &&
+    evidence.privacy?.appStoreConnectAnswers?.tracking === "No" &&
+    evidence.privacy?.manifestChecks?.trackingDeclaredFalse === true &&
+    evidence.evidenceTargets?.privacyPacket === "npm run appstore:privacy",
+  "App Privacy evidence packet",
+  evidence.privacy?.packetGenerated
+    ? "App Privacy packet is included and matches the local-only release assumptions."
+    : "Run npm run appstore:privacy and check docs/app-privacy-answers.md.",
+);
+addCheck(
+  checks,
   evidence.screenshots?.packetGenerated === true &&
     evidence.evidenceTargets?.screenshotDoc === "docs/app-store-screenshots.md",
   "Screenshot evidence packet",
