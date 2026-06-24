@@ -192,6 +192,7 @@ requireText("src/main.tsx", "写真ライブラリから選べる場合", "Photo
 requireText("src/main.tsx", "STORED_IMAGE_MAX_EDGE", "Stored image max-edge resize guard");
 requireText("src/main.tsx", "toDataURL(\"image/jpeg\", STORED_IMAGE_QUALITY)", "Stored image JPEG compression");
 requireText("src/main.tsx", "撮影写真は端末内保存前にサイズ調整", "In-app storage-size explanation");
+requireText("scripts/smoke-app-ui.mjs", "Uploaded register images should be resized and JPEG-compressed before storage", "Stored image compression smoke test");
 requireText("src/main.tsx", "を正解にする", "Candidate confirmation accessibility labels");
 requireText("src/main.tsx", "は違う候補として記録", "Candidate rejection accessibility labels");
 requireText("src/main.tsx", "候補にない場合の正しい管理番号", "Correction select accessibility label");

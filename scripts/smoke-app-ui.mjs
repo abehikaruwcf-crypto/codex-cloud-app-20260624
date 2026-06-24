@@ -81,6 +81,14 @@ function backupCharm(id, managementNumber) {
   };
 }
 
+function writeSmokePng(name) {
+  const pngBase64 =
+    "iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAIAAABMXPacAAABgElEQVR4nO3UsQ3DMBDAwKjL8L9n4wQhuJmLjzU4FyrgE9x9AAAAcI3vex7h9T2N8JoBAAYAQACAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAYDdcfYb5v18Ho0wAgAAACAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAQAGAAQAGAA4L7z8/19n9fbDQwwAAAAMAAABAAIAJAAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAQACACQAEAAgP8zDw9zGz3f3/c8wmIGABgAAAIAAgAEAEgAIAFABIAIABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAJABAAIAPgHRnYCrISp7B4AAAAASUVORK5CYII=";
+  const path = join(tmpdir(), `${name}-${Date.now()}.png`);
+  writeFileSync(path, Buffer.from(pngBase64, "base64"));
+  return path;
+}
+
 async function readState(page) {
   return page.evaluate(() => ({
     activeHeading: document.querySelector(".view.is-active h2")?.textContent?.trim() ?? "",
@@ -113,6 +121,7 @@ async function readState(page) {
     qualityMeterLabel: document.querySelector(".training-meter meter")?.getAttribute("aria-label") ?? null,
     topCandidate: document.querySelector(".match-summary h3")?.textContent?.trim() ?? null,
     qualityText: document.querySelector(".training-meter strong")?.textContent?.trim() ?? null,
+    firstRegisterImageUrl: document.querySelector(".register-form .angle-card.is-complete img")?.getAttribute("src") ?? null,
   }));
 }
 
@@ -353,6 +362,14 @@ try {
     "Register view should mention photo library fallback when camera capture is unavailable.",
   );
   expect(register.qualityMeterLabel === "登録品質", "Register quality meter should expose an accessible label.");
+  const smokePngPath = writeSmokePng("charm-id-smoke-register");
+  await page.getByLabel("表の登録写真を撮影").setInputFiles(smokePngPath);
+  await page.locator(".register-form .angle-card.is-complete img").first().waitFor({ timeout: 3000 });
+  const compressedRegister = await readState(page);
+  expect(
+    compressedRegister.firstRegisterImageUrl?.startsWith("data:image/jpeg"),
+    "Uploaded register images should be resized and JPEG-compressed before storage.",
+  );
   await page.getByPlaceholder("例: CH-1042").fill(" ch-001 ");
   await page.getByRole("button", { name: "登録する" }).click();
   const duplicateRegister = await readState(page);
