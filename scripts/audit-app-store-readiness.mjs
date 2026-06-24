@@ -321,6 +321,9 @@ requireText("scripts/app-store-release-status.mjs", "public/privacy.html: replac
 requireText("scripts/app-store-release-status.mjs", "public/support.html: replace the placeholder", "Release status points to support contact input");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
 requireText("README.md", "npm run appstore:metadata", "README includes metadata print command");
+requireText("README.md", "npm run appstore:connect-packet", "README includes App Store Connect packet command");
+requireText("README.md", "npm run appstore:screenshots:submission", "README includes submission screenshot command");
+requireText("README.md", "npm run appstore:signoff-draft", "README includes signoff draft command");
 requireText("README.md", "npm run appstore:evidence", "README includes evidence command");
 requireText("README.md", "npm run backup:validate", "README includes backup validation command");
 requireText("README.md", "npm run appstore:verify", "README includes verification command");

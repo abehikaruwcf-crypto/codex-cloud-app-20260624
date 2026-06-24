@@ -12,6 +12,9 @@ npm run appstore:set-version -- 1.0 1
 npm run backup:validate -- tests/fixtures/valid-backup.json
 npm run appstore:status
 npm run appstore:metadata
+npm run appstore:connect-packet
+npm run appstore:screenshots:submission
+npm run appstore:signoff-draft
 npm run appstore:evidence
 npm run appstore:audit
 npm run appstore:verify
@@ -33,6 +36,9 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - [docs/app-store-roadmap.md](docs/app-store-roadmap.md) tracks the release path.
 - [docs/app-store-submission-packet.md](docs/app-store-submission-packet.md) consolidates App Store Connect inputs.
 - `npm run appstore:metadata` prints the current App Store Connect listing values as JSON.
+- `npm run appstore:connect-packet` prints the complete App Store Connect transfer packet.
+- `npm run appstore:screenshots:submission` generates 6.9 inch and 6.5 inch App Store screenshot-size review assets.
+- `npm run appstore:signoff-draft` prints the current App Review signoff draft.
 - `npm run appstore:evidence` prints a JSON release evidence snapshot for final signoff.
 - `npm run backup:validate -- <backup.json>` validates exported Charm ID backup files before migration, TestFlight QA, or support review.
 - [docs/testflight-release-checklist.md](docs/testflight-release-checklist.md) covers the Xcode/TestFlight upload flow.
@@ -58,7 +64,7 @@ Known manual blockers before App Review:
 - Create the App Store Connect app record.
 - Publish final Privacy Policy and Support URLs.
 - Replace the support-page placeholder with the final support contact.
-- Capture final App Store screenshots from the release build.
+- Generate and review App Store screenshot-size assets with `npm run appstore:screenshots:submission`.
 - Run physical iPhone TestFlight validation.
 - Validate any migration or QA backup with `npm run backup:validate -- <backup.json>`.
 - Complete [docs/app-review-final-signoff.md](docs/app-review-final-signoff.md).
