@@ -38,6 +38,8 @@ Print the current App Store Connect listing values with:
 npm run appstore:metadata
 ```
 
+The metadata export validates current App Store Connect field limits used for this release: app name 30 characters, subtitle 30 characters, promotional text 170 characters, description 4000 characters, keywords 100 bytes, and What's New 4000 characters.
+
 Before final submission, replace generic prototype wording with final customer-facing language and confirm whether the public listing should target charms only or broader small-item inventory.
 
 ## Privacy

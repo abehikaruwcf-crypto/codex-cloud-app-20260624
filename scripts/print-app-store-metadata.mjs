@@ -43,6 +43,14 @@ function stripCodeFence(value) {
   return value.replace(/^```text\n/, "").replace(/\n```$/, "").trim();
 }
 
+function characterCount(value) {
+  return [...value].length;
+}
+
+function byteCount(value) {
+  return Buffer.byteLength(value, "utf8");
+}
+
 const metadata = read("docs/app-store-metadata.md");
 const submission = read("docs/app-store-submission-packet.md");
 const releaseNotes = read("docs/release-notes.md");
@@ -80,6 +88,32 @@ const output = {
     appStoreWhatsNew: stripCodeFence(section(releaseNotes, "### App Store What's New Draft")),
     testFlightNotes: stripCodeFence(section(releaseNotes, "### TestFlight Notes Draft")),
   },
+  fieldLimits: {
+    appName: {
+      usedCharacters: 0,
+      maxCharacters: 30,
+    },
+    subtitle: {
+      usedCharacters: 0,
+      maxCharacters: 30,
+    },
+    promotionalText: {
+      usedCharacters: 0,
+      maxCharacters: 170,
+    },
+    description: {
+      usedCharacters: 0,
+      maxCharacters: 4000,
+    },
+    keywords: {
+      usedBytes: 0,
+      maxBytes: 100,
+    },
+    whatsNew: {
+      usedCharacters: 0,
+      maxCharacters: 4000,
+    },
+  },
   sourceDocs: [
     "docs/app-store-submission-packet.md",
     "docs/app-store-metadata.md",
@@ -87,6 +121,13 @@ const output = {
     "docs/release-notes.md",
   ],
 };
+
+output.fieldLimits.appName.usedCharacters = characterCount(output.japaneseListing.appName);
+output.fieldLimits.subtitle.usedCharacters = characterCount(output.japaneseListing.subtitle);
+output.fieldLimits.promotionalText.usedCharacters = characterCount(output.japaneseListing.promotionalText);
+output.fieldLimits.description.usedCharacters = characterCount(output.japaneseListing.description);
+output.fieldLimits.keywords.usedBytes = byteCount(output.japaneseListing.keywords);
+output.fieldLimits.whatsNew.usedCharacters = characterCount(output.japaneseListing.whatsNew);
 
 if (!submission.includes("Primary language: Japanese")) {
   throw new Error("Submission packet primary language is not Japanese.");
@@ -108,6 +149,36 @@ const requiredFields = [
 for (const [field, value] of requiredFields) {
   if (!value) {
     throw new Error(`Missing App Store metadata field: ${field}`);
+  }
+}
+
+const limitChecks = [
+  ["japaneseListing.appName", output.fieldLimits.appName.usedCharacters, output.fieldLimits.appName.maxCharacters, "characters"],
+  ["japaneseListing.subtitle", output.fieldLimits.subtitle.usedCharacters, output.fieldLimits.subtitle.maxCharacters, "characters"],
+  [
+    "japaneseListing.promotionalText",
+    output.fieldLimits.promotionalText.usedCharacters,
+    output.fieldLimits.promotionalText.maxCharacters,
+    "characters",
+  ],
+  [
+    "japaneseListing.description",
+    output.fieldLimits.description.usedCharacters,
+    output.fieldLimits.description.maxCharacters,
+    "characters",
+  ],
+  ["japaneseListing.keywords", output.fieldLimits.keywords.usedBytes, output.fieldLimits.keywords.maxBytes, "bytes"],
+  [
+    "japaneseListing.whatsNew",
+    output.fieldLimits.whatsNew.usedCharacters,
+    output.fieldLimits.whatsNew.maxCharacters,
+    "characters",
+  ],
+];
+
+for (const [field, used, max, unit] of limitChecks) {
+  if (used > max) {
+    throw new Error(`App Store metadata field ${field} is ${used}/${max} ${unit}.`);
   }
 }
 

@@ -190,9 +190,11 @@ requireText("docs/app-store-review-answers.md", "camera access is denied", "Revi
 requireText("docs/app-store-submission-packet.md", "app-store-review-answers.md", "Review answers linked from submission packet");
 requireText("docs/app-store-metadata.md", "Japanese Metadata Draft", "Japanese App Store metadata draft");
 requireText("docs/app-store-metadata.md", "小物を撮影して管理番号を確認", "Japanese subtitle draft");
+requireText("docs/app-store-metadata.md", "管理番号,小物,チャーム,アクセサリー,部品,在庫,カメラ,識別", "Japanese keywords draft under byte limit");
 requireText("docs/app-store-submission-packet.md", "Primary language: Japanese", "Submission packet primary language");
 requireText("docs/app-store-submission-packet.md", "iOS development region: `ja`", "Submission packet iOS development region");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:metadata", "Submission packet includes metadata print command");
+requireText("docs/app-store-submission-packet.md", "keywords 100 bytes", "Submission packet documents metadata limits");
 requireText("docs/release-notes.md", "App Store What's New Draft", "Release notes include What's New");
 requireText("docs/release-notes.md", "TestFlight Notes Draft", "Release notes include TestFlight notes");
 requireText("docs/app-store-submission-packet.md", "release-notes.md", "Submission packet links release notes");
@@ -206,6 +208,9 @@ requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation s
 requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
 requireText("package.json", "\"appstore:status\"", "Release status script entry");
+requireText("scripts/print-app-store-metadata.mjs", "fieldLimits", "Metadata print includes field limits");
+requireText("scripts/print-app-store-metadata.mjs", "maxBytes: 100", "Metadata print validates keyword byte limit");
+requireText("scripts/print-app-store-metadata.mjs", "used > max", "Metadata print fails on field limit overflow");
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
 requireText("scripts/app-store-release-status.mjs", "Formal support contact", "Release status checks support contact");
 requireText("scripts/app-store-release-status.mjs", "Hosted privacy/support URLs", "Release status checks hosted URLs");
@@ -256,7 +261,8 @@ const metadataOk =
   metadata.ok &&
   metadata.output.includes('"bundleId": "com.wcf.charmid"') &&
   metadata.output.includes('"primaryLanguage": "Japanese"') &&
-  metadata.output.includes('"subtitle": "小物を撮影して管理番号を確認"');
+  metadata.output.includes('"subtitle": "小物を撮影して管理番号を確認"') &&
+  metadata.output.includes('"maxBytes": 100');
 addCheck("App Store metadata print", metadataOk ? "pass" : "fail", metadata.output.split("\n").slice(-12).join("\n"));
 
 const build = run("npm", ["run", "build"]);
