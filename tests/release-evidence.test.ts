@@ -32,6 +32,7 @@ test("release evidence exposes final signoff readiness and missing fields", () =
   assert.equal(evidence.finalSignoff.ready, false);
   assert.ok(evidence.finalSignoff.missingFields.includes("Release commit"));
   assert.ok(evidence.finalSignoff.missingFields.includes("Support contact"));
+  assert.ok(evidence.finalSignoff.missingFields.includes("Copyright holder"));
   assert.ok(evidence.finalSignoff.filledFields.includes("Final Privacy Policy URL"));
   assert.ok(evidence.finalSignoff.filledFields.includes("Final Support URL"));
 });
@@ -46,7 +47,7 @@ test("release evidence includes hosted page sources and the current manual gate"
   assert.equal(evidence.evidenceTargets.screenshotDoc, "docs/app-store-screenshots.md");
   assert.equal(evidence.evidenceTargets.screenshotPacket, "npm run appstore:screenshot-packet");
   assert.equal(evidence.evidenceTargets.xcodePacket, "npm run appstore:xcode-packet");
-  assert.equal(evidence.releaseStatus.todo, 4);
+  assert.equal(evidence.releaseStatus.todo, 5);
   assert.equal(evidence.publishing.publicUrlsReachable, true);
   assert.equal(evidence.nextStrictGate, "npm run appstore:verify -- --strict");
 });

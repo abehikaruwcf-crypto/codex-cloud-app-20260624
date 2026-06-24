@@ -29,6 +29,7 @@ const connectPacket = parseJsonOutput(run("appstore:connect-packet").output, "ap
 const screenshotPacket = parseJsonOutput(run("appstore:screenshot-packet").output, "appstore:screenshot-packet");
 const xcodePacket = parseJsonOutput(run("appstore:xcode-packet").output, "appstore:xcode-packet");
 const signoffTemplate = parseJsonOutput(run("appstore:signoff-template").output, "appstore:signoff-template");
+const copyrightHolder = signoffTemplate.template["copyright-holder"];
 
 const screens = [
   {
@@ -67,7 +68,7 @@ const screens = [
     status: "ready",
     fields: {
       version: connectPacket.release.marketingVersion,
-      copyright: "<copyright-holder>",
+      copyright: copyrightHolder,
       releaseType: connectPacket.release.releaseType,
       whatsNew: connectPacket.appStoreListing.whatsNew,
       promotionalText: connectPacket.appStoreListing.promotionalText,

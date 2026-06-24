@@ -56,6 +56,8 @@ test("release input CLI validates dry-run inputs without writing files", () => {
       "support@example.com",
       "--privacy-contact",
       "privacy@example.com",
+      "--copyright-holder",
+      "WCF Inc.",
       "--privacy-url",
       "https://example.com/privacy.html",
       "--support-url",
@@ -98,6 +100,8 @@ test("release input CLI applies contacts, hosted URLs, and signoff evidence fiel
       "support@example.com",
       "--privacy-contact",
       "privacy@example.com",
+      "--copyright-holder",
+      "WCF Inc.",
       "--privacy-url",
       "https://example.com/privacy.html",
       "--support-url",
@@ -155,6 +159,7 @@ test("release input CLI applies contacts, hosted URLs, and signoff evidence fiel
     assert.match(hostingDocs, /https:\/\/example\.com\/support\.html/);
     assert.match(finalSignoff, /- Support contact: support@example\.com/);
     assert.match(finalSignoff, /- Privacy contact: privacy@example\.com/);
+    assert.match(finalSignoff, /- Copyright holder: WCF Inc\./);
     assert.match(finalSignoff, /- Final Privacy Policy URL: https:\/\/example\.com\/privacy\.html/);
     assert.match(finalSignoff, /- Final Support URL: https:\/\/example\.com\/support\.html/);
     assert.match(finalSignoff, /Status: Ready for App Review/);
@@ -179,6 +184,7 @@ test("release input CLI applies values from a JSON inputs file", () => {
         {
           "support-contact": "support@example.com",
           "privacy-contact": "privacy@example.com",
+          "copyright-holder": "WCF Inc.",
           "privacy-url": "https://example.com/privacy.html",
           "support-url": "https://example.com/support.html",
           "release-commit": "abc1234",
@@ -212,6 +218,7 @@ test("release input CLI applies values from a JSON inputs file", () => {
     assert.match(finalSignoff, /Status: Ready for App Review/);
     assert.match(finalSignoff, /- App Store Connect app ID: 1234567890/);
     assert.match(finalSignoff, /- Uploaded build: 1\.0 \(1\)/);
+    assert.match(finalSignoff, /- Copyright holder: WCF Inc\./);
     assert.match(supportPage, /mailto:support@example\.com/);
   } finally {
     rmSync(fixtureRoot, { force: true, recursive: true });
@@ -243,6 +250,8 @@ test("release input CLI refuses to mark final signoff ready when evidence is inc
       "support@example.com",
       "--privacy-contact",
       "privacy@example.com",
+      "--copyright-holder",
+      "WCF Inc.",
       "--privacy-url",
       "https://example.com/privacy.html",
       "--support-url",

@@ -55,7 +55,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - `npm run appstore:signoff-command` prints the final `appstore:apply-inputs` command with current repo evidence and placeholders for manual App Review values.
 - `npm run appstore:signoff-template` prints a JSON `release-inputs.json` template for final App Review evidence.
 - `npm run appstore:preflight` prints the App Store submission preflight packet and remaining manual TODOs.
-- `npm run appstore:apply-inputs -- --support-contact <contact> --privacy-contact <contact>` applies final release contacts and can fill final signoff evidence; use `--inputs-file release-inputs.json` for the JSON template flow, and add `--mark-ready` only after every required field is present.
+- `npm run appstore:apply-inputs -- --support-contact <contact> --privacy-contact <contact> --copyright-holder <holder>` applies final release contacts/copyright and can fill final signoff evidence; use `--inputs-file release-inputs.json` for the JSON template flow, and add `--mark-ready` only after every required field is present.
 - `npm run appstore:evidence` prints a JSON release evidence snapshot for final signoff, including public URLs, screenshots, and final signoff readiness.
 - `npm run appstore:evidence-check` verifies the release evidence snapshot; add `-- --strict` after all manual App Review TODOs are complete.
 - `npm run backup:validate -- <backup.json>` validates exported Charm ID backup files before migration, TestFlight QA, or support review.

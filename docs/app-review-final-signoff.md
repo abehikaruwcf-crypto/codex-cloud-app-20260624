@@ -90,6 +90,7 @@ npm run appstore:preflight
 - Final Support URL: https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html
 - Support contact:
 - Privacy contact:
+- Copyright holder:
 - Signoff owner:
 - Signoff date:
 
@@ -118,7 +119,7 @@ npm run appstore:apply-inputs -- --inputs-file release-inputs.json
 When the final contacts, public URLs, and release evidence are known, apply them with:
 
 ```bash
-npm run appstore:apply-inputs -- --support-contact support@example.com --privacy-contact privacy@example.com --privacy-url https://example.com/privacy.html --support-url https://example.com/support.html --release-commit <sha> --evidence-report-generated <iso-date> --app-store-connect-app-id <app-id> --uploaded-build "1.0 (1)" --testflight-device "iPhone model / iOS version" --backup-validation-file <backup.json> --backup-validation-result passed --backup-import-result passed --public-url-verification-result passed --strict-verification-result passed --accessibility-label-result reviewed --age-rating-result "4+ confirmed" --signoff-owner <name> --signoff-date <yyyy-mm-dd>
+npm run appstore:apply-inputs -- --support-contact support@example.com --privacy-contact privacy@example.com --copyright-holder "Company Name" --privacy-url https://example.com/privacy.html --support-url https://example.com/support.html --release-commit <sha> --evidence-report-generated <iso-date> --app-store-connect-app-id <app-id> --uploaded-build "1.0 (1)" --testflight-device "iPhone model / iOS version" --backup-validation-file <backup.json> --backup-validation-result passed --backup-import-result passed --public-url-verification-result passed --strict-verification-result passed --accessibility-label-result reviewed --age-rating-result "4+ confirmed" --signoff-owner <name> --signoff-date <yyyy-mm-dd>
 ```
 
 Add `--mark-ready` to the same command only after every required evidence value is complete. The command refuses to mark the page ready while required signoff fields are blank.
@@ -127,5 +128,6 @@ Add `--mark-ready` to the same command only after every required evidence value 
 | --- | --- | --- |
 | Formal support contact | A concrete `mailto:` link, email address, or telephone contact for app support. | `public/support.html` and `docs/support.html` |
 | Privacy policy contact | A concrete `mailto:` link, email address, or telephone contact for privacy inquiries. | `public/privacy.html` and `docs/privacy.html` |
+| App Store copyright holder | The legal copyright holder entered in App Store Connect. | This signoff page and App Store Connect |
 | Full Xcode selected | Output of `xcodebuild -version` after selecting full Xcode. | This signoff page |
-| Final App Review signoff | Filled release commit, evidence timestamp, App Store Connect app ID, uploaded build, physical iPhone TestFlight result, backup validation/import result, public URL verification, strict verification, accessibility result, age rating result, final URLs, contacts, owner, and date. | This signoff page |
+| Final App Review signoff | Filled release commit, evidence timestamp, App Store Connect app ID, uploaded build, physical iPhone TestFlight result, backup validation/import result, public URL verification, strict verification, accessibility result, age rating result, final URLs, contacts, copyright holder, owner, and date. | This signoff page |

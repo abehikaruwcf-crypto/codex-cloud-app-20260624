@@ -295,6 +295,7 @@ requireText("package.json", "\"appstore:status\"", "Release status script entry"
 requireText("scripts/apply-release-inputs.mjs", "--support-contact", "Release input script accepts support contact");
 requireText("scripts/apply-release-inputs.mjs", "--inputs-file", "Release input script accepts JSON inputs file");
 requireText("scripts/apply-release-inputs.mjs", "--privacy-contact", "Release input script accepts privacy contact");
+requireText("scripts/apply-release-inputs.mjs", "--copyright-holder", "Release input script accepts copyright holder");
 requireText("scripts/apply-release-inputs.mjs", "--privacy-url", "Release input script accepts privacy URL");
 requireText("scripts/apply-release-inputs.mjs", "--support-url", "Release input script accepts support URL");
 requireText("scripts/apply-release-inputs.mjs", "--release-commit", "Release input script accepts final signoff evidence");
@@ -309,6 +310,7 @@ requireText("tests/release-inputs-cli.test.ts", "release input CLI validates dry
 requireText("tests/release-inputs-cli.test.ts", "rejects non-https public URLs", "Release input CLI URL validation test exists");
 requireText("tests/release-inputs-cli.test.ts", "applies contacts, hosted URLs, and signoff evidence fields", "Release input CLI apply test exists");
 requireText("tests/release-inputs-cli.test.ts", "applies values from a JSON inputs file", "Release input CLI JSON file test exists");
+requireText("tests/release-inputs-cli.test.ts", "Copyright holder: WCF Inc", "Release input CLI verifies copyright holder update");
 requireText("tests/release-inputs-cli.test.ts", "refuses to mark final signoff ready", "Release input CLI ready guard test exists");
 requireText("tests/release-inputs-cli.test.ts", "pagesSupportPage", "Release input CLI verifies Pages support contact update");
 requireText("tests/release-inputs-cli.test.ts", "pagesPrivacyPage", "Release input CLI verifies Pages privacy contact update");
@@ -382,6 +384,7 @@ requireText("scripts/print-app-store-connect-packet.mjs", "docs/app-accessibilit
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
 requireText("scripts/set-release-version.mjs", "docs/support.html", "Release version script updates Pages support page");
 requireText("scripts/app-store-release-status.mjs", "Formal support contact", "Release status checks support contact");
+requireText("scripts/app-store-release-status.mjs", "App Store copyright holder", "Release status checks App Store copyright holder");
 requireText("scripts/app-store-release-status.mjs", "formalSupportContactReady", "Release status requires concrete support contact");
 requireText("scripts/app-store-release-status.mjs", "privacyContactReady", "Release status requires concrete privacy contact");
 requireText("scripts/app-store-release-status.mjs", "hasConcreteContact", "Release status uses shared concrete contact detection");
@@ -407,6 +410,7 @@ requireText("README.md", "npm run appstore:status", "README includes release sta
 requireText("README.md", "npm run appstore:metadata", "README includes metadata print command");
 requireText("README.md", "npm run appstore:connect-packet", "README includes App Store Connect packet command");
 requireText("README.md", "npm run appstore:submission-checklist", "README includes submission checklist command");
+requireText("README.md", "--copyright-holder", "README includes copyright holder input");
 requireText("README.md", "npm run appstore:rating", "README includes age rating command");
 requireText("README.md", "npm run appstore:accessibility", "README includes accessibility command");
 requireText("README.md", "npm run appstore:screenshots:submission", "README includes submission screenshot command");
@@ -444,6 +448,7 @@ requireText("docs/app-review-final-signoff.md", "Age rating result", "Final sign
 requireText("docs/app-review-final-signoff.md", "xcode-app-store-upload-guide.md", "Final signoff links Xcode upload guide");
 requireText("docs/app-review-final-signoff.md", "Formal support contact", "Final signoff maps support contact TODO");
 requireText("docs/app-review-final-signoff.md", "Privacy policy contact", "Final signoff maps privacy contact TODO");
+requireText("docs/app-review-final-signoff.md", "Copyright holder", "Final signoff maps copyright holder TODO");
 requireText("docs/app-review-final-signoff.md", "docs/support.html", "Final signoff maps Pages support contact target");
 requireText("docs/app-review-final-signoff.md", "docs/privacy.html", "Final signoff maps Pages privacy contact target");
 requireText("docs/app-store-submission-packet.md", "docs/privacy.html", "Submission packet includes Pages privacy source");
@@ -483,6 +488,7 @@ requireText("scripts/print-release-signoff-command.mjs", "replacePlaceholdersBef
 requireText("scripts/print-release-signoff-command.mjs", "npm run appstore:apply-inputs", "Signoff command prints apply-inputs command");
 requireText("scripts/print-release-signoff-command.mjs", "--mark-ready", "Signoff command includes ready marker after placeholders");
 requireText("scripts/print-release-input-template.mjs", "release-inputs.json", "Signoff template prints JSON file name");
+requireText("scripts/print-release-input-template.mjs", "copyright-holder", "Signoff template includes copyright holder");
 requireText("scripts/print-release-input-template.mjs", "appstore:apply-inputs -- --inputs-file", "Signoff template prints JSON apply command");
 requireText("scripts/print-app-store-submission-checklist.mjs", "remainingManualScreens", "Submission checklist reports manual screens");
 requireText("scripts/print-app-store-submission-checklist.mjs", "App Review Information", "Submission checklist includes review information screen");
@@ -496,7 +502,7 @@ requireText("scripts/print-app-store-preflight.mjs", "appstore:testflight-packet
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-draft", "Preflight includes signoff draft");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-command", "Preflight includes signoff command");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-template", "Preflight includes signoff template");
-requireText("scripts/print-app-store-preflight.mjs", "expectedManualTodoCount: 4", "Preflight records expected manual TODO count");
+requireText("scripts/print-app-store-preflight.mjs", "expectedManualTodoCount: 5", "Preflight records expected manual TODO count");
 requireText("scripts/generate-release-evidence.mjs", "hostedPrivacyPageSource", "Release evidence includes hosted privacy source");
 requireText("scripts/generate-release-evidence.mjs", "hostedSupportPageSource", "Release evidence includes hosted support source");
 
@@ -539,7 +545,7 @@ const connectPacketOk =
   connectPacket.ok &&
   connectPacket.output.includes('"privacyPolicy": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html"') &&
   connectPacket.output.includes('"support": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html"') &&
-  connectPacket.output.includes('"todo": 4');
+  connectPacket.output.includes('"todo": 5');
 addCheck(
   "App Store Connect packet print",
   connectPacketOk ? "pass" : "fail",

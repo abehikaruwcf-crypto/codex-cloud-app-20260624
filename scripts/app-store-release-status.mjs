@@ -53,6 +53,12 @@ function hasSignoffValue(content, label) {
   return Boolean(match?.[1]?.trim());
 }
 
+function signoffValue(content, label) {
+  const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = content.match(new RegExp(`^- ${escapedLabel}:[^\\S\\r\\n]*(.*)$`, "m"));
+  return match?.[1]?.trim() ?? "";
+}
+
 const packageVersion = hasFile("package.json") ? readJson("package.json").version : "unknown";
 const xcode = run("xcodebuild", ["-version"]);
 const xcodeSelected = xcode.ok && xcode.output.includes("Xcode");
@@ -102,10 +108,13 @@ const requiredSignoffFields = [
   "Final Support URL",
   "Support contact",
   "Privacy contact",
+  "Copyright holder",
   "Signoff owner",
   "Signoff date",
 ];
 const finalSignoffStatusReady = /^Status: Ready for App Review$/m.test(finalSignoff);
+const copyrightHolder = signoffValue(finalSignoff, "Copyright holder");
+const copyrightHolderReady = Boolean(copyrightHolder) && !/^<.+>$/.test(copyrightHolder);
 const missingSignoffFields = requiredSignoffFields.filter((field) => !hasSignoffValue(finalSignoff, field));
 const finalSignoffEvidenceReady = missingSignoffFields.length === 0;
 const finalSignoffReady = finalSignoffStatusReady && finalSignoffEvidenceReady;
@@ -147,6 +156,13 @@ const checks = [
         : "Enable GitHub Pages or another host, then replace <owner>/<repo> URL placeholders.",
   },
   {
+    ok: copyrightHolderReady,
+    title: "App Store copyright holder",
+    detail: copyrightHolderReady
+      ? `Copyright holder recorded: ${copyrightHolder}.`
+      : "Fill Copyright holder in docs/app-review-final-signoff.md or appstore:apply-inputs.",
+  },
+  {
     ok: hasFile("docs/app-store-submission-packet.md"),
     title: "Submission packet",
     detail: "docs/app-store-submission-packet.md",
@@ -183,6 +199,7 @@ const manualBlockers = [
   ...(hostedUrlsReady ? [] : ["Enable/publish public Privacy Policy and Support URLs."]),
   "Replace the support-page placeholder with a concrete mailto, email address, or telephone contact.",
   "Replace the privacy-page placeholder with a concrete mailto, email address, or telephone contact.",
+  "Fill the App Store copyright holder.",
   "Capture final App Store screenshots from release build at Apple-supported sizes.",
   "Run physical iPhone TestFlight validation.",
   "Complete docs/app-review-final-signoff.md.",
@@ -194,6 +211,7 @@ const nextInputs = [
   "Run npm run appstore:apply-inputs -- --release-commit <sha> --uploaded-build <version-build> --testflight-device <device> to fill final signoff evidence.",
   "public/support.html and docs/support.html: replace the placeholder with a concrete app support contact.",
   "public/privacy.html and docs/privacy.html: replace the placeholder with a concrete privacy contact.",
+  "Run npm run appstore:apply-inputs -- --copyright-holder <holder> to fill the App Store copyright holder.",
   ...(hostedUrlsReady
     ? []
     : [

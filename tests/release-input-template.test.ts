@@ -24,9 +24,11 @@ test("release input template maps final signoff values to apply-inputs JSON", ()
   assert.equal(packet.readyCommand, "npm run appstore:apply-inputs -- --inputs-file release-inputs.json --mark-ready");
   assert.equal(packet.template["privacy-url"], "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html");
   assert.equal(packet.template["support-url"], "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html");
+  assert.equal(packet.template["copyright-holder"], "<copyright-holder>");
   assert.equal(packet.template["mark-ready"], false);
   assert.ok(packet.placeholders.includes("support-contact"));
   assert.ok(packet.placeholders.includes("app-store-connect-app-id"));
+  assert.ok(packet.placeholders.includes("copyright-holder"));
   assert.ok(packet.sourcePackets.xcode.signoffFields.includes("uploaded-build"));
   assert.ok(packet.sourcePackets.testflight.evidenceFields.includes("backup-validation-result"));
 });

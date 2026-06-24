@@ -12,7 +12,7 @@ const requiredSteps = [
     expected: [
       '"privacyPolicy": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html"',
       '"support": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html"',
-      '"todo": 4',
+      '"todo": 5',
     ],
   },
   {
@@ -62,7 +62,7 @@ const requiredSteps = [
   {
     name: "Final signoff apply command",
     script: "appstore:signoff-command",
-    expected: ['"replacePlaceholdersBeforeUse"', "npm run appstore:apply-inputs", "--mark-ready"],
+    expected: ['"replacePlaceholdersBeforeUse"', "npm run appstore:apply-inputs", "--copyright-holder", "--mark-ready"],
   },
   {
     name: "Final signoff input template",
@@ -163,7 +163,7 @@ const preflight = {
     pass: releaseStatus.pass,
     todo: releaseStatus.todo,
     todoItems: releaseStatus.todoItems,
-    expectedManualTodoCount: 4,
+    expectedManualTodoCount: 5,
   },
   manualGate: {
     readyForAppReview: releaseStatusResult.ok && releaseStatus.todo === 0,

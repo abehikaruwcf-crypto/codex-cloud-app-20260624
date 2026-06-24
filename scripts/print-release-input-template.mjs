@@ -42,6 +42,7 @@ const generatedAt = new Date().toISOString();
 const template = {
   "support-contact": "<support-contact>",
   "privacy-contact": "<privacy-contact>",
+  "copyright-holder": "<copyright-holder>",
   "privacy-url": privacyUrl,
   "support-url": supportUrl,
   "release-commit": head.ok ? head.output : "<release-commit>",

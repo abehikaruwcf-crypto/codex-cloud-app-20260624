@@ -35,6 +35,7 @@ const generatedAt = new Date().toISOString();
 const values = {
   "support-contact": "<support-contact>",
   "privacy-contact": "<privacy-contact>",
+  "copyright-holder": "<copyright-holder>",
   "privacy-url": privacyUrl,
   "support-url": supportUrl,
   "release-commit": head.ok ? head.output : "<release-commit>",
@@ -75,4 +76,3 @@ const packet = {
 };
 
 console.log(JSON.stringify(packet, null, 2));
-

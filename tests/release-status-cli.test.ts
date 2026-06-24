@@ -96,6 +96,7 @@ function fillSignoffFields(content: string) {
     "Final Support URL": "https://example.com/support.html",
     "Support contact": "support@example.com",
     "Privacy contact": "privacy@example.com",
+    "Copyright holder": "WCF Inc.",
     "Signoff owner": "Release owner",
     "Signoff date": "2026-06-25",
   };
@@ -148,5 +149,6 @@ test("current release status exits nonzero while App Review TODOs remain", () =>
   assert.equal(result.ok, false);
   assert.match(result.output, /Status summary: \d+ pass, [1-9]\d* todo/);
   assert.match(result.output, /\[TODO\] Formal support contact/);
+  assert.match(result.output, /\[TODO\] App Store copyright holder/);
   assert.match(result.output, /\[TODO\] Full Xcode selected/);
 });

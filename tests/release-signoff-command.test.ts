@@ -22,6 +22,7 @@ test("release signoff command packet keeps placeholders explicit", () => {
   assert.equal(packet.readyToUse, false);
   assert.equal(packet.purpose, "Fill final App Review signoff evidence after manual release checks are complete.");
   assert.match(packet.command, /^npm run appstore:apply-inputs -- /);
+  assert.match(packet.command, /--copyright-holder '<copyright-holder>'/);
   assert.match(packet.command, /--privacy-url https:\/\/abehikaruwcf-crypto\.github\.io\/codex-cloud-app-20260624\/privacy\.html/);
   assert.match(packet.command, /--support-url https:\/\/abehikaruwcf-crypto\.github\.io\/codex-cloud-app-20260624\/support\.html/);
   assert.match(packet.command, /--public-url-verification-result 'passed with npm run appstore:public-urls'/);
@@ -30,6 +31,7 @@ test("release signoff command packet keeps placeholders explicit", () => {
   assert.deepEqual(packet.replacePlaceholdersBeforeUse, [
     "support-contact",
     "privacy-contact",
+    "copyright-holder",
     "app-store-connect-app-id",
     "uploaded-build",
     "testflight-device",

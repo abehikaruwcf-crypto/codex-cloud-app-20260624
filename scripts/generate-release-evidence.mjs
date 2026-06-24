@@ -131,6 +131,7 @@ function finalSignoffEvidence() {
     "Final Support URL",
     "Support contact",
     "Privacy contact",
+    "Copyright holder",
     "Signoff owner",
     "Signoff date",
   ];

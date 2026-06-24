@@ -196,6 +196,7 @@ Use this table as the direct entry map for App Store Connect.
 | Bundle ID | `com.wcf.charmid` |
 | SKU | `charm-id-ios` |
 | Primary language | Japanese |
+| Copyright | Run `npm run appstore:signoff-template`, replace `copyright-holder`, then copy that value. |
 | Category | Business |
 | Secondary category | Productivity |
 | Age rating expectation | 4+ |

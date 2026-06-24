@@ -45,6 +45,7 @@ test("App Store submission checklist preserves critical listing and review value
   const screenshots = checklist.screens.find((screen: { screen: string }) => screen.screen === "Screenshots");
 
   assert.equal(version.fields.supportUrl, "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html");
+  assert.equal(version.fields.copyright, "<copyright-holder>");
   assert.equal(version.fields.keywords, "管理番号,小物,チャーム,アクセサリー,部品,在庫,カメラ,識別");
   assert.match(review.fields.notes, /Charm ID can be used without login/);
   assert.equal(screenshots.fields.profiles.length, 2);

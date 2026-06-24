@@ -14,6 +14,7 @@ Options:
   --privacy-contact  Concrete privacy email, mailto link, tel link, or telephone number.
   --privacy-url      Final public Privacy Policy URL.
   --support-url      Final public Support URL.
+  --copyright-holder Final App Store copyright holder.
   --inputs-file      JSON file containing the same option keys without leading --.
   --mark-ready       Mark final signoff as Ready for App Review after all required evidence fields are filled.
   --dry-run          Validate inputs without writing files.
@@ -58,6 +59,7 @@ const validKeys = new Set([
   "privacy-contact",
   "privacy-url",
   "support-url",
+  "copyright-holder",
   "inputs-file",
   "dry-run",
   "mark-ready",
@@ -163,6 +165,12 @@ function requireUrl(value, label) {
   }
 }
 
+function requireCopyrightHolder(value) {
+  if (!value || /^<.+>$/.test(value) || value.length < 2) {
+    throw new Error("--copyright-holder must be a real copyright holder name.");
+  }
+}
+
 function replaceOrThrow(content, search, replacement, label) {
   if (!content.includes(search)) {
     throw new Error(`Could not find ${label}.`);
@@ -192,6 +200,7 @@ function missingSignoffFields(content) {
     "Final Support URL",
     "Support contact",
     "Privacy contact",
+    "Copyright holder",
   ];
   return labels.filter((label) => !signoffValue(content, label));
 }
@@ -244,7 +253,7 @@ function updateHostingDocs(privacyUrl, supportUrl) {
   write(path, content);
 }
 
-function updateFinalSignoff({ supportContact, privacyContact, privacyUrl, supportUrl, signoffValues, markReady }) {
+function updateFinalSignoff({ supportContact, privacyContact, privacyUrl, supportUrl, copyrightHolder, signoffValues, markReady }) {
   const path = "docs/app-review-final-signoff.md";
   let content = read(path);
   if (privacyUrl) {
@@ -258,6 +267,9 @@ function updateFinalSignoff({ supportContact, privacyContact, privacyUrl, suppor
   }
   if (privacyContact) {
     content = replaceSignoffValue(content, "Privacy contact", privacyContact);
+  }
+  if (copyrightHolder) {
+    content = replaceSignoffValue(content, "Copyright holder", copyrightHolder);
   }
   for (const [label, value] of Object.entries(signoffValues)) {
     content = replaceSignoffValue(content, label, value);
@@ -298,6 +310,7 @@ try {
   const privacyContact = parsed["privacy-contact"];
   const privacyUrl = parsed["privacy-url"];
   const supportUrl = parsed["support-url"];
+  const copyrightHolder = parsed["copyright-holder"];
   const markReady = Boolean(parsed["mark-ready"]);
   const signoffValues = Object.fromEntries(
     signoffInputs
@@ -305,7 +318,7 @@ try {
       .map(([key, label]) => [label, parsed[key].trim()]),
   );
 
-  if (!supportContact && !privacyContact && !privacyUrl && !supportUrl && !markReady && Object.keys(signoffValues).length === 0) {
+  if (!supportContact && !privacyContact && !privacyUrl && !supportUrl && !copyrightHolder && !markReady && Object.keys(signoffValues).length === 0) {
     usage();
     process.exit(1);
   }
@@ -321,6 +334,9 @@ try {
   }
   if (supportUrl) {
     requireUrl(supportUrl, "--support-url");
+  }
+  if (copyrightHolder) {
+    requireCopyrightHolder(copyrightHolder);
   }
   if ((privacyUrl && !supportUrl) || (!privacyUrl && supportUrl)) {
     throw new Error("--privacy-url and --support-url must be supplied together.");
@@ -341,7 +357,7 @@ try {
     updateHostingDocs(privacyUrl, supportUrl);
   }
 
-  updateFinalSignoff({ supportContact, privacyContact, privacyUrl, supportUrl, signoffValues, markReady });
+  updateFinalSignoff({ supportContact, privacyContact, privacyUrl, supportUrl, copyrightHolder, signoffValues, markReady });
 
   console.log(dryRun ? "Release inputs validated." : "Release inputs applied.");
   console.log("Next: run npm run appstore:status and npm run appstore:audit.");
