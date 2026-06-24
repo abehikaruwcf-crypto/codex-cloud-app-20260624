@@ -22,6 +22,7 @@ Possible later variants:
 - Capacitor iOS wrapper is being introduced.
 - Matching logic is isolated behind a replaceable matching engine.
 - Branded placeholder app icon and splash artwork are installed in the iOS asset catalog.
+- App Store readiness audit script is available through `npm run appstore:audit`.
 
 ## Release-Quality Gaps
 
@@ -72,3 +73,27 @@ Possible later variants:
 5. Cloud storage and account model.
 6. TestFlight release.
 7. App Store submission.
+
+## Current Automated Audit
+
+Run:
+
+```bash
+npm run appstore:audit
+```
+
+The audit checks:
+
+- Required project files.
+- `Info.plist` and `PrivacyInfo.xcprivacy` validity.
+- Camera/photo usage descriptions.
+- Privacy manifest resource inclusion.
+- App icon and splash dimensions.
+- Generated development screenshots.
+- Web production build.
+- Capacitor iOS doctor.
+- Xcode availability.
+
+Known current warning:
+
+- Full Xcode is not active on this Mac, so TestFlight/App Store archive validation still requires Xcode setup.
