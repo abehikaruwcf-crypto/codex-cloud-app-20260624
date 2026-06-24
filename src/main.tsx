@@ -1,61 +1,22 @@
 import React, { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
+import {
+  angleSuggestions,
+  Candidate,
+  captureAngles,
+  Charm,
+  CharmImage,
+  DecisionLog,
+  ImageSignature,
+  View,
+} from "./domain";
+import { colorSignatureEngine } from "./matchingEngine";
 import "./styles.css";
-
-type View = "identify" | "register" | "library";
-
-type ImageSignature = {
-  red: number;
-  green: number;
-  blue: number;
-  brightness: number;
-};
-
-type CharmImage = {
-  id: string;
-  imageUrl: string;
-  angleLabel: string;
-  signature: ImageSignature;
-  createdAt: string;
-};
-
-type Charm = {
-  id: string;
-  managementNumber: string;
-  note: string;
-  images: CharmImage[];
-  createdAt: string;
-};
-
-type Candidate = {
-  charm: Charm;
-  score: number;
-  bestImage?: CharmImage;
-  matchedAngles: number;
-};
-
-type DecisionLog = {
-  id: string;
-  managementNumber: string;
-  decision: "confirmed" | "rejected";
-  score: number;
-  learnedImages: number;
-  createdAt: string;
-};
 
 const STORAGE_KEY = "charm-id-camera-app-charms";
 const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
 const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
 const MAX_IMAGES_PER_ANGLE = 8;
-
-const captureAngles = [
-  { id: "front", label: "表", hint: "正面の模様や刻印が見える向き" },
-  { id: "back", label: "裏", hint: "裏側の形状や留め具が見える向き" },
-  { id: "right", label: "右側面", hint: "厚みと右側の輪郭" },
-  { id: "left", label: "左側面", hint: "厚みと左側の輪郭" },
-  { id: "top", label: "上側面", hint: "上部の金具や穴の形" },
-  { id: "bottom", label: "下側面", hint: "下部の輪郭や装飾" },
-];
 
 const sampleCharms: Charm[] = [
   {
@@ -67,6 +28,7 @@ const sampleCharms: Charm[] = [
       {
         id: "sample-1-img",
         angleLabel: "表",
+        source: "registration",
         createdAt: new Date().toISOString(),
         imageUrl:
           "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Crect width='480' height='480' fill='%23f7efe0'/%3E%3Ccircle cx='240' cy='240' r='132' fill='%23d4a944'/%3E%3Ccircle cx='240' cy='240' r='66' fill='%23fff7d7'/%3E%3C/svg%3E",
@@ -83,6 +45,7 @@ const sampleCharms: Charm[] = [
       {
         id: "sample-2-img",
         angleLabel: "表",
+        source: "registration",
         createdAt: new Date().toISOString(),
         imageUrl:
           "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='480' height='480' viewBox='0 0 480 480'%3E%3Crect width='480' height='480' fill='%23edf1f4'/%3E%3Cpath d='M240 88 378 240 240 392 102 240Z' fill='%23a6b1ba'/%3E%3Ccircle cx='240' cy='240' r='62' fill='%23f9fbfc'/%3E%3C/svg%3E",
@@ -91,8 +54,6 @@ const sampleCharms: Charm[] = [
     ],
   },
 ];
-
-const angleSuggestions = captureAngles.map((angle) => angle.label);
 
 function makeId(prefix: string) {
   return `${prefix}-${crypto.randomUUID()}`;
@@ -153,53 +114,6 @@ async function signatureFromImage(imageUrl: string): Promise<ImageSignature> {
   };
 }
 
-function scoreSignature(query: ImageSignature, reference: ImageSignature) {
-  const distance = Math.sqrt(
-    (query.red - reference.red) ** 2 +
-      (query.green - reference.green) ** 2 +
-      (query.blue - reference.blue) ** 2 +
-      ((query.brightness - reference.brightness) * 0.7) ** 2,
-  );
-
-  return Math.max(0, Math.round(100 - (distance / 441) * 100));
-}
-
-function findCandidates(queries: CharmImage[], charms: Charm[]): Candidate[] {
-  return charms
-    .map((charm) => {
-      const scoredQueries = queries.map((query) => {
-        const sameAngleImages = charm.images.filter((image) => image.angleLabel === query.angleLabel);
-        const comparableImages = sameAngleImages.length > 0 ? sameAngleImages : charm.images;
-        const best = comparableImages
-          .map((image) => ({
-            image,
-            score: scoreSignature(query.signature, image.signature),
-          }))
-          .sort((first, second) => second.score - first.score)[0];
-
-        return best;
-      });
-
-      const validScores = scoredQueries.filter(Boolean);
-      const best = [...validScores].sort((first, second) => second.score - first.score)[0];
-      const averageScore =
-        validScores.length === 0
-          ? 0
-          : Math.round(
-              validScores.reduce((total, score) => total + score.score, 0) / validScores.length,
-            );
-
-      return {
-        charm,
-        score: averageScore,
-        bestImage: best?.image,
-        matchedAngles: validScores.length,
-      };
-    })
-    .sort((first, second) => second.score - first.score)
-    .slice(0, 3);
-}
-
 function confidenceLabel(score: number) {
   if (score >= 88) {
     return "高";
@@ -223,7 +137,7 @@ function qualityScore(images: CharmImage[]) {
 }
 
 function learningImageCount(charm: Charm) {
-  return Math.max(0, charm.images.length - captureAngles.length);
+  return charm.images.filter((image) => image.source === "confirmed-identification").length;
 }
 
 function missingAngles(images: CharmImage[]) {
@@ -238,7 +152,10 @@ function loadDecisions() {
   }
 
   try {
-    return JSON.parse(stored) as DecisionLog[];
+    return (JSON.parse(stored) as DecisionLog[]).map((log) => ({
+      ...log,
+      learnedImages: log.learnedImages ?? 0,
+    }));
   } catch {
     return [];
   }
@@ -252,7 +169,13 @@ function loadCharms() {
   }
 
   try {
-    return JSON.parse(stored) as Charm[];
+    return (JSON.parse(stored) as Charm[]).map((charm) => ({
+      ...charm,
+      images: charm.images.map((image) => ({
+        ...image,
+        source: image.source ?? "registration",
+      })),
+    }));
   } catch {
     return sampleCharms;
   }
@@ -288,7 +211,7 @@ function App() {
       return [];
     }
 
-    return findCandidates(queryImages, charms);
+    return colorSignatureEngine.findCandidates(queryImages, charms);
   }, [charms, queryImages]);
 
   const topCandidate = candidates[0];
@@ -318,6 +241,7 @@ function App() {
             imageUrl,
             signature,
             angleLabel,
+            source: "registration" as const,
             createdAt: new Date().toISOString(),
           };
         }),
@@ -353,6 +277,7 @@ function App() {
         imageUrl,
         signature,
         angleLabel,
+        source: "confirmed-identification" as const,
         createdAt: new Date().toISOString(),
       };
       setQueryImages((current) => [
@@ -423,6 +348,7 @@ function App() {
     return sourceImages.map((image) => ({
       ...image,
       id: makeId("learned"),
+      source: "confirmed-identification" as const,
       createdAt: new Date().toISOString(),
     }));
   }
@@ -577,6 +503,7 @@ function App() {
           <div>
             <h2>撮影して識別</h2>
             <p>まず表を撮影し、迷う場合は裏や側面を追加して候補を絞ります。</p>
+            <small className="engine-label">Engine: {colorSignatureEngine.name}</small>
           </div>
         </div>
 

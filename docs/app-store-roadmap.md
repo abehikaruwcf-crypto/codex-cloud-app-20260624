@@ -20,6 +20,7 @@ Possible later variants:
 - Human-confirmed self-learning loop.
 - Local device storage.
 - Capacitor iOS wrapper is being introduced.
+- Matching logic is isolated behind a replaceable matching engine.
 
 ## Release-Quality Gaps
 
@@ -35,6 +36,7 @@ Possible later variants:
 
 - Move from color-signature prototype matching to image embeddings or a server-side model.
 - Store confirmed usage examples separately from original registration images.
+- Preserve a clear engine boundary so model changes do not require rewriting the product UI.
 - Add cloud backup/sync before production release.
 - Add safeguards against wrong confirmations poisoning the model.
 

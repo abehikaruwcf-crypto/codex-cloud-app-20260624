@@ -157,6 +157,14 @@ h3 {
   line-height: 1.65;
 }
 
+.engine-label {
+  display: inline-block;
+  margin-top: 8px;
+  color: #7a8990;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
 .camera-button,
 .primary-action,
 .secondary-action {
