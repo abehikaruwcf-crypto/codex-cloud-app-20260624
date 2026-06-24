@@ -26,6 +26,7 @@ npm run appstore:signoff-draft
 - Physical iPhone TestFlight validation completed against the uploaded build.
 - Exported backup from the release build validates with `npm run backup:validate -- <exported-backup.json>` and imports successfully on a physical iPhone.
 - App Privacy answers from [app-privacy-answers.md](app-privacy-answers.md) match the uploaded build.
+- Accessibility Nutrition Labels from [app-accessibility-answers.md](app-accessibility-answers.md) match the tested release build.
 - App Review notes from [app-store-review-answers.md](app-store-review-answers.md) are entered in App Store Connect.
 - `npm run appstore:evidence` has been generated on the release commit and reviewed against this signoff page.
 - `npm run appstore:status` reports `0 todo`.
@@ -44,6 +45,7 @@ npm run appstore:signoff-draft
 - Backup import result:
 - Public URL verification result:
 - Strict verification result:
+- Accessibility label result:
 - Final Privacy Policy URL: https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html
 - Final Support URL: https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html
 - Support contact:

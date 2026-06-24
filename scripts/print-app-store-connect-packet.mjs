@@ -120,6 +120,7 @@ const statusResult = run("npm", ["run", "appstore:status"]);
 const metadata = metadataResult.ok ? JSON.parse(metadataResult.output.slice(metadataResult.output.indexOf("{"))) : null;
 const releaseNotes = read("docs/release-notes.md");
 const privacyAnswers = read("docs/app-privacy-answers.md");
+const accessibilityAnswers = read("docs/app-accessibility-answers.md");
 const reviewAnswers = read("docs/app-store-review-answers.md");
 const pagesNotes = read("docs/github-pages-workflow.md");
 const parsedStatus = parseStatus(statusResult.output);
@@ -180,6 +181,11 @@ const packet = {
     currentProductAssumption: section(privacyAnswers, "## Current Product Assumption"),
     privacyLabelDraft: section(privacyAnswers, "## App Privacy Label Draft"),
   },
+  accessibility: {
+    answers: "docs/app-accessibility-answers.md",
+    currentRecommendation: section(accessibilityAnswers, "## Current Recommendation"),
+    appStoreConnectGuidance: section(accessibilityAnswers, "## App Store Connect Entry Guidance"),
+  },
   screenshots: {
     finalCaptureRequired: true,
     developmentManifest: screenshotManifest(),
@@ -197,6 +203,7 @@ const packet = {
     "docs/app-store-metadata.md",
     "docs/app-store-review-answers.md",
     "docs/app-privacy-answers.md",
+    "docs/app-accessibility-answers.md",
     "docs/release-notes.md",
     "docs/app-review-final-signoff.md",
   ],
