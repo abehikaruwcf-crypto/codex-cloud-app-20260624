@@ -38,6 +38,7 @@ test("App Store preflight stays parseable and reports the current manual gate", 
   assert.equal(preflight.commands.handoffPacket, "npm run appstore:handoff");
   assert.equal(preflight.commands.signoffCommand, "npm run appstore:signoff-command");
   assert.equal(preflight.commands.signoffTemplate, "npm run appstore:signoff-template");
+  assert.equal(preflight.commands.validateInputs, "npm run appstore:validate-inputs -- release-inputs.json");
   assert.ok([4, 5].includes(preflight.releaseStatus.todo), "manual TODO count should tolerate Xcode availability");
   assert.equal(preflight.releaseStatus.expectedManualTodoCount, preflight.releaseStatus.todo);
   assert.deepEqual(preflight.releaseStatus.environmentSensitiveTodoItems, ["Full Xcode selected"]);

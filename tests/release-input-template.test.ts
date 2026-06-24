@@ -20,6 +20,7 @@ test("release input template maps final signoff values to apply-inputs JSON", ()
   const packet = runTemplate();
 
   assert.equal(packet.saveAs, "release-inputs.json");
+  assert.equal(packet.validateCommand, "npm run appstore:validate-inputs -- release-inputs.json");
   assert.equal(packet.applyCommand, "npm run appstore:apply-inputs -- --inputs-file release-inputs.json");
   assert.equal(packet.readyCommand, "npm run appstore:apply-inputs -- --inputs-file release-inputs.json --mark-ready");
   assert.equal(packet.template["privacy-url"], "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html");

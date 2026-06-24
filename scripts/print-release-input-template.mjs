@@ -72,6 +72,7 @@ const packet = {
   template,
   placeholders,
   saveAs: "release-inputs.json",
+  validateCommand: "npm run appstore:validate-inputs -- release-inputs.json",
   applyCommand: "npm run appstore:apply-inputs -- --inputs-file release-inputs.json",
   readyCommand: "npm run appstore:apply-inputs -- --inputs-file release-inputs.json --mark-ready",
   sourcePackets: {

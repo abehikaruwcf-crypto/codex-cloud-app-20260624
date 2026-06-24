@@ -165,6 +165,7 @@ fileExists("scripts/print-release-handoff-packet.mjs", "Release handoff packet s
 fileExists("scripts/print-app-review-signoff-draft.mjs", "App Review signoff draft script");
 fileExists("scripts/print-release-signoff-command.mjs", "Release signoff command script");
 fileExists("scripts/print-release-input-template.mjs", "Release input template script");
+fileExists("scripts/validate-release-inputs.mjs", "Release input validator script");
 fileExists("scripts/print-app-store-preflight.mjs", "App Store preflight print script");
 fileExists("scripts/apply-release-inputs.mjs", "Release input application script");
 fileExists("scripts/verify-public-urls.mjs", "Public URL verification script");
@@ -294,6 +295,7 @@ requireText("package.json", "\"appstore:handoff\"", "Release handoff packet scri
 requireText("package.json", "\"appstore:signoff-draft\"", "App Review signoff draft script entry");
 requireText("package.json", "\"appstore:signoff-command\"", "Release signoff command script entry");
 requireText("package.json", "\"appstore:signoff-template\"", "Release input template script entry");
+requireText("package.json", "\"appstore:validate-inputs\"", "Release input validator script entry");
 requireText("package.json", "\"appstore:preflight\"", "App Store preflight script entry");
 requireText("package.json", "\"appstore:apply-inputs\"", "Release input application script entry");
 requireText("package.json", "\"appstore:public-urls\"", "Public URL verification script entry");
@@ -317,6 +319,9 @@ requireText("scripts/apply-release-inputs.mjs", "https URL", "Release input scri
 requireText("scripts/apply-release-inputs.mjs", "requireFinalSignoffEvidence", "Release input script validates final signoff evidence formats");
 requireText("scripts/apply-release-inputs.mjs", "docs/support.html", "Release input script updates Pages support page");
 requireText("scripts/apply-release-inputs.mjs", "docs/privacy.html", "Release input script updates Pages privacy page");
+requireText("scripts/validate-release-inputs.mjs", "readyToApply", "Release input validator reports readiness");
+requireText("scripts/validate-release-inputs.mjs", "placeholders", "Release input validator rejects placeholders");
+requireText("scripts/validate-release-inputs.mjs", "app-store-connect-app-id", "Release input validator checks App Store Connect app ID");
 requireText("tests/release-inputs-cli.test.ts", "release input CLI validates dry-run inputs", "Release input CLI dry-run unit test exists");
 requireText("tests/release-inputs-cli.test.ts", "rejects non-https public URLs", "Release input CLI URL validation test exists");
 requireText("tests/release-inputs-cli.test.ts", "applies contacts, hosted URLs, and signoff evidence fields", "Release input CLI apply test exists");
@@ -326,6 +331,9 @@ requireText("tests/release-inputs-cli.test.ts", "rejects malformed final signoff
 requireText("tests/release-inputs-cli.test.ts", "refuses to mark final signoff ready", "Release input CLI ready guard test exists");
 requireText("tests/release-inputs-cli.test.ts", "pagesSupportPage", "Release input CLI verifies Pages support contact update");
 requireText("tests/release-inputs-cli.test.ts", "pagesPrivacyPage", "Release input CLI verifies Pages privacy contact update");
+requireText("tests/release-inputs-validator.test.ts", "accepts complete final inputs", "Release input validator accepts complete inputs");
+requireText("tests/release-inputs-validator.test.ts", "rejects placeholders", "Release input validator rejects placeholders");
+requireText("tests/release-inputs-validator.test.ts", "rejects unknown or malformed values", "Release input validator rejects malformed inputs");
 requireText("tests/release-version-cli.test.ts", "keeps bundled and hosted support pages in sync", "Release version CLI Pages sync unit test exists");
 requireText("tests/release-evidence.test.ts", "exposes final signoff readiness", "Release evidence final signoff unit test exists");
 requireText("tests/release-evidence.test.ts", "includes hosted page sources", "Release evidence hosted source unit test exists");
@@ -437,6 +445,7 @@ requireText("README.md", "npm run appstore:handoff", "README includes release ha
 requireText("README.md", "npm run appstore:screenshots:submission", "README includes submission screenshot command");
 requireText("README.md", "npm run appstore:signoff-draft", "README includes signoff draft command");
 requireText("README.md", "npm run appstore:signoff-template", "README includes signoff template command");
+requireText("README.md", "npm run appstore:validate-inputs", "README includes release input validation command");
 requireText("README.md", "npm run appstore:preflight", "README includes App Store preflight command");
 requireText("README.md", "npm run appstore:evidence", "README includes evidence command");
 requireText("README.md", "npm run appstore:evidence-check", "README includes evidence check command");
@@ -456,6 +465,7 @@ requireText("docs/app-review-final-signoff.md", "npm run appstore:evidence", "Fi
 requireText("docs/app-review-final-signoff.md", "npm run appstore:evidence-check -- --strict", "Final signoff includes strict evidence check");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:signoff-draft", "Final signoff includes signoff draft command");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:signoff-template", "Final signoff includes signoff template command");
+requireText("docs/app-review-final-signoff.md", "npm run appstore:validate-inputs", "Final signoff includes input validation command");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:preflight", "Final signoff includes preflight command");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:xcode-packet", "Final signoff includes Xcode evidence command");
 requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final signoff includes TODO resolution inputs");
@@ -510,6 +520,7 @@ requireText("scripts/print-release-signoff-command.mjs", "npm run appstore:apply
 requireText("scripts/print-release-signoff-command.mjs", "--mark-ready", "Signoff command includes ready marker after placeholders");
 requireText("scripts/print-release-input-template.mjs", "release-inputs.json", "Signoff template prints JSON file name");
 requireText("scripts/print-release-input-template.mjs", "copyright-holder", "Signoff template includes copyright holder");
+requireText("scripts/print-release-input-template.mjs", "validateCommand", "Signoff template prints validation command");
 requireText("scripts/print-release-input-template.mjs", "appstore:apply-inputs -- --inputs-file", "Signoff template prints JSON apply command");
 requireText("scripts/print-app-store-submission-checklist.mjs", "remainingManualScreens", "Submission checklist reports manual screens");
 requireText("scripts/print-app-store-submission-checklist.mjs", "appstore:privacy", "Submission checklist includes App Privacy packet");
@@ -526,6 +537,7 @@ requireText("scripts/print-app-store-preflight.mjs", "appstore:handoff", "Prefli
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-draft", "Preflight includes signoff draft");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-command", "Preflight includes signoff command");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-template", "Preflight includes signoff template");
+requireText("scripts/print-app-store-preflight.mjs", "appstore:validate-inputs", "Preflight includes input validator command");
 requireText("scripts/print-app-store-preflight.mjs", "expectedManualTodoCount", "Preflight records expected manual TODO count");
 requireText("scripts/print-app-store-preflight.mjs", "environmentSensitiveTodoItems", "Preflight records environment-sensitive TODOs");
 requireText("scripts/generate-release-evidence.mjs", "hostedPrivacyPageSource", "Release evidence includes hosted privacy source");

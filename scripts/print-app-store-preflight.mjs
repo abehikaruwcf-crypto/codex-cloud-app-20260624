@@ -77,7 +77,12 @@ const requiredSteps = [
   {
     name: "Final signoff input template",
     script: "appstore:signoff-template",
-    expected: ['"applyCommand"', '"npm run appstore:apply-inputs -- --inputs-file release-inputs.json"', '"mark-ready"'],
+    expected: [
+      '"validateCommand"',
+      '"npm run appstore:validate-inputs -- release-inputs.json"',
+      '"npm run appstore:apply-inputs -- --inputs-file release-inputs.json"',
+      '"mark-ready"',
+    ],
   },
 ];
 
@@ -168,6 +173,7 @@ const preflight = {
     handoffPacket: "npm run appstore:handoff",
     signoffCommand: "npm run appstore:signoff-command",
     signoffTemplate: "npm run appstore:signoff-template",
+    validateInputs: "npm run appstore:validate-inputs -- release-inputs.json",
   },
   steps,
   releaseStatus: {

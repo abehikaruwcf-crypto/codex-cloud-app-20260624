@@ -27,6 +27,7 @@
     "appstore:signoff-draft": "node scripts/print-app-review-signoff-draft.mjs",
     "appstore:signoff-command": "node scripts/print-release-signoff-command.mjs",
     "appstore:signoff-template": "node scripts/print-release-input-template.mjs",
+    "appstore:validate-inputs": "node scripts/validate-release-inputs.mjs",
     "appstore:preflight": "node scripts/print-app-store-preflight.mjs",
     "appstore:apply-inputs": "node scripts/apply-release-inputs.mjs",
     "appstore:public-urls": "node scripts/verify-public-urls.mjs",

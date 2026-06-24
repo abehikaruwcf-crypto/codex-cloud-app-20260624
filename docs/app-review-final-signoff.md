@@ -113,6 +113,7 @@ npm run appstore:signoff-template
 After replacing every placeholder in `release-inputs.json`, apply the values with:
 
 ```bash
+npm run appstore:validate-inputs -- release-inputs.json
 npm run appstore:apply-inputs -- --inputs-file release-inputs.json
 ```
 
