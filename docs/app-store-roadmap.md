@@ -60,6 +60,7 @@ Possible later variants:
 - Screenshots for required device sizes.
 - Privacy policy URL.
 - App privacy answers.
+- Privacy manifest validation.
 - Demo account or review instructions if login is required.
 
 ## Proposed Milestones

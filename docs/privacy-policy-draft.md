@@ -16,6 +16,8 @@ The app may store:
 
 The current prototype stores data locally on the user's device. The data is not transmitted to a remote server by the prototype.
 
+Users can export a local JSON backup and restore that backup on the same or another device. The user controls this exported file.
+
 ## Camera and Photo Library
 
 The app requests camera access to capture item photos. It may request photo library access when the user chooses to select or save images.
@@ -28,6 +30,10 @@ If cloud sync is added, this policy must be updated before release to describe:
 - Where it is stored.
 - How users can delete their data.
 - Whether data is used to improve matching models.
+
+## App Store Privacy
+
+The current local-only build is expected to answer "Data Not Collected" in App Store Connect, because user data is not transmitted to the developer or third parties. This must be reviewed again before submission.
 
 ## Contact
 
