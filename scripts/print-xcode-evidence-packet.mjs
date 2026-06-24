@@ -53,7 +53,9 @@ const packageJson = readJson("package.json");
 const xcodebuild = run("xcodebuild", ["-version"]);
 const xcodeSelect = run("xcode-select", ["-p"]);
 const selectedDeveloperPath = xcodeSelect.output;
+const fullXcodeAppPath = "/Applications/Xcode.app";
 const fullXcodeDeveloperPath = "/Applications/Xcode.app/Contents/Developer";
+const fullXcodeInstalled = existsSync(fullXcodeAppPath);
 const fullXcodeSelected = xcodeSelect.ok && selectedDeveloperPath === fullXcodeDeveloperPath;
 const xcodebuildReportsXcode = xcodebuild.ok && /^Xcode\s+\S+/m.test(xcodebuild.output);
 const projectExists = existsSync(join(root, projectPath));
@@ -63,7 +65,7 @@ const bundleIdConfigured = pbxproj.includes(`PRODUCT_BUNDLE_IDENTIFIER = ${expec
 const versions = projectVersions();
 
 const manualActions = [
-  "Install full Xcode from the Mac App Store if /Applications/Xcode.app is missing.",
+  `Install full Xcode from the Mac App Store if ${fullXcodeAppPath} is missing.`,
   `sudo xcode-select -s ${fullXcodeDeveloperPath}`,
   "xcodebuild -version",
   `open ${projectPath}`,
@@ -97,6 +99,8 @@ const packet = {
   purpose: "Verify local Xcode and archive prerequisites before TestFlight or App Store upload.",
   sourceDoc: "docs/xcode-app-store-upload-guide.md",
   xcode: {
+    installed: fullXcodeInstalled,
+    appPath: fullXcodeAppPath,
     selectedDeveloperPath,
     expectedDeveloperPath: fullXcodeDeveloperPath,
     fullXcodeSelected,
@@ -118,7 +122,19 @@ const packet = {
     marketingVersions: versions.marketingVersions,
     buildNumbers: versions.buildNumbers,
   },
-  readyForArchive: fullXcodeSelected && xcodebuildReportsXcode && projectExists && pbxprojExists && bundleIdConfigured,
+  readyForArchive:
+    fullXcodeInstalled && fullXcodeSelected && xcodebuildReportsXcode && projectExists && pbxprojExists && bundleIdConfigured,
+  readinessBlocker: !fullXcodeInstalled
+    ? `Install full Xcode so ${fullXcodeAppPath} exists.`
+    : !fullXcodeSelected
+      ? `Select full Xcode with sudo xcode-select -s ${fullXcodeDeveloperPath}.`
+      : !xcodebuildReportsXcode
+        ? "Confirm xcodebuild -version prints an Xcode version."
+        : !projectExists || !pbxprojExists
+          ? `Confirm ${projectPath} exists and includes project.pbxproj.`
+          : !bundleIdConfigured
+            ? `Confirm Bundle ID is ${expectedBundleId}.`
+            : null,
   manualActions,
   signoffFields,
   relatedCommands: {

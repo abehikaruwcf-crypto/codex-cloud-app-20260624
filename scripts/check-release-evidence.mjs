@@ -121,7 +121,7 @@ addCheck(
   "Full Xcode selected",
   evidence.xcode?.readyForArchive
     ? `Ready for archive at ${evidence.xcode.selectedDeveloperPath}.`
-    : "Select full Xcode before archive/upload.",
+    : evidence.xcode?.readinessBlocker || "Install/select full Xcode before archive/upload.",
   true,
 );
 

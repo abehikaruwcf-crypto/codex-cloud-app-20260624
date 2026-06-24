@@ -248,6 +248,11 @@ requireText("docs/app-store-submission-packet.md", "xcode-app-store-upload-guide
 requireText("docs/app-store-submission-packet.md", "keywords 100 bytes", "Submission packet documents metadata limits");
 requireText("docs/app-store-submission-packet.md", "App Store Connect Entry Checklist", "Submission packet includes App Store Connect entry map");
 requireText("docs/app-store-submission-packet.md", "Formal support and privacy contacts", "Submission packet tracks remaining contact blocker");
+requireText("scripts/print-xcode-evidence-packet.mjs", "fullXcodeInstalled", "Xcode packet records full Xcode installation state");
+requireText("scripts/print-xcode-evidence-packet.mjs", "readinessBlocker", "Xcode packet reports the first archive readiness blocker");
+requireText("scripts/app-store-release-status.mjs", "Install full Xcode from the Mac App Store", "Release status distinguishes missing Xcode from unselected Xcode");
+requireText("scripts/generate-release-evidence.mjs", "readinessBlocker", "Release evidence includes Xcode readiness blocker");
+requireText("docs/xcode-app-store-upload-guide.md", '"installed": true', "Xcode guide documents installed evidence field");
 requireText("docs/release-notes.md", "App Store What's New Draft", "Release notes include What's New");
 requireText("docs/release-notes.md", "TestFlight Notes Draft", "Release notes include TestFlight notes");
 requireText("docs/app-store-submission-packet.md", "release-notes.md", "Submission packet links release notes");

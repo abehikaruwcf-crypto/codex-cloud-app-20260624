@@ -61,6 +61,8 @@ function signoffValue(content, label) {
 
 const packageVersion = hasFile("package.json") ? readJson("package.json").version : "unknown";
 const xcode = run("xcodebuild", ["-version"]);
+const fullXcodeAppPath = "/Applications/Xcode.app";
+const fullXcodeInstalled = existsSync(fullXcodeAppPath);
 const xcodeSelected = xcode.ok && xcode.output.includes("Xcode");
 const supportPage = hasFile("public/support.html") ? readText("public/support.html") : "";
 const privacyPage = hasFile("public/privacy.html") ? readText("public/privacy.html") : "";
@@ -189,11 +191,16 @@ const checks = [
   {
     ok: xcodeSelected,
     title: "Full Xcode selected",
-    detail: xcodeSelected ? xcode.output.split("\n")[0] : "Run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer",
+    detail: xcodeSelected
+      ? xcode.output.split("\n")[0]
+      : fullXcodeInstalled
+        ? "Run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer"
+        : "Install full Xcode from the Mac App Store so /Applications/Xcode.app exists, then run sudo xcode-select -s /Applications/Xcode.app/Contents/Developer",
   },
 ];
 
 const manualBlockers = [
+  ...(fullXcodeInstalled ? [] : ["Install full Xcode from the Mac App Store."]),
   "Select Apple Developer Program team in Xcode.",
   "Create App Store Connect app record for Bundle ID com.wcf.charmid.",
   ...(hostedUrlsReady ? [] : ["Enable/publish public Privacy Policy and Support URLs."]),

@@ -88,10 +88,13 @@ test("release evidence includes Xcode archive readiness packet", () => {
 
   assert.equal(evidence.xcode.command, "npm run appstore:xcode-packet");
   assert.equal(evidence.xcode.packetGenerated, true);
+  assert.equal(typeof evidence.xcode.installed, "boolean");
+  assert.equal(evidence.xcode.appPath, "/Applications/Xcode.app");
   assert.equal(evidence.xcode.expectedDeveloperPath, "/Applications/Xcode.app/Contents/Developer");
   assert.equal(evidence.xcode.projectPath, "ios/App/App.xcodeproj");
   assert.equal(evidence.xcode.bundleIdConfigured, true);
   assert.equal(typeof evidence.xcode.readyForArchive, "boolean");
+  assert.equal(typeof evidence.xcode.readinessBlocker === "string" || evidence.xcode.readinessBlocker === null, true);
   assert.deepEqual(
     evidence.xcode.signoffFields.map((field: { key: string }) => field.key),
     ["app-store-connect-app-id", "uploaded-build", "strict-verification-result"],

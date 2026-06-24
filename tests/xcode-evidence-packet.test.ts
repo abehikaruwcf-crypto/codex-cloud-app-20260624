@@ -23,7 +23,10 @@ test("Xcode evidence packet maps archive prerequisites to signoff fields", () =>
   assert.equal(packet.sourceDoc, "docs/xcode-app-store-upload-guide.md");
   assert.equal(packet.project.path, "ios/App/App.xcodeproj");
   assert.equal(packet.bundleId.expected, "com.wcf.charmid");
+  assert.equal(typeof packet.xcode.installed, "boolean");
+  assert.equal(packet.xcode.appPath, "/Applications/Xcode.app");
   assert.equal(typeof packet.readyForArchive, "boolean");
+  assert.equal(typeof packet.readinessBlocker === "string" || packet.readinessBlocker === null, true);
   assert.ok(packet.manualActions.includes("sudo xcode-select -s /Applications/Xcode.app/Contents/Developer"));
   assert.ok(packet.manualActions.includes("open ios/App/App.xcodeproj"));
   assert.deepEqual(signoffKeys, ["app-store-connect-app-id", "uploaded-build", "strict-verification-result"]);

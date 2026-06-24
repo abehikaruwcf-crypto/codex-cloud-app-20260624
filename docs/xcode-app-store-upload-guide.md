@@ -4,7 +4,7 @@ Use this guide after full Xcode is installed. It covers the manual Apple steps t
 
 ## 1. Select Full Xcode
 
-Confirm `/Applications/Xcode.app` exists, then select it for command line tools:
+Install full Xcode from the Mac App Store if `/Applications/Xcode.app` is missing. After it exists, select it for command line tools:
 
 ```bash
 sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
@@ -13,6 +13,7 @@ xcodebuild -version
 
 Expected result:
 
+- `npm run appstore:xcode-packet` reports `"installed": true`.
 - `xcodebuild -version` prints an Xcode version, not the Command Line Tools error.
 - `npm run appstore:status` no longer reports `Full Xcode selected` as TODO.
 

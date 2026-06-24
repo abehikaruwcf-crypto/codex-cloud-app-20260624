@@ -192,8 +192,11 @@ const evidence = {
   xcode: {
     command: "npm run appstore:xcode-packet",
     packetGenerated: xcodePacket.ok && Boolean(parsedXcodePacket),
+    installed: parsedXcodePacket?.xcode?.installed ?? null,
+    appPath: parsedXcodePacket?.xcode?.appPath ?? null,
     selected: parsedXcodePacket?.xcode?.fullXcodeSelected ?? (xcode.ok && xcode.output.includes("Xcode")),
     readyForArchive: parsedXcodePacket?.readyForArchive ?? false,
+    readinessBlocker: parsedXcodePacket?.readinessBlocker ?? null,
     selectedDeveloperPath: parsedXcodePacket?.xcode?.selectedDeveloperPath ?? null,
     expectedDeveloperPath: parsedXcodePacket?.xcode?.expectedDeveloperPath ?? null,
     projectPath: parsedXcodePacket?.project?.path ?? null,

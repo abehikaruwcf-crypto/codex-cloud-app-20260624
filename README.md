@@ -85,7 +85,7 @@ npm run appstore:verify
 
 Known manual blockers before App Review:
 
-- Select full Xcode with `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`.
+- Install full Xcode from the Mac App Store if `/Applications/Xcode.app` is missing, then select it with `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`.
 - Select the Apple Developer Program team in Xcode.
 - Create the App Store Connect app record.
 - Confirm App Store Connect calculates the expected age rating from the release build answers.
