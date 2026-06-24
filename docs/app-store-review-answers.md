@@ -56,7 +56,7 @@ Required before submission:
 
 - Public support URL after hosting is enabled.
 - Public privacy policy URL after hosting is enabled.
-- Developer contact path for support requests.
+- Developer contact path for support requests, using a concrete `mailto:` link, email address, telephone contact, or legally required contact details.
 
 The repository currently includes `public/privacy.html`, `public/support.html`, and a GitHub Pages deployment template. Add the final hosted URLs and formal support contact before App Review submission.
 

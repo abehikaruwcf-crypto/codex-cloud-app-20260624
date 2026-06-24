@@ -44,6 +44,11 @@ const finalSignoff = hasFile("docs/app-review-final-signoff.md")
   : "";
 const hasSupportPlaceholder =
   supportPage.includes("正式なサポート連絡先") || supportPage.includes("配布元の担当者");
+const hasSupportContact =
+  /mailto:[^"'\s>]+@[^"'\s>]+/i.test(supportPage) ||
+  /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/.test(supportPage) ||
+  /tel:\+?[0-9][0-9()\-\s]+/i.test(supportPage);
+const formalSupportContactReady = !hasSupportPlaceholder && hasSupportContact;
 const hostedUrlsReady =
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/privacy.html") &&
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/support.html");
@@ -61,11 +66,11 @@ const checks = [
     detail: "public/privacy.html and public/support.html",
   },
   {
-    ok: !hasSupportPlaceholder,
+    ok: formalSupportContactReady,
     title: "Formal support contact",
-    detail: hasSupportPlaceholder
-      ? "Replace support-page placeholder with final App Review support contact."
-      : "public/support.html includes final support contact.",
+    detail: formalSupportContactReady
+      ? "public/support.html includes a concrete support contact."
+      : "Replace support-page placeholder with a concrete mailto, email address, or telephone contact.",
   },
   {
     ok: hostedUrlsReady,
@@ -107,7 +112,7 @@ const manualBlockers = [
   "Select Apple Developer Program team in Xcode.",
   "Create App Store Connect app record for Bundle ID com.wcf.charmid.",
   "Enable/publish public Privacy Policy and Support URLs.",
-  "Replace the support-page placeholder with the final support contact.",
+  "Replace the support-page placeholder with a concrete mailto, email address, or telephone contact.",
   "Capture final App Store screenshots from release build at Apple-supported sizes.",
   "Run physical iPhone TestFlight validation.",
   "Complete docs/app-review-final-signoff.md.",

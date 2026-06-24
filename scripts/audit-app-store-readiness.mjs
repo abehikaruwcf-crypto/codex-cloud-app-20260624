@@ -173,6 +173,7 @@ requireText("public/privacy.html", "Charm ID Privacy Policy", "Privacy policy pa
 requireText("public/support.html", "Charm ID Support", "Support page title");
 requireText("public/support.html", `Version ${packageVersion()}`, "Support page release version");
 requireText("public/support.html", "端末内データをリセット", "Support page explains local data reset");
+requireText("public/support.html", "メールアドレス、電話番号", "Support page explains final contact requirement");
 requireText("public/privacy.html", "端末内データをリセット", "Privacy page explains local data deletion");
 requireText("src/main.tsx", "APP_VERSION", "In-app release version display");
 requireText("src/main.tsx", 'href="/support.html"', "In-app support link");
@@ -213,6 +214,9 @@ requireText("scripts/print-app-store-metadata.mjs", "maxBytes: 100", "Metadata p
 requireText("scripts/print-app-store-metadata.mjs", "used > max", "Metadata print fails on field limit overflow");
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
 requireText("scripts/app-store-release-status.mjs", "Formal support contact", "Release status checks support contact");
+requireText("scripts/app-store-release-status.mjs", "formalSupportContactReady", "Release status requires concrete support contact");
+requireText("scripts/app-store-release-status.mjs", "mailto:", "Release status accepts mailto support contact");
+requireText("scripts/app-store-release-status.mjs", "tel:", "Release status accepts telephone support contact");
 requireText("scripts/app-store-release-status.mjs", "Hosted privacy/support URLs", "Release status checks hosted URLs");
 requireText("scripts/app-store-release-status.mjs", "Final App Review signoff", "Release status checks final signoff");
 requireText("scripts/app-store-release-status.mjs", "^Status: Ready for App Review$", "Release status checks exact final signoff status");
@@ -227,7 +231,9 @@ requireText("README.md", "public/support.html", "README references support page"
 requireText("README.md", "final support contact", "README tracks support contact blocker");
 requireText("docs/app-review-final-signoff.md", "Status: Pending", "Final signoff starts pending");
 requireText("docs/app-review-final-signoff.md", "Status: Ready for App Review", "Final signoff ready marker");
+requireText("docs/app-review-final-signoff.md", "concrete support contact", "Final signoff requires concrete support contact");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:status", "Final signoff includes release status evidence");
+requireText("docs/app-store-review-answers.md", "concrete `mailto:` link", "Review answers require concrete support contact");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");
 requireText("docs/testflight-release-checklist.md", "Status: Ready for App Review", "TestFlight checklist includes final signoff ready marker");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");
