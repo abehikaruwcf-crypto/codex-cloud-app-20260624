@@ -1359,10 +1359,10 @@ function App() {
             照合エンジンは公開前検証用のプロトタイプです。候補を確定する前に、管理番号を目視で確認してください。
           </p>
           <p className="app-version">Version {APP_VERSION}</p>
-          <a href="/privacy.html" target="_blank" rel="noreferrer">
+          <a href="privacy.html" target="_blank" rel="noreferrer">
             プライバシーポリシー
           </a>
-          <a href="/support.html" target="_blank" rel="noreferrer">
+          <a href="support.html" target="_blank" rel="noreferrer">
             サポート
           </a>
         </div>

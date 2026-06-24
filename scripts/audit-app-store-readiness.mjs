@@ -176,8 +176,11 @@ requireText("public/support.html", "端末内データをリセット", "Support
 requireText("public/support.html", "メールアドレス、電話番号", "Support page explains final contact requirement");
 requireText("public/privacy.html", "端末内データをリセット", "Privacy page explains local data deletion");
 requireText("public/privacy.html", "メールアドレス、電話番号", "Privacy page explains final contact requirement");
+requireText("vite.config.ts", 'base: "./"', "Vite build uses relative asset base");
+requireText("index.html", 'href="manifest.webmanifest"', "Web manifest link is project-page safe");
+requireText("public/support.html", 'href="privacy.html"', "Support page privacy link is project-page safe");
 requireText("src/main.tsx", "APP_VERSION", "In-app release version display");
-requireText("src/main.tsx", 'href="/support.html"', "In-app support link");
+requireText("src/main.tsx", 'href="support.html"', "In-app support link is project-page safe");
 requireText("src/main.tsx", "追加学習しますか？", "Learning confirmation prompt");
 requireText("src/main.tsx", "設定アプリで Charm ID > カメラ を許可", "Camera permission recovery guidance");
 requireText("src/main.tsx", "写真ライブラリから選べる場合", "Photo library fallback guidance");
