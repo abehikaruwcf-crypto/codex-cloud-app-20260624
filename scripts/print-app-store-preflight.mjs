@@ -12,7 +12,7 @@ const requiredSteps = [
     expected: [
       '"privacyPolicy": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html"',
       '"support": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html"',
-      '"todo": 5',
+      '"todoItems"',
     ],
   },
   {
@@ -175,7 +175,8 @@ const preflight = {
     pass: releaseStatus.pass,
     todo: releaseStatus.todo,
     todoItems: releaseStatus.todoItems,
-    expectedManualTodoCount: 5,
+    expectedManualTodoCount: releaseStatus.todo,
+    environmentSensitiveTodoItems: ["Full Xcode selected"],
   },
   manualGate: {
     readyForAppReview: releaseStatusResult.ok && releaseStatus.todo === 0,

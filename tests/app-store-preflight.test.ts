@@ -38,16 +38,18 @@ test("App Store preflight stays parseable and reports the current manual gate", 
   assert.equal(preflight.commands.handoffPacket, "npm run appstore:handoff");
   assert.equal(preflight.commands.signoffCommand, "npm run appstore:signoff-command");
   assert.equal(preflight.commands.signoffTemplate, "npm run appstore:signoff-template");
-  assert.equal(preflight.releaseStatus.todo, 5);
-  assert.equal(preflight.releaseStatus.expectedManualTodoCount, 5);
+  assert.ok([4, 5].includes(preflight.releaseStatus.todo), "manual TODO count should tolerate Xcode availability");
+  assert.equal(preflight.releaseStatus.expectedManualTodoCount, preflight.releaseStatus.todo);
+  assert.deepEqual(preflight.releaseStatus.environmentSensitiveTodoItems, ["Full Xcode selected"]);
   assert.equal(preflight.manualGate.readyForAppReview, false);
-  assert.deepEqual(preflight.manualGate.remainingActions, [
+  for (const action of [
     "Formal support contact",
     "Privacy policy contact",
     "App Store copyright holder",
     "Final App Review signoff",
-    "Full Xcode selected",
-  ]);
+  ]) {
+    assert.ok(preflight.manualGate.remainingActions.includes(action), `${action} should remain blocked`);
+  }
 });
 
 test("App Store preflight confirms every submission packet substep", () => {

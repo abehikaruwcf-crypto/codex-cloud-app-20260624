@@ -66,7 +66,8 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - [docs/app-review-final-signoff.md](docs/app-review-final-signoff.md) captures the final App Review evidence.
 - [docs/release-notes.md](docs/release-notes.md) contains the App Store What's New and TestFlight notes draft.
 - [docs/app-privacy-answers.md](docs/app-privacy-answers.md) documents the current local-only privacy answers.
-- [docs/github-actions-app-store-readiness.md](docs/github-actions-app-store-readiness.md) contains the GitHub Actions readiness workflow template.
+- [docs/workflows/app-store-readiness.yml](docs/workflows/app-store-readiness.yml) is the GitHub Actions readiness workflow source; copy it to `.github/workflows/app-store-readiness.yml` with a token that has `workflow` scope.
+- [docs/github-actions-app-store-readiness.md](docs/github-actions-app-store-readiness.md) documents the GitHub Actions readiness workflow, the current token limitation, and the later strict-mode switch.
 - `public/privacy.html` and `public/support.html` are bundled with the app; matching `docs/privacy.html` and `docs/support.html` are the GitHub Pages source files tracked in [docs/github-pages-workflow.md](docs/github-pages-workflow.md).
 
 Current release gate:

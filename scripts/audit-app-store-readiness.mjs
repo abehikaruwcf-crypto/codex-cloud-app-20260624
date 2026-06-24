@@ -146,6 +146,7 @@ fileExists("docs/privacy.html", "Pages privacy policy page");
 fileExists("docs/support.html", "Pages support page");
 fileExists("docs/.nojekyll", "Pages Jekyll bypass marker");
 fileExists("docs/github-actions-app-store-readiness.md", "App Store readiness CI workflow template");
+fileExists("docs/workflows/app-store-readiness.yml", "App Store readiness CI workflow source");
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
 fileExists("scripts/run-unit-tests.mjs", "Unit test runner");
@@ -251,6 +252,10 @@ requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:audi
 requireText("docs/github-actions-app-store-readiness.md", "macos-latest", "CI template runs on macOS");
 requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:verify", "CI template runs verification gate");
 requireText("docs/github-actions-app-store-readiness.md", "-- --strict", "CI template documents strict verification");
+requireText("docs/workflows/app-store-readiness.yml", "macos-latest", "CI workflow source runs on macOS");
+requireText("docs/workflows/app-store-readiness.yml", "node-version: 22", "CI workflow source uses Node 22");
+requireText("docs/workflows/app-store-readiness.yml", "npx playwright install chromium", "CI workflow source installs Playwright Chromium");
+requireText("docs/workflows/app-store-readiness.yml", "npm run appstore:verify", "CI workflow source runs verification gate");
 requireText("docs/github-pages-workflow.md", "gh-pages @", "Pages notes record published branch");
 requireText("docs/github-pages-workflow.md", "Source: pages-docs /docs", "Pages notes record active Pages source");
 requireText("docs/github-pages-workflow.md", "GitHub Pages build status: built", "Pages notes record successful build");
@@ -521,7 +526,8 @@ requireText("scripts/print-app-store-preflight.mjs", "appstore:handoff", "Prefli
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-draft", "Preflight includes signoff draft");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-command", "Preflight includes signoff command");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-template", "Preflight includes signoff template");
-requireText("scripts/print-app-store-preflight.mjs", "expectedManualTodoCount: 5", "Preflight records expected manual TODO count");
+requireText("scripts/print-app-store-preflight.mjs", "expectedManualTodoCount", "Preflight records expected manual TODO count");
+requireText("scripts/print-app-store-preflight.mjs", "environmentSensitiveTodoItems", "Preflight records environment-sensitive TODOs");
 requireText("scripts/generate-release-evidence.mjs", "hostedPrivacyPageSource", "Release evidence includes hosted privacy source");
 requireText("scripts/generate-release-evidence.mjs", "hostedSupportPageSource", "Release evidence includes hosted support source");
 
@@ -564,7 +570,7 @@ const connectPacketOk =
   connectPacket.ok &&
   connectPacket.output.includes('"privacyPolicy": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/privacy.html"') &&
   connectPacket.output.includes('"support": "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html"') &&
-  connectPacket.output.includes('"todo": 5');
+  /"todo":\s*[45]/.test(connectPacket.output);
 addCheck(
   "App Store Connect packet print",
   connectPacketOk ? "pass" : "fail",

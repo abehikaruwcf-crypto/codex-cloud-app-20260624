@@ -33,7 +33,11 @@ test("App Store submission checklist maps Connect packet into screen order", () 
     "TestFlight",
     "Final Signoff",
   ]);
-  assert.ok(checklist.remainingManualScreens.includes("Build"));
+  const build = checklist.screens.find((screen: { screen: string }) => screen.screen === "Build");
+  assert.ok(["manual", "ready-after-upload"].includes(build.status));
+  if (build.status === "manual") {
+    assert.ok(checklist.remainingManualScreens.includes("Build"));
+  }
   assert.ok(checklist.remainingManualScreens.includes("TestFlight"));
   assert.equal(checklist.finalGate.strictCommand, "npm run appstore:verify -- --strict");
 });

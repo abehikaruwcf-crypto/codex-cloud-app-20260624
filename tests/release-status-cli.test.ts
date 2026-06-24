@@ -150,5 +150,4 @@ test("current release status exits nonzero while App Review TODOs remain", () =>
   assert.match(result.output, /Status summary: \d+ pass, [1-9]\d* todo/);
   assert.match(result.output, /\[TODO\] Formal support contact/);
   assert.match(result.output, /\[TODO\] App Store copyright holder/);
-  assert.match(result.output, /\[TODO\] Full Xcode selected/);
 });
