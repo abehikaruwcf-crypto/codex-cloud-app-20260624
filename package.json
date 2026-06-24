@@ -15,6 +15,7 @@
     "appstore:screenshots": "node scripts/generate-app-store-screenshots.mjs",
     "appstore:metadata": "node scripts/print-app-store-metadata.mjs",
     "appstore:apply-inputs": "node scripts/apply-release-inputs.mjs",
+    "appstore:public-urls": "node scripts/verify-public-urls.mjs",
     "appstore:smoke": "node scripts/smoke-app-ui.mjs",
     "appstore:audit": "node scripts/audit-app-store-readiness.mjs",
     "appstore:verify": "node scripts/verify-app-store-release.mjs",

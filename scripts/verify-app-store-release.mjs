@@ -10,6 +10,7 @@ const requiredCommands = [
   },
   { name: "Unit tests", command: "npm", args: ["run", "test:unit"] },
   { name: "Metadata export", command: "npm", args: ["run", "appstore:metadata"] },
+  { name: "Public URL verification", command: "npm", args: ["run", "appstore:public-urls"] },
   { name: "Release evidence report", command: "npm", args: ["run", "appstore:evidence"] },
   { name: "App Store audit", command: "npm", args: ["run", "appstore:audit"] },
   { name: "iOS sync", command: "npm", args: ["run", "ios:sync"] },

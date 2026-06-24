@@ -86,6 +86,7 @@ const branch = run("git", ["branch", "--show-current"]);
 const statusShort = run("git", ["status", "--short"]);
 const xcode = run("xcodebuild", ["-version"]);
 const releaseStatus = run("npm", ["run", "appstore:status"]);
+const publicUrls = run("npm", ["run", "appstore:public-urls"]);
 const parsedStatus = parseStatus(releaseStatus.output);
 const pagesNotes = hasFile("docs/github-pages-workflow.md")
   ? read("docs/github-pages-workflow.md")
@@ -125,6 +126,8 @@ const evidence = {
     hostedUrlPlaceholdersRemain:
       pagesNotes.includes("https://<owner>.github.io/<repo>/privacy.html") ||
       pagesNotes.includes("https://<owner>.github.io/<repo>/support.html"),
+    publicUrlsReachable: publicUrls.ok,
+    publicUrlCheckOutput: publicUrls.output,
   },
   evidenceTargets: {
     finalSignoff: "docs/app-review-final-signoff.md",
