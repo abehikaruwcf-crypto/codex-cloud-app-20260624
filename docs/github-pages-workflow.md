@@ -6,8 +6,8 @@ The repository is public and GitHub Pages is configured for a static public rele
 The current App Store URL source is:
 
 ```text
-Source: main /docs
-GitHub Pages build status: errored in API checks on 2026-06-24
+Source: pages-docs /docs
+GitHub Pages build status: built in API checks on 2026-06-24
 ```
 
 The `gh-pages` branch also exists with a built static app snapshot:

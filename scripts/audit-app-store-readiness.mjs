@@ -220,7 +220,8 @@ requireText("docs/github-actions-app-store-readiness.md", "macos-latest", "CI te
 requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:verify", "CI template runs verification gate");
 requireText("docs/github-actions-app-store-readiness.md", "-- --strict", "CI template documents strict verification");
 requireText("docs/github-pages-workflow.md", "gh-pages @", "Pages notes record published branch");
-requireText("docs/github-pages-workflow.md", "Source: main /docs", "Pages notes record active Pages source");
+requireText("docs/github-pages-workflow.md", "Source: pages-docs /docs", "Pages notes record active Pages source");
+requireText("docs/github-pages-workflow.md", "GitHub Pages build status: built", "Pages notes record successful build");
 requireText("docs/github-pages-workflow.md", "github.io/codex-cloud-app-20260624/privacy.html", "Pages notes include final privacy URL");
 requireText("docs/github-pages-workflow.md", "/support.html", "Support page Pages URL");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");

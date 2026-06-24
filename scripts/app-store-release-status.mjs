@@ -167,7 +167,7 @@ const checks = [
 const manualBlockers = [
   "Select Apple Developer Program team in Xcode.",
   "Create App Store Connect app record for Bundle ID com.wcf.charmid.",
-  "Enable/publish public Privacy Policy and Support URLs.",
+  ...(hostedUrlsReady ? [] : ["Enable/publish public Privacy Policy and Support URLs."]),
   "Replace the support-page placeholder with a concrete mailto, email address, or telephone contact.",
   "Replace the privacy-page placeholder with a concrete mailto, email address, or telephone contact.",
   "Capture final App Store screenshots from release build at Apple-supported sizes.",
@@ -180,12 +180,16 @@ const nextInputs = [
   "Run npm run appstore:apply-inputs -- --support-contact <contact> --privacy-contact <contact> after contacts are finalized.",
   "public/support.html: replace the placeholder with a concrete app support contact.",
   "public/privacy.html: replace the placeholder with a concrete privacy contact.",
-  pagesPlanBlocked
-    ? "Publishing: make the repository public, upgrade/move to a Pages-capable plan, or publish dist on another public static host."
-    : pagesBuildBlocked
-      ? "Publishing: GitHub Pages is configured but currently not serving; resolve the Pages build or publish on another public static host."
-    : "Publishing: enable GitHub Pages or another public host for privacy.html and support.html.",
-  "docs/github-pages-workflow.md and App Store Connect: replace placeholder Pages URLs with final public Privacy/Support URLs.",
+  ...(hostedUrlsReady
+    ? []
+    : [
+        pagesPlanBlocked
+          ? "Publishing: make the repository public, upgrade/move to a Pages-capable plan, or publish dist on another public static host."
+          : pagesBuildBlocked
+            ? "Publishing: GitHub Pages is configured but currently not serving; resolve the Pages build or publish on another public static host."
+            : "Publishing: enable GitHub Pages or another public host for privacy.html and support.html.",
+        "docs/github-pages-workflow.md and App Store Connect: replace placeholder Pages URLs with final public Privacy/Support URLs.",
+      ]),
   "docs/app-review-final-signoff.md: record Xcode, App Store Connect, uploaded build, TestFlight, URL, contact, owner, and date evidence.",
   "docs/app-review-final-signoff.md: change Status to Ready for App Review only after appstore:status reports 0 todo.",
 ];
