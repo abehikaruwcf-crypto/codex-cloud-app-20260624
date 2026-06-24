@@ -69,6 +69,7 @@ async function readState(page) {
     privacyLink: document.querySelector('.app-info-panel a[href="/privacy.html"]')?.textContent?.trim() ?? null,
     infoPanel: document.querySelector(".app-info-panel")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     statusRole: document.querySelector(".status-message")?.getAttribute("role") ?? null,
+    statusText: document.querySelector(".status-message")?.textContent?.trim() ?? null,
     identifyFileLabels: [...document.querySelectorAll('.view.is-active input[type="file"]')]
       .map((input) => input.getAttribute("aria-label"))
       .filter(Boolean),
@@ -151,6 +152,14 @@ try {
     register.identifyFileLabels.includes("表の登録写真を撮影"),
     "Register file inputs should expose accessible labels.",
   );
+  await page.getByPlaceholder("例: CH-1042").fill(" ch-001 ");
+  await page.getByRole("button", { name: "登録する" }).click();
+  const duplicateRegister = await readState(page);
+  expect(
+    duplicateRegister.statusText === "CH-001 は登録済みです。既存モデルに追加学習してください。",
+    "Register should block duplicate management numbers.",
+  );
+  expect(duplicateRegister.activeHeading === "チャーム登録", "Duplicate registration should keep the register view active.");
 
   await browser.close();
   console.log("UI smoke test passed.");

@@ -205,6 +205,10 @@ function makeId(prefix: string) {
   return `${prefix}-${crypto.randomUUID()}`;
 }
 
+function normalizeManagementNumber(value: string) {
+  return value.trim().replace(/\s+/g, " ").toUpperCase();
+}
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
 }
@@ -564,9 +568,19 @@ function App() {
 
   function saveCharm(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const normalizedManagementNumber = normalizeManagementNumber(managementNumber);
 
-    if (!managementNumber.trim()) {
+    if (!normalizedManagementNumber) {
       setMessage("管理番号を入力してください。");
+      return;
+    }
+
+    const alreadyRegistered = charms.some(
+      (charm) => normalizeManagementNumber(charm.managementNumber) === normalizedManagementNumber,
+    );
+
+    if (alreadyRegistered) {
+      setMessage(`${normalizedManagementNumber} は登録済みです。既存モデルに追加学習してください。`);
       return;
     }
 
@@ -580,7 +594,7 @@ function App() {
     const now = new Date().toISOString();
     const charm: Charm = {
       id: makeId("charm"),
-      managementNumber: managementNumber.trim(),
+      managementNumber: normalizedManagementNumber,
       note: note.trim(),
       images: draftImages,
       createdAt: now,
