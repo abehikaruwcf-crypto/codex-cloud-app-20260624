@@ -10,6 +10,7 @@ npm run dev
 npm run build
 npm run appstore:set-version -- 1.0 1
 npm run appstore:status
+npm run appstore:metadata
 npm run appstore:audit
 npm run ios:sync
 ```
@@ -28,6 +29,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 
 - [docs/app-store-roadmap.md](docs/app-store-roadmap.md) tracks the release path.
 - [docs/app-store-submission-packet.md](docs/app-store-submission-packet.md) consolidates App Store Connect inputs.
+- `npm run appstore:metadata` prints the current App Store Connect listing values as JSON.
 - [docs/testflight-release-checklist.md](docs/testflight-release-checklist.md) covers the Xcode/TestFlight upload flow.
 - [docs/app-review-final-signoff.md](docs/app-review-final-signoff.md) captures the final App Review evidence.
 - [docs/release-notes.md](docs/release-notes.md) contains the App Store What's New and TestFlight notes draft.

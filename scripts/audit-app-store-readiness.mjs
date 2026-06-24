@@ -143,6 +143,7 @@ fileExists("docs/github-actions-app-store-readiness.md", "App Store readiness CI
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
+fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print script");
 fileExists("scripts/set-release-version.mjs", "Release version script");
 fileExists("scripts/app-store-release-status.mjs", "Release status script");
 
@@ -191,6 +192,7 @@ requireText("docs/app-store-metadata.md", "Japanese Metadata Draft", "Japanese A
 requireText("docs/app-store-metadata.md", "小物を撮影して管理番号を確認", "Japanese subtitle draft");
 requireText("docs/app-store-submission-packet.md", "Primary language: Japanese", "Submission packet primary language");
 requireText("docs/app-store-submission-packet.md", "iOS development region: `ja`", "Submission packet iOS development region");
+requireText("docs/app-store-submission-packet.md", "npm run appstore:metadata", "Submission packet includes metadata print command");
 requireText("docs/release-notes.md", "App Store What's New Draft", "Release notes include What's New");
 requireText("docs/release-notes.md", "TestFlight Notes Draft", "Release notes include TestFlight notes");
 requireText("docs/app-store-submission-packet.md", "release-notes.md", "Submission packet links release notes");
@@ -201,6 +203,7 @@ requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages d
 requireText("docs/app-store-screenshots.md", "05-learning.jpg", "Screenshot docs include learning success shot");
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
+requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
 requireText("package.json", "\"appstore:status\"", "Release status script entry");
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
@@ -211,6 +214,7 @@ requireText("scripts/app-store-release-status.mjs", "^Status: Ready for App Revi
 requireText("scripts/app-store-release-status.mjs", "todoCount > 0", "Release status fails when TODO items remain");
 requireText("scripts/app-store-release-status.mjs", "Status summary", "Release status prints summary");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
+requireText("README.md", "npm run appstore:metadata", "README includes metadata print command");
 requireText("README.md", "exits non-zero", "README explains release status failure behavior");
 requireText("README.md", "app-review-final-signoff.md", "README links final signoff");
 requireText("README.md", "docs/release-notes.md", "README links release notes");
@@ -246,6 +250,14 @@ addCheck(
 for (const name of ["01-onboarding", "02-library", "03-identify", "04-register", "05-learning"]) {
   screenshotInfo(`outputs/app-store-screenshots/${name}.jpg`, `Screenshot ${name}`);
 }
+
+const metadata = run("npm", ["run", "appstore:metadata"]);
+const metadataOk =
+  metadata.ok &&
+  metadata.output.includes('"bundleId": "com.wcf.charmid"') &&
+  metadata.output.includes('"primaryLanguage": "Japanese"') &&
+  metadata.output.includes('"subtitle": "小物を撮影して管理番号を確認"');
+addCheck("App Store metadata print", metadataOk ? "pass" : "fail", metadata.output.split("\n").slice(-12).join("\n"));
 
 const build = run("npm", ["run", "build"]);
 addCheck("Web production build", build.ok ? "pass" : "fail", build.output.split("\n").slice(-5).join("\n"));

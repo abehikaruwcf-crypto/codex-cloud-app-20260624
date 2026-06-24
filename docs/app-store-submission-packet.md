@@ -32,6 +32,12 @@ Use [app-store-metadata.md](app-store-metadata.md) as the source draft for:
 - What's New text from [release-notes.md](release-notes.md)
 - Japanese listing fields from the `Japanese Metadata Draft` section.
 
+Print the current App Store Connect listing values with:
+
+```bash
+npm run appstore:metadata
+```
+
 Before final submission, replace generic prototype wording with final customer-facing language and confirm whether the public listing should target charms only or broader small-item inventory.
 
 ## Privacy
