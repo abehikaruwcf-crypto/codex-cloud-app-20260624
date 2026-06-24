@@ -150,6 +150,7 @@ plistCheck("ios/App/App/PrivacyInfo.xcprivacy", "Privacy manifest is valid");
 
 requireText("ios/App/App/Info.plist", "NSCameraUsageDescription", "Camera usage description");
 requireText("ios/App/App/Info.plist", "NSPhotoLibraryUsageDescription", "Photo library usage description");
+requireText("ios/App/App/Info.plist", "<string>ja</string>", "iOS development region is Japanese");
 requireText("ios/App/App/PrivacyInfo.xcprivacy", "NSPrivacyTracking", "Privacy tracking declaration");
 requireText(
   "ios/App/App/PrivacyInfo.xcprivacy",
@@ -184,6 +185,7 @@ requireText("docs/app-store-submission-packet.md", "app-store-review-answers.md"
 requireText("docs/app-store-metadata.md", "Japanese Metadata Draft", "Japanese App Store metadata draft");
 requireText("docs/app-store-metadata.md", "小物を撮影して管理番号を確認", "Japanese subtitle draft");
 requireText("docs/app-store-submission-packet.md", "Primary language: Japanese", "Submission packet primary language");
+requireText("docs/app-store-submission-packet.md", "iOS development region: `ja`", "Submission packet iOS development region");
 requireText("docs/release-notes.md", "App Store What's New Draft", "Release notes include What's New");
 requireText("docs/release-notes.md", "TestFlight Notes Draft", "Release notes include TestFlight notes");
 requireText("docs/app-store-submission-packet.md", "release-notes.md", "Submission packet links release notes");

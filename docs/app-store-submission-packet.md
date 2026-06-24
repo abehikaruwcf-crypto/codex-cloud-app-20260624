@@ -8,6 +8,7 @@ This packet consolidates the current App Store Connect inputs for the local-only
 - Bundle ID: `com.wcf.charmid`
 - SKU suggestion: `charm-id-ios`
 - Primary language: Japanese for the first release candidate.
+- iOS development region: `ja`
 - Category: Business
 - Secondary category: Productivity
 - Age rating expectation: 4+
