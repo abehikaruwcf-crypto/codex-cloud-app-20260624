@@ -741,16 +741,23 @@ h3 {
   white-space: nowrap;
 }
 
-.library-search {
+.library-controls {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.library-search,
+.library-sort {
   display: grid;
   gap: 8px;
-  margin-bottom: 12px;
   color: #38484f;
   font-size: 0.9rem;
   font-weight: 800;
 }
 
-.library-search input {
+.library-search input,
+.library-sort select {
   width: 100%;
   border: 1px solid rgba(23, 32, 38, 0.14);
   border-radius: 8px;

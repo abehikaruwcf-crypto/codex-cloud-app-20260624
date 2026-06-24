@@ -96,6 +96,7 @@ async function readState(page) {
     infoPanel: document.querySelector(".app-info-panel")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     statusRole: document.querySelector(".status-message")?.getAttribute("role") ?? null,
     statusText: document.querySelector(".status-message")?.textContent?.trim() ?? null,
+    librarySortValue: document.querySelector(".library-sort select")?.value ?? null,
     identifyFileLabels: [...document.querySelectorAll('.view.is-active input[type="file"]')]
       .map((input) => input.getAttribute("aria-label"))
       .filter(Boolean),
@@ -168,6 +169,19 @@ try {
   await page.getByRole("button", { name: "検索をクリア" }).click();
   const clearedSearchLibrary = await readState(page);
   expect(clearedSearchLibrary.libraryCards === 2, "Library search clear should restore the full list.");
+  expect(clearedSearchLibrary.librarySortValue === "recent", "Library should default to registration order.");
+  await page.getByLabel("並び替え").selectOption("managementDesc");
+  const descendingLibrary = await readState(page);
+  expect(
+    descendingLibrary.libraryCardTitles.join(",") === "CH-002,CH-001",
+    "Library management number descending sort should reorder the list.",
+  );
+  await page.getByLabel("並び替え").selectOption("managementAsc");
+  const ascendingLibrary = await readState(page);
+  expect(
+    ascendingLibrary.libraryCardTitles.join(",") === "CH-001,CH-002",
+    "Library management number ascending sort should reorder the list.",
+  );
   const duplicateBackupPath = join(tmpdir(), `charm-id-duplicate-backup-${Date.now()}.json`);
   writeFileSync(
     duplicateBackupPath,

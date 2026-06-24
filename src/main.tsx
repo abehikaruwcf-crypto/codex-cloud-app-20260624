@@ -20,6 +20,7 @@ const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
 const MAX_IMAGES_PER_ANGLE = 8;
 
 type AppShotMode = "onboarding" | "register" | "identify" | "library";
+type LibrarySort = "recent" | "managementAsc" | "managementDesc";
 
 type ErrorBoundaryState = {
   hasError: boolean;
@@ -499,6 +500,7 @@ function App() {
   const [message, setMessage] = useState("");
   const [importSummary, setImportSummary] = useState("");
   const [librarySearch, setLibrarySearch] = useState("");
+  const [librarySort, setLibrarySort] = useState<LibrarySort>("recent");
 
   useEffect(() => {
     if (shotMode) {
@@ -530,12 +532,29 @@ function App() {
   const missingQueryAngles = missingAngles(queryImages);
   const selectedCorrectionTarget = charms.find((charm) => charm.id === correctionTargetId);
   const normalizedLibrarySearch = normalizeManagementNumber(librarySearch);
-  const filteredCharms = normalizedLibrarySearch
-    ? charms.filter((charm) => {
-        const searchableText = normalizeManagementNumber(`${charm.managementNumber} ${charm.note}`);
-        return searchableText.includes(normalizedLibrarySearch);
-      })
-    : charms;
+  const filteredCharms = useMemo(() => {
+    const matchingCharms = normalizedLibrarySearch
+      ? charms.filter((charm) => {
+          const searchableText = normalizeManagementNumber(`${charm.managementNumber} ${charm.note}`);
+          return searchableText.includes(normalizedLibrarySearch);
+        })
+      : charms;
+
+    if (librarySort === "recent") {
+      return matchingCharms;
+    }
+
+    return [...matchingCharms].sort((firstCharm, secondCharm) => {
+      const firstManagementNumber = normalizeManagementNumber(firstCharm.managementNumber);
+      const secondManagementNumber = normalizeManagementNumber(secondCharm.managementNumber);
+      const comparison = firstManagementNumber.localeCompare(secondManagementNumber, "ja-JP", {
+        numeric: true,
+        sensitivity: "base",
+      });
+
+      return librarySort === "managementAsc" ? comparison : -comparison;
+    });
+  }, [charms, librarySort, normalizedLibrarySearch]);
 
   async function addImages(event: ChangeEvent<HTMLInputElement>, angleLabel: string) {
     const files = Array.from(event.target.files ?? []);
@@ -1117,16 +1136,30 @@ function App() {
           </div>
         </div>
 
-        <label className="library-search">
-          管理番号を検索
-          <input
-            value={librarySearch}
-            onChange={(event) => setLibrarySearch(event.target.value)}
-            placeholder="例: CH-001"
-            inputMode="search"
-            type="search"
-          />
-        </label>
+        <div className="library-controls">
+          <label className="library-search">
+            管理番号を検索
+            <input
+              value={librarySearch}
+              onChange={(event) => setLibrarySearch(event.target.value)}
+              placeholder="例: CH-001"
+              inputMode="search"
+              type="search"
+            />
+          </label>
+
+          <label className="library-sort">
+            並び替え
+            <select
+              value={librarySort}
+              onChange={(event) => setLibrarySort(event.target.value as LibrarySort)}
+            >
+              <option value="recent">登録順</option>
+              <option value="managementAsc">管理番号 A-Z</option>
+              <option value="managementDesc">管理番号 Z-A</option>
+            </select>
+          </label>
+        </div>
 
         <div className="library-list">
           {charms.length > 0 && filteredCharms.length > 0 ? (
