@@ -141,6 +141,7 @@ fileExists("public/privacy.html", "Public privacy policy page");
 fileExists("public/support.html", "Public support page");
 fileExists("docs/privacy.html", "Pages privacy policy page");
 fileExists("docs/support.html", "Pages support page");
+fileExists("docs/.nojekyll", "Pages Jekyll bypass marker");
 fileExists("docs/github-actions-app-store-readiness.md", "App Store readiness CI workflow template");
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
