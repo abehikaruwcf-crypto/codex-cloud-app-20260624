@@ -64,6 +64,12 @@ Before final submission, replace generic prototype wording with final customer-f
 
 Use [app-privacy-answers.md](app-privacy-answers.md) for App Store Connect privacy answers.
 
+Print the App Store Privacy entry packet with:
+
+```bash
+npm run appstore:privacy
+```
+
 Current local-only assumption:
 
 - No login.

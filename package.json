@@ -19,6 +19,7 @@
     "appstore:metadata": "node scripts/print-app-store-metadata.mjs",
     "appstore:connect-packet": "node scripts/print-app-store-connect-packet.mjs",
     "appstore:submission-checklist": "node scripts/print-app-store-submission-checklist.mjs",
+    "appstore:privacy": "node scripts/print-app-privacy-answers.mjs",
     "appstore:rating": "node scripts/print-app-age-rating-answers.mjs",
     "appstore:accessibility": "node scripts/print-app-accessibility-answers.mjs",
     "appstore:testflight-packet": "node scripts/print-testflight-evidence-packet.mjs",

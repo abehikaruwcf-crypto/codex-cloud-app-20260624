@@ -31,6 +31,7 @@ test("App Store preflight stays parseable and reports the current manual gate", 
   assert.equal(preflight.commands.hardGate, "npm run appstore:verify");
   assert.equal(preflight.commands.strictGate, "npm run appstore:verify -- --strict");
   assert.equal(preflight.commands.submissionChecklist, "npm run appstore:submission-checklist");
+  assert.equal(preflight.commands.privacyPacket, "npm run appstore:privacy");
   assert.equal(preflight.commands.screenshotPacket, "npm run appstore:screenshot-packet");
   assert.equal(preflight.commands.xcodePacket, "npm run appstore:xcode-packet");
   assert.equal(preflight.commands.testflightPacket, "npm run appstore:testflight-packet");
@@ -56,6 +57,7 @@ test("App Store preflight confirms every submission packet substep", () => {
     "Metadata",
     "App Store Connect transfer packet",
     "App Store Connect submission checklist",
+    "App Privacy answers",
     "Age rating answers",
     "Accessibility answers",
     "Screenshot evidence packet",

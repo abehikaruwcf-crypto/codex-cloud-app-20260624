@@ -21,6 +21,11 @@ const requiredSteps = [
     expected: ['"screen": "App Information"', '"screen": "Build"', '"remainingManualScreens"'],
   },
   {
+    name: "App Privacy answers",
+    script: "appstore:privacy",
+    expected: ['"sourceDoc": "docs/app-privacy-answers.md"', '"dataCollected": "No"', '"trackingDeclaredFalse": true'],
+  },
+  {
     name: "Age rating answers",
     script: "appstore:rating",
     expected: ['"expectedRating": "4+"', "Camera: Yes"],
@@ -151,6 +156,7 @@ const preflight = {
     strictGate: "npm run appstore:verify -- --strict",
     status: "npm run appstore:status",
     submissionChecklist: "npm run appstore:submission-checklist",
+    privacyPacket: "npm run appstore:privacy",
     screenshotPacket: "npm run appstore:screenshot-packet",
     xcodePacket: "npm run appstore:xcode-packet",
     testflightPacket: "npm run appstore:testflight-packet",

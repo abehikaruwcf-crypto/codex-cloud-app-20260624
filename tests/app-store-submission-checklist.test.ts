@@ -40,10 +40,14 @@ test("App Store submission checklist maps Connect packet into screen order", () 
 
 test("App Store submission checklist preserves critical listing and review values", () => {
   const checklist = runChecklist();
+  const privacy = checklist.screens.find((screen: { screen: string }) => screen.screen === "App Privacy");
   const version = checklist.screens.find((screen: { screen: string }) => screen.screen === "Version Information");
   const review = checklist.screens.find((screen: { screen: string }) => screen.screen === "App Review Information");
   const screenshots = checklist.screens.find((screen: { screen: string }) => screen.screen === "Screenshots");
 
+  assert.equal(privacy.fields.dataCollected, "No");
+  assert.equal(privacy.fields.tracking, "No");
+  assert.equal(privacy.fields.manifestChecks.trackingDeclaredFalse, true);
   assert.equal(version.fields.supportUrl, "https://abehikaruwcf-crypto.github.io/codex-cloud-app-20260624/support.html");
   assert.equal(version.fields.copyright, "<copyright-holder>");
   assert.equal(version.fields.keywords, "管理番号,小物,チャーム,アクセサリー,部品,在庫,カメラ,識別");

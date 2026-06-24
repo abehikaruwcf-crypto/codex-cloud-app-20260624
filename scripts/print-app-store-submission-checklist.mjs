@@ -26,6 +26,7 @@ function parseJsonOutput(output, label) {
 }
 
 const connectPacket = parseJsonOutput(run("appstore:connect-packet").output, "appstore:connect-packet");
+const privacyPacket = parseJsonOutput(run("appstore:privacy").output, "appstore:privacy");
 const screenshotPacket = parseJsonOutput(run("appstore:screenshot-packet").output, "appstore:screenshot-packet");
 const xcodePacket = parseJsonOutput(run("appstore:xcode-packet").output, "appstore:xcode-packet");
 const signoffTemplate = parseJsonOutput(run("appstore:signoff-template").output, "appstore:signoff-template");
@@ -52,6 +53,11 @@ const screens = [
       privacyManifest: connectPacket.privacy.privacyManifest,
       privacyPolicyUrl: connectPacket.urls.privacyPolicy,
       currentAssumption: connectPacket.privacy.currentProductAssumption,
+      dataCollected: privacyPacket.appStoreConnectAnswers.dataCollected,
+      tracking: privacyPacket.appStoreConnectAnswers.tracking,
+      dataLinkedToUser: privacyPacket.appStoreConnectAnswers.dataLinkedToUser,
+      dataNotLinkedToUser: privacyPacket.appStoreConnectAnswers.dataNotLinkedToUser,
+      manifestChecks: privacyPacket.manifestChecks,
     },
   },
   {

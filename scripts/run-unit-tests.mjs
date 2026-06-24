@@ -9,6 +9,7 @@ const testFiles = [
   "backup-cli.test.ts",
   "release-inputs-cli.test.ts",
   "release-status-cli.test.ts",
+  "app-privacy-answers.test.ts",
   "app-store-preflight.test.ts",
   "app-store-submission-checklist.test.ts",
   "screenshot-evidence-packet.test.ts",
