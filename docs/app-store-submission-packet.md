@@ -47,6 +47,8 @@ The app includes `ios/App/App/PrivacyInfo.xcprivacy` and declares UserDefaults r
 
 ## Review Notes
 
+Use [app-store-review-answers.md](app-store-review-answers.md) for App Review information, age rating assumptions, export compliance notes, content rights notes, and final manual checks.
+
 Suggested review note:
 
 ```text
@@ -91,6 +93,6 @@ Use Xcode Organizer to upload the archive to App Store Connect.
 - Full Xcode is not active on this Mac, so archive/upload validation cannot run here yet.
 - Apple Developer Program team must be selected in Xcode.
 - App Store Connect app record must be created.
-- Final screenshots and public privacy policy URL are still required.
+- Final screenshots, public support URL, and public privacy policy URL are still required.
 - `public/privacy.html` is ready to publish.
 - A GitHub Pages workflow template is included in [github-pages-workflow.md](github-pages-workflow.md). Once GitHub Pages is enabled for this repository, the privacy policy should be available at `/privacy.html` on the Pages site.
