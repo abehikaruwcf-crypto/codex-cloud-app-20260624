@@ -246,6 +246,8 @@ requireText("docs/github-pages-workflow.md", "GitHub Pages build status: built",
 requireText("docs/github-pages-workflow.md", "github.io/codex-cloud-app-20260624/privacy.html", "Pages notes include final privacy URL");
 requireText("docs/github-pages-workflow.md", "/support.html", "Support page Pages URL");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
+requireText("README.md", "docs/privacy.html", "README references Pages privacy source");
+requireText("README.md", "docs/support.html", "README references Pages support source");
 requireText("docs/app-store-screenshots.md", "05-learning.jpg", "Screenshot docs include learning success shot");
 requireText("scripts/generate-app-store-screenshots.mjs", "clip: { x: 0, y: 0, width: profile.viewport.width, height: profile.viewport.height }", "Screenshot generation uses exact viewport clip");
 requireText("scripts/generate-app-store-screenshots.mjs", "failed screenshot validation", "Screenshot generation validates output dimensions");
@@ -285,6 +287,7 @@ requireText("tests/release-inputs-cli.test.ts", "rejects non-https public URLs",
 requireText("tests/release-inputs-cli.test.ts", "applies contacts, hosted URLs, and signoff evidence fields", "Release input CLI apply test exists");
 requireText("tests/release-inputs-cli.test.ts", "pagesSupportPage", "Release input CLI verifies Pages support contact update");
 requireText("tests/release-inputs-cli.test.ts", "pagesPrivacyPage", "Release input CLI verifies Pages privacy contact update");
+requireText("tests/release-version-cli.test.ts", "keeps bundled and hosted support pages in sync", "Release version CLI Pages sync unit test exists");
 requireText("tests/release-status-cli.test.ts", "status is ready but evidence fields are blank", "Release status final signoff guard test exists");
 requireText("tests/release-status-cli.test.ts", "status and required evidence fields are filled", "Release status filled signoff test exists");
 requireText("tests/release-status-cli.test.ts", "exits nonzero while App Review TODOs remain", "Release status TODO-blocking test exists");
@@ -331,6 +334,7 @@ requireText("docs/app-accessibility-answers.md", "Do not claim yet", "Accessibil
 requireText("scripts/print-app-accessibility-answers.mjs", "commonTasks", "Accessibility script exports common tasks");
 requireText("scripts/print-app-store-connect-packet.mjs", "docs/app-accessibility-answers.md", "Connect packet includes accessibility source");
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
+requireText("scripts/set-release-version.mjs", "docs/support.html", "Release version script updates Pages support page");
 requireText("scripts/app-store-release-status.mjs", "Formal support contact", "Release status checks support contact");
 requireText("scripts/app-store-release-status.mjs", "formalSupportContactReady", "Release status requires concrete support contact");
 requireText("scripts/app-store-release-status.mjs", "privacyContactReady", "Release status requires concrete privacy contact");
@@ -388,6 +392,10 @@ requireText("docs/app-review-final-signoff.md", "Age rating result", "Final sign
 requireText("docs/app-review-final-signoff.md", "xcode-app-store-upload-guide.md", "Final signoff links Xcode upload guide");
 requireText("docs/app-review-final-signoff.md", "Formal support contact", "Final signoff maps support contact TODO");
 requireText("docs/app-review-final-signoff.md", "Privacy policy contact", "Final signoff maps privacy contact TODO");
+requireText("docs/app-review-final-signoff.md", "docs/support.html", "Final signoff maps Pages support contact target");
+requireText("docs/app-review-final-signoff.md", "docs/privacy.html", "Final signoff maps Pages privacy contact target");
+requireText("docs/app-store-submission-packet.md", "docs/privacy.html", "Submission packet includes Pages privacy source");
+requireText("docs/app-store-submission-packet.md", "docs/support.html", "Submission packet includes Pages support source");
 requireText("docs/privacy-policy-draft.md", "Concrete contact information", "Privacy policy draft requires concrete contact");
 requireText("docs/app-store-review-answers.md", "concrete `mailto:` link", "Review answers require concrete support contact");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");
@@ -414,6 +422,8 @@ requireText("scripts/print-app-store-preflight.mjs", "appstore:rating", "Preflig
 requireText("scripts/print-app-store-preflight.mjs", "appstore:accessibility", "Preflight includes accessibility packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-draft", "Preflight includes signoff draft");
 requireText("scripts/print-app-store-preflight.mjs", "expectedManualTodoCount: 4", "Preflight records expected manual TODO count");
+requireText("scripts/generate-release-evidence.mjs", "hostedPrivacyPageSource", "Release evidence includes hosted privacy source");
+requireText("scripts/generate-release-evidence.mjs", "hostedSupportPageSource", "Release evidence includes hosted support source");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",

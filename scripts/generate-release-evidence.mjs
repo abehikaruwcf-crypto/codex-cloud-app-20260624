@@ -133,8 +133,10 @@ const evidence = {
     finalSignoff: "docs/app-review-final-signoff.md",
     testFlightChecklist: "docs/testflight-release-checklist.md",
     submissionPacket: "docs/app-store-submission-packet.md",
-    privacyPage: "public/privacy.html",
-    supportPage: "public/support.html",
+    bundledPrivacyPage: "public/privacy.html",
+    bundledSupportPage: "public/support.html",
+    hostedPrivacyPageSource: "docs/privacy.html",
+    hostedSupportPageSource: "docs/support.html",
   },
   nextStrictGate: "npm run appstore:verify -- --strict",
 };

@@ -73,6 +73,7 @@ Static public pages included in the build:
 
 - Privacy Policy: `public/privacy.html`
 - Support: `public/support.html`
+- GitHub Pages source: `docs/privacy.html` and `docs/support.html`
 
 Final public URLs for App Store Connect:
 

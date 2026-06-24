@@ -10,6 +10,7 @@ const testFiles = [
   "release-inputs-cli.test.ts",
   "release-status-cli.test.ts",
   "app-store-preflight.test.ts",
+  "release-version-cli.test.ts",
 ];
 
 mkdirSync(outdir, { recursive: true });
