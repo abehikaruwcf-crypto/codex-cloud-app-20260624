@@ -4,7 +4,12 @@ import { build } from "esbuild";
 
 const root = process.cwd();
 const outdir = join(root, "work", "unit-tests");
-const testFiles = ["matching-and-learning.test.ts", "backup-cli.test.ts", "release-inputs-cli.test.ts"];
+const testFiles = [
+  "matching-and-learning.test.ts",
+  "backup-cli.test.ts",
+  "release-inputs-cli.test.ts",
+  "release-status-cli.test.ts",
+];
 
 mkdirSync(outdir, { recursive: true });
 

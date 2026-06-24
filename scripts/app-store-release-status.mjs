@@ -47,6 +47,12 @@ function remoteBranchExists(branch) {
   return result.ok && result.output.includes(`refs/heads/${branch}`);
 }
 
+function hasSignoffValue(content, label) {
+  const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = content.match(new RegExp(`^- ${escapedLabel}:[^\\S\\r\\n]*(.+)$`, "m"));
+  return Boolean(match?.[1]?.trim());
+}
+
 const packageVersion = hasFile("package.json") ? readJson("package.json").version : "unknown";
 const xcode = run("xcodebuild", ["-version"]);
 const xcodeSelected = xcode.ok && xcode.output.includes("Xcode");
@@ -67,7 +73,27 @@ const privacyContactReady = !hasPrivacyPlaceholder && hasPrivacyContact;
 const hostedUrlsReady =
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/privacy.html") &&
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/support.html");
-const finalSignoffReady = /^Status: Ready for App Review$/m.test(finalSignoff);
+const requiredSignoffFields = [
+  "Release commit",
+  "Evidence report generated",
+  "App Store Connect app ID",
+  "Uploaded build",
+  "TestFlight device",
+  "Backup validation file",
+  "Backup validation result",
+  "Backup import result",
+  "Strict verification result",
+  "Final Privacy Policy URL",
+  "Final Support URL",
+  "Support contact",
+  "Privacy contact",
+  "Signoff owner",
+  "Signoff date",
+];
+const finalSignoffStatusReady = /^Status: Ready for App Review$/m.test(finalSignoff);
+const missingSignoffFields = requiredSignoffFields.filter((field) => !hasSignoffValue(finalSignoff, field));
+const finalSignoffEvidenceReady = missingSignoffFields.length === 0;
+const finalSignoffReady = finalSignoffStatusReady && finalSignoffEvidenceReady;
 const ghPagesBranchReady = remoteBranchExists("gh-pages");
 const pagesPlanBlocked = pagesWorkflow.includes("does not support GitHub Pages for this repository");
 
@@ -122,8 +148,10 @@ const checks = [
     ok: finalSignoffReady,
     title: "Final App Review signoff",
     detail: finalSignoffReady
-      ? "docs/app-review-final-signoff.md is marked ready."
-      : "Complete docs/app-review-final-signoff.md and mark Status: Ready for App Review.",
+      ? "docs/app-review-final-signoff.md is marked ready and required evidence fields are filled."
+      : finalSignoffStatusReady
+        ? `Fill final signoff evidence fields: ${missingSignoffFields.join(", ")}.`
+        : "Complete docs/app-review-final-signoff.md and mark Status: Ready for App Review.",
   },
   {
     ok: xcodeSelected,

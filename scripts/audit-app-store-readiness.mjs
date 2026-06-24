@@ -243,6 +243,8 @@ requireText("scripts/apply-release-inputs.mjs", "https URL", "Release input scri
 requireText("tests/release-inputs-cli.test.ts", "release input CLI validates dry-run inputs", "Release input CLI dry-run unit test exists");
 requireText("tests/release-inputs-cli.test.ts", "rejects non-https public URLs", "Release input CLI URL validation test exists");
 requireText("tests/release-inputs-cli.test.ts", "applies contacts, hosted URLs, and signoff evidence fields", "Release input CLI apply test exists");
+requireText("tests/release-status-cli.test.ts", "status is ready but evidence fields are blank", "Release status final signoff guard test exists");
+requireText("tests/release-status-cli.test.ts", "status and required evidence fields are filled", "Release status filled signoff test exists");
 requireText("tests/matching-and-learning.test.ts", "matching ranks the closest charm", "Matching ranking unit test exists");
 requireText("tests/matching-and-learning.test.ts", "learning merge keeps the latest examples", "Learning cap unit test exists");
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects duplicate management numbers", "Backup duplicate validation unit test exists");
@@ -274,6 +276,7 @@ requireText("scripts/app-store-release-status.mjs", "tel:", "Release status acce
 requireText("scripts/app-store-release-status.mjs", "Hosted privacy/support URLs", "Release status checks hosted URLs");
 requireText("scripts/app-store-release-status.mjs", "Final App Review signoff", "Release status checks final signoff");
 requireText("scripts/app-store-release-status.mjs", "^Status: Ready for App Review$", "Release status checks exact final signoff status");
+requireText("scripts/app-store-release-status.mjs", "requiredSignoffFields", "Release status requires final signoff evidence fields");
 requireText("scripts/app-store-release-status.mjs", "todoCount > 0", "Release status fails when TODO items remain");
 requireText("scripts/app-store-release-status.mjs", "Status summary", "Release status prints summary");
 requireText("scripts/app-store-release-status.mjs", "Next required inputs", "Release status prints next required inputs");
