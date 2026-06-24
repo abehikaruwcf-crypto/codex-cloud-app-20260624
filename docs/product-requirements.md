@@ -20,7 +20,8 @@ Build a mobile-first web app that identifies a physical charm from a smartphone 
 3. If confidence is low, app prompts the user to add another angle such as back or side.
 4. App compares the captured angles against registered charm data angle-by-angle.
 5. App displays the most likely management number and confidence/candidate ranking.
-6. User can confirm the result or mark it as incorrect.
+6. User confirms the correct management number or selects the correct model manually.
+7. App stores the identification photos as additional learning images for the selected model.
 
 ## MVP Scope
 
@@ -32,6 +33,7 @@ Build a mobile-first web app that identifies a physical charm from a smartphone 
 - Local or simple backend-backed storage of charm records and images.
 - Similarity-based matching prototype that can use one or more captured angles.
 - Result screen showing top candidate and confidence.
+- Human-confirmed self-learning loop that adds real identification photos to the correct charm model.
 
 ## Out Of Scope For First MVP
 
@@ -66,6 +68,7 @@ type CharmImage = {
   charmId: string;
   imageUrl: string;
   angleLabel: "表" | "裏" | "右側面" | "左側面" | "上側面" | "下側面";
+  source?: "registration" | "confirmed-identification";
   embedding?: number[];
   createdAt: string;
 };
@@ -109,3 +112,15 @@ The first practical version should not attempt full 3D model generation. Instead
 - Bottom side
 
 This gives the matching layer multi-angle evidence without requiring heavy photogrammetry. Full 3D reconstruction can be evaluated later after enough real charm data is collected.
+
+## Self-Learning Direction
+
+The app should learn from actual usage:
+
+1. User captures one or more identification images.
+2. App suggests candidate management numbers.
+3. User confirms the correct model or manually selects the correct management number.
+4. App adds those identification images to the selected charm as additional learning examples.
+5. Future matching uses both initial six-direction registration images and confirmed real-world identification images.
+
+This should remain human-confirmed at first. Fully automatic learning is risky because incorrect confirmations can poison the reference dataset.

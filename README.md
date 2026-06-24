@@ -16,6 +16,7 @@ The app should support two main workflows:
 
 - Register a charm by entering a management number and capturing six fixed angles: front, back, right side, left side, top side, and bottom side.
 - Identify a charm by taking one or more angle-specific camera photos and matching them against the registered charm dataset.
+- Improve matching over time by adding user-confirmed identification photos back into the selected charm model.
 
 See [docs/product-requirements.md](docs/product-requirements.md) for the current requirements draft.
 

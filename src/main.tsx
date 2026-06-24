@@ -39,11 +39,13 @@ type DecisionLog = {
   managementNumber: string;
   decision: "confirmed" | "rejected";
   score: number;
+  learnedImages: number;
   createdAt: string;
 };
 
 const STORAGE_KEY = "charm-id-camera-app-charms";
 const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
+const MAX_IMAGES_PER_ANGLE = 8;
 
 const captureAngles = [
   { id: "front", label: "表", hint: "正面の模様や刻印が見える向き" },
@@ -219,6 +221,10 @@ function qualityScore(images: CharmImage[]) {
   return Math.max(0, Math.min(100, angleScore + bonusScore));
 }
 
+function learningImageCount(charm: Charm) {
+  return Math.max(0, charm.images.length - captureAngles.length);
+}
+
 function missingAngles(images: CharmImage[]) {
   return captureAngles.filter((angle) => !images.some((image) => image.angleLabel === angle.label));
 }
@@ -259,6 +265,7 @@ function App() {
   const [draftImages, setDraftImages] = useState<CharmImage[]>([]);
   const [queryImages, setQueryImages] = useState<CharmImage[]>([]);
   const [decisionLogs, setDecisionLogs] = useState<DecisionLog[]>(loadDecisions);
+  const [correctionTargetId, setCorrectionTargetId] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -282,6 +289,7 @@ function App() {
   const currentQualityScore = qualityScore(draftImages);
   const missingDraftAngles = missingAngles(draftImages);
   const missingQueryAngles = missingAngles(queryImages);
+  const selectedCorrectionTarget = charms.find((charm) => charm.id === correctionTargetId);
 
   async function addImages(event: ChangeEvent<HTMLInputElement>, angleLabel: string) {
     const files = Array.from(event.target.files ?? []);
@@ -405,12 +413,34 @@ function App() {
     setMessage("識別用の撮影をリセットしました。");
   }
 
-  function logDecision(candidate: Candidate, decision: DecisionLog["decision"]) {
+  function imagesForLearning(sourceImages: CharmImage[]) {
+    return sourceImages.map((image) => ({
+      ...image,
+      id: makeId("learned"),
+      createdAt: new Date().toISOString(),
+    }));
+  }
+
+  function mergeLearningImages(charm: Charm, learnedImages: CharmImage[]) {
+    const nextImages = [...charm.images, ...learnedImages];
+
+    return {
+      ...charm,
+      images: angleSuggestions.flatMap((angleLabel) =>
+        nextImages
+          .filter((image) => image.angleLabel === angleLabel)
+          .slice(-MAX_IMAGES_PER_ANGLE),
+      ),
+    };
+  }
+
+  function logDecision(candidate: Candidate, decision: DecisionLog["decision"], learnedImages = 0) {
     const nextLog: DecisionLog = {
       id: makeId("decision"),
       managementNumber: candidate.charm.managementNumber,
       decision,
       score: candidate.score,
+      learnedImages,
       createdAt: new Date().toISOString(),
     };
 
@@ -419,6 +449,44 @@ function App() {
       decision === "confirmed"
         ? `${candidate.charm.managementNumber} を確定しました。`
         : `${candidate.charm.managementNumber} を違う候補として記録しました。`,
+    );
+  }
+
+  function confirmCandidate(candidate: Candidate) {
+    const learnedImages = imagesForLearning(queryImages);
+
+    setCharms((current) =>
+      current.map((charm) =>
+        charm.id === candidate.charm.id ? mergeLearningImages(charm, learnedImages) : charm,
+      ),
+    );
+    logDecision(candidate, "confirmed", learnedImages.length);
+    setMessage(
+      `${candidate.charm.managementNumber} を確定し、${learnedImages.length}枚を追加学習しました。`,
+    );
+  }
+
+  function applyCorrection() {
+    if (!selectedCorrectionTarget || !topCandidate) {
+      setMessage("正しい管理番号を選択してください。");
+      return;
+    }
+
+    const learnedImages = imagesForLearning(queryImages);
+
+    setCharms((current) =>
+      current.map((charm) =>
+        charm.id === selectedCorrectionTarget.id ? mergeLearningImages(charm, learnedImages) : charm,
+      ),
+    );
+    logDecision(
+      { ...topCandidate, charm: selectedCorrectionTarget },
+      "confirmed",
+      learnedImages.length,
+    );
+    setCorrectionTargetId("");
+    setMessage(
+      `${selectedCorrectionTarget.managementNumber} を正解として、${learnedImages.length}枚を追加学習しました。`,
     );
   }
 
@@ -449,8 +517,8 @@ function App() {
           <p>参照写真</p>
         </div>
         <div>
-          <span>{decisionLogs.length}</span>
-          <p>判定履歴</p>
+          <span>{charms.reduce((total, charm) => total + learningImageCount(charm), 0)}</span>
+          <p>学習写真</p>
         </div>
         <div>
           <span>{queryImages.length}/6</span>
@@ -521,10 +589,10 @@ function App() {
                       <img src={candidate.bestImage.imageUrl} alt="" />
                     ) : null}
                     <div className="candidate-actions">
-                      <button type="button" onClick={() => logDecision(candidate, "confirmed")}>
-                        確定
+                      <button type="button" onClick={() => confirmCandidate(candidate)}>
+                        正解にする
                       </button>
-                      <button type="button" onClick={() => logDecision(candidate, "rejected")}>
+                      <button type="button" onClick={() => logDecision(candidate, "rejected", 0)}>
                         違う
                       </button>
                     </div>
@@ -537,6 +605,24 @@ function App() {
             <button className="secondary-action" type="button" onClick={clearQueryImages}>
               識別撮影をリセット
             </button>
+            <div className="correction-panel">
+              <h3>候補にない場合</h3>
+              <p>正しい管理番号を選ぶと、今回の撮影画像をそのモデルに追加学習します。</p>
+              <select
+                value={correctionTargetId}
+                onChange={(event) => setCorrectionTargetId(event.target.value)}
+              >
+                <option value="">正しい管理番号を選択</option>
+                {charms.map((charm) => (
+                  <option key={charm.id} value={charm.id}>
+                    {charm.managementNumber}
+                  </option>
+                ))}
+              </select>
+              <button type="button" onClick={applyCorrection}>
+                選択したモデルに学習
+              </button>
+            </div>
           </div>
         ) : (
           <div className="empty-state identify-guide">
@@ -643,7 +729,7 @@ function App() {
                     {captureAngles.filter((angle) =>
                       charm.images.some((image) => image.angleLabel === angle.label),
                     ).length}
-                    /6方向登録
+                    /6方向・追加学習{learningImageCount(charm)}枚
                   </span>
                 </div>
               </div>
@@ -667,7 +753,8 @@ function App() {
             {decisionLogs.slice(0, 5).map((log) => (
               <p key={log.id}>
                 <span>{log.managementNumber}</span>
-                {log.decision === "confirmed" ? "確定" : "違う"} / {log.score}%
+                {log.decision === "confirmed" ? "確定" : "違う"} / {log.score}% / 学習
+                {log.learnedImages}枚
               </p>
             ))}
           </div>
