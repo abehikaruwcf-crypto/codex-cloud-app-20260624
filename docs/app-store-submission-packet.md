@@ -14,8 +14,8 @@ This packet consolidates the current App Store Connect inputs for the local-only
 
 ## Version
 
-- Marketing version: `0.1.0`
-- Build number: Set in Xcode before archive.
+- Marketing version: `1.0`
+- Build number: `1`
 - Release type: Manual release after App Review approval.
 
 ## App Store Metadata

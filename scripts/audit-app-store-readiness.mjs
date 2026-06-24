@@ -111,6 +111,12 @@ requireText(
   "PrivacyInfo.xcprivacy in Resources",
   "Privacy manifest included in resources",
 );
+requireText("capacitor.config.ts", 'appId: "com.wcf.charmid"', "Capacitor app ID");
+requireText("ios/App/App.xcodeproj/project.pbxproj", "PRODUCT_BUNDLE_IDENTIFIER = com.wcf.charmid;", "Xcode Bundle ID");
+requireText("ios/App/App.xcodeproj/project.pbxproj", "MARKETING_VERSION = 1.0;", "Xcode marketing version");
+requireText("ios/App/App.xcodeproj/project.pbxproj", "CURRENT_PROJECT_VERSION = 1;", "Xcode build number");
+requireText("ios/App/App/Info.plist", "Charm ID", "Display name");
+requireText("package.json", "\"version\": \"1.0.0\"", "Package release version");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
