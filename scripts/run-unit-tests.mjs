@@ -7,6 +7,7 @@ const outdir = join(root, "work", "unit-tests");
 const testFiles = [
   "matching-and-learning.test.ts",
   "backup-cli.test.ts",
+  "development-environment-packet.test.ts",
   "release-inputs-cli.test.ts",
   "release-inputs-validator.test.ts",
   "release-status-cli.test.ts",

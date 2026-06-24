@@ -47,6 +47,7 @@ If the repository is not already present on the Pro:
 git clone https://github.com/abehikaruwcf-crypto/codex-cloud-app-20260624.git
 cd codex-cloud-app-20260624
 npm install
+npm run dev:doctor
 npm run test:unit
 ```
 
@@ -104,6 +105,7 @@ Useful commands:
 
 ```bash
 npm run appstore:status
+npm run dev:doctor
 npm run appstore:signoff-template
 npm run appstore:connect-fields
 npm run appstore:audit

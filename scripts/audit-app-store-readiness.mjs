@@ -149,6 +149,7 @@ fileExists("docs/github-actions-app-store-readiness.md", "App Store readiness CI
 fileExists("docs/workflows/app-store-readiness.yml", "App Store readiness CI workflow source");
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
+fileExists("scripts/print-development-environment-packet.mjs", "Development environment packet script");
 fileExists("scripts/run-unit-tests.mjs", "Unit test runner");
 fileExists("scripts/validate-backup.mjs", "Backup validation CLI");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
@@ -198,6 +199,7 @@ requireText("ios/App/App.xcodeproj/project.pbxproj", "PRODUCT_BUNDLE_IDENTIFIER 
 requireProjectVersionSync();
 requireText("ios/App/App/Info.plist", "Charm ID", "Display name");
 requireText("package.json", "\"version\"", "Package release version");
+requireText("package.json", "\"dev:doctor\"", "Development environment packet script entry");
 requireText("public/privacy.html", "Charm ID Privacy Policy", "Privacy policy page title");
 requireText("public/support.html", "Charm ID Support", "Support page title");
 requireText("public/support.html", `Version ${packageVersion()}`, "Support page release version");
@@ -342,6 +344,7 @@ requireText("tests/release-inputs-cli.test.ts", "pagesPrivacyPage", "Release inp
 requireText("tests/release-inputs-validator.test.ts", "accepts complete final inputs", "Release input validator accepts complete inputs");
 requireText("tests/release-inputs-validator.test.ts", "rejects placeholders", "Release input validator rejects placeholders");
 requireText("tests/release-inputs-validator.test.ts", "rejects unknown or malformed values", "Release input validator rejects malformed inputs");
+requireText("tests/development-environment-packet.test.ts", "development environment packet maps Mac handoff prerequisites", "Development environment packet unit test exists");
 requireText("tests/release-version-cli.test.ts", "keeps bundled and hosted support pages in sync", "Release version CLI Pages sync unit test exists");
 requireText("tests/release-evidence.test.ts", "exposes final signoff readiness", "Release evidence final signoff unit test exists");
 requireText("tests/release-evidence.test.ts", "includes hosted page sources", "Release evidence hosted source unit test exists");
@@ -445,6 +448,7 @@ requireText("scripts/app-store-release-status.mjs", "public/privacy.html and doc
 requireText("scripts/app-store-release-status.mjs", "public/support.html and docs/support.html: replace the placeholder", "Release status points to support contact input");
 requireText("scripts/app-store-release-status.mjs", "docs/privacy.html", "Release status checks Pages privacy contact");
 requireText("scripts/app-store-release-status.mjs", "docs/support.html", "Release status checks Pages support contact");
+requireText("README.md", "npm run dev:doctor", "README includes development environment packet command");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
 requireText("README.md", "npm run appstore:metadata", "README includes metadata print command");
 requireText("README.md", "npm run appstore:connect-packet", "README includes App Store Connect packet command");

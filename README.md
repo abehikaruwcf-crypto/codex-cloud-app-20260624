@@ -6,6 +6,7 @@ Mobile-first app concept for identifying physical charms from smartphone camera 
 
 ```bash
 npm install
+npm run dev:doctor
 npm run dev
 npm run build
 npm run appstore:set-version -- 1.0 1
@@ -44,6 +45,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 ## App Store Release Prep
 
 - [docs/app-store-roadmap.md](docs/app-store-roadmap.md) tracks the release path.
+- `npm run dev:doctor` prints a checkout readiness packet for MacBook Pro handoff, local development, and App Store archive prep.
 - [docs/app-store-submission-packet.md](docs/app-store-submission-packet.md) consolidates App Store Connect inputs.
 - `npm run appstore:metadata` prints the current App Store Connect listing values as JSON.
 - `npm run appstore:connect-packet` prints the complete App Store Connect transfer packet.
