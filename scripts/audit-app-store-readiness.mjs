@@ -151,6 +151,7 @@ fileExists("scripts/validate-backup.mjs", "Backup validation CLI");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
 fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print script");
 fileExists("scripts/print-app-store-connect-packet.mjs", "App Store Connect packet script");
+fileExists("scripts/print-app-review-signoff-draft.mjs", "App Review signoff draft script");
 fileExists("scripts/apply-release-inputs.mjs", "Release input application script");
 fileExists("scripts/verify-public-urls.mjs", "Public URL verification script");
 fileExists("scripts/verify-app-store-release.mjs", "App Store verification script");
@@ -217,6 +218,7 @@ requireText("docs/app-store-submission-packet.md", "Primary language: Japanese",
 requireText("docs/app-store-submission-packet.md", "iOS development region: `ja`", "Submission packet iOS development region");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:metadata", "Submission packet includes metadata print command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:connect-packet", "Submission packet includes App Store Connect packet command");
+requireText("docs/app-store-submission-packet.md", "npm run appstore:signoff-draft", "Submission packet includes signoff draft command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:public-urls", "Submission packet includes public URL verification command");
 requireText("docs/app-store-submission-packet.md", "xcode-app-store-upload-guide.md", "Submission packet links Xcode upload guide");
 requireText("docs/app-store-submission-packet.md", "keywords 100 bytes", "Submission packet documents metadata limits");
@@ -244,6 +246,7 @@ requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
 requireText("package.json", "\"appstore:connect-packet\"", "App Store Connect packet script entry");
+requireText("package.json", "\"appstore:signoff-draft\"", "App Review signoff draft script entry");
 requireText("package.json", "\"appstore:apply-inputs\"", "Release input application script entry");
 requireText("package.json", "\"appstore:public-urls\"", "Public URL verification script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
@@ -325,6 +328,7 @@ requireText("docs/app-review-final-signoff.md", "concrete support contact", "Fin
 requireText("docs/app-review-final-signoff.md", "concrete privacy contact", "Final signoff requires concrete privacy contact");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:status", "Final signoff includes release status evidence");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:evidence", "Final signoff includes evidence command");
+requireText("docs/app-review-final-signoff.md", "npm run appstore:signoff-draft", "Final signoff includes signoff draft command");
 requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final signoff includes TODO resolution inputs");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:apply-inputs", "Final signoff documents release input application command");
 requireText("docs/app-review-final-signoff.md", "Backup validation file", "Final signoff records backup validation file");
@@ -352,6 +356,9 @@ requireText("docs/xcode-app-store-upload-guide.md", "Product > Archive", "Xcode 
 requireText("docs/xcode-app-store-upload-guide.md", "Distribute App", "Xcode guide covers upload");
 requireText("docs/xcode-app-store-upload-guide.md", "npm run appstore:connect-packet", "Xcode guide uses transfer packet");
 requireText("docs/xcode-app-store-upload-guide.md", "npm run appstore:verify -- --strict", "Xcode guide includes strict verification");
+requireText("scripts/print-app-review-signoff-draft.mjs", "App Review Signoff Draft", "Signoff draft prints heading");
+requireText("scripts/print-app-review-signoff-draft.mjs", "npm run appstore:public-urls", "Signoff draft records public URL check");
+requireText("scripts/print-app-review-signoff-draft.mjs", "npm run appstore:status", "Signoff draft records release status");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",

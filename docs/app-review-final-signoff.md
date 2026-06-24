@@ -6,6 +6,12 @@ Use this page as the final evidence checklist before submitting Charm ID for App
 
 Change `Status: Pending` to `Status: Ready for App Review` only after every evidence item below is complete and verified on the release build.
 
+Generate a current copy/paste draft with:
+
+```bash
+npm run appstore:signoff-draft
+```
+
 ## Required Evidence
 
 - Full Xcode selected and `xcodebuild -version` reports Xcode.

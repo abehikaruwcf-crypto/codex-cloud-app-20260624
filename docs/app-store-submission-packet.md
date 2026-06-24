@@ -128,6 +128,7 @@ open ios/App/App.xcodeproj
 Use Xcode Organizer to upload the archive to App Store Connect. Follow the manual upload flow in [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md).
 
 Before submitting for App Review, complete [app-review-final-signoff.md](app-review-final-signoff.md) and confirm `npm run appstore:status` reports `0 todo`.
+Generate the current signoff draft with `npm run appstore:signoff-draft`.
 
 ## App Store Connect Entry Checklist
 
@@ -151,6 +152,7 @@ Use this table as the direct entry map for App Store Connect.
 | What's New | Run `npm run appstore:metadata` and copy `japaneseListing.whatsNew`. |
 | Full transfer packet | Run `npm run appstore:connect-packet`. |
 | Xcode upload steps | Use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md). |
+| Final signoff draft | Run `npm run appstore:signoff-draft`. |
 | App Review notes | Use [app-store-review-answers.md](app-store-review-answers.md). |
 | TestFlight notes | Use [release-notes.md](release-notes.md). |
 | App Privacy answers | Use [app-privacy-answers.md](app-privacy-answers.md). |
