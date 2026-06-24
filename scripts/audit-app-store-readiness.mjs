@@ -204,7 +204,10 @@ requireText("package.json", "\"appstore:status\"", "Release status script entry"
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
 requireText("scripts/app-store-release-status.mjs", "Formal support contact", "Release status checks support contact");
 requireText("scripts/app-store-release-status.mjs", "Hosted privacy/support URLs", "Release status checks hosted URLs");
+requireText("scripts/app-store-release-status.mjs", "todoCount > 0", "Release status fails when TODO items remain");
+requireText("scripts/app-store-release-status.mjs", "Status summary", "Release status prints summary");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
+requireText("README.md", "exits non-zero", "README explains release status failure behavior");
 requireText("README.md", "docs/release-notes.md", "README links release notes");
 requireText("README.md", "public/support.html", "README references support page");
 requireText("README.md", "final support contact", "README tracks support contact blocker");

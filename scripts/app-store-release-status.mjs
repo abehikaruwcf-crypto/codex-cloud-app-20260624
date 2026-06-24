@@ -110,6 +110,8 @@ for (const check of checks) {
   console.log(`[${mark(check.ok)}] ${check.title}: ${check.detail}`);
 }
 
+const todoCount = checks.filter((check) => !check.ok).length;
+
 console.log("");
 console.log("Manual items before App Review:");
 for (const blocker of manualBlockers) {
@@ -122,6 +124,9 @@ console.log("1. npm run appstore:audit");
 console.log("2. npm run ios:sync");
 console.log("3. Complete docs/testflight-release-checklist.md");
 
-if (!xcodeSelected) {
+console.log("");
+console.log(`Status summary: ${checks.length - todoCount} pass, ${todoCount} todo`);
+
+if (todoCount > 0) {
   process.exitCode = 1;
 }

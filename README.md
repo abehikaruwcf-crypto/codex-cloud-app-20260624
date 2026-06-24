@@ -42,6 +42,8 @@ npm run appstore:audit
 npm run ios:sync
 ```
 
+`npm run appstore:status` exits non-zero while any App Review TODO remains.
+
 Known manual blockers before App Review:
 
 - Select full Xcode with `sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`.
