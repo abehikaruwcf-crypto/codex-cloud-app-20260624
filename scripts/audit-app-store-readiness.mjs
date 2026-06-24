@@ -381,6 +381,7 @@ requireText("tests/matching-and-learning.test.ts", "backup export payload valida
 requireText("scripts/validate-backup.mjs", "Backup validation passed", "Backup validation CLI reports success");
 requireText("src/main.tsx", "現在の端末内データを置き換えます", "Backup restore replacement confirmation");
 requireText("scripts/smoke-app-ui.mjs", "Dismissed restore confirmation should keep existing models", "Backup restore cancellation smoke test");
+requireText("scripts/smoke-app-ui.mjs", "画像データ形式が不正です", "Backup restore rejects unsupported image references in UI smoke test");
 requireText("scripts/verify-app-store-release.mjs", "appstore:status", "Verification script includes release status");
 requireText("scripts/verify-app-store-release.mjs", "appstore:public-urls", "Verification script includes public URL check");
 requireText("scripts/verify-app-store-release.mjs", "appstore:evidence", "Verification script includes release evidence");

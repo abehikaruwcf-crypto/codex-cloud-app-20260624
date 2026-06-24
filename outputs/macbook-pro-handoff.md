@@ -59,6 +59,32 @@ npm run appstore:xcode-packet
 npm run appstore:verify
 ```
 
+## Mobile -> MacBook Pro Continuation
+
+Use the MacBook Pro as the active worker machine, then control or monitor it from mobile:
+
+1. Keep the MacBook Pro powered, online, and signed in to Codex.
+2. Open the pinned Charm ID thread on the MacBook Pro.
+3. Pull the latest repo state on the Pro before asking Codex to continue:
+
+```bash
+git pull origin main
+npm install
+npm run dev:doctor
+```
+
+4. From mobile, open Codex and continue the same pinned thread if available, or message the MacBook Pro-side thread to continue from GitHub `main`.
+5. Ask Codex to commit and push every completed checkpoint so the project survives either laptop being closed.
+
+Mobile can steer the work, but the actual local iOS/Xcode build still depends on whichever Mac is active. If both Macs may be closed, use Codex Cloud with this GitHub repository as the source of truth.
+
+Suggested mobile/MBP resume prompt:
+
+```text
+Charm IDアプリ開発を続行して。GitHub repo abehikaruwcf-crypto/codex-cloud-app-20260624 の main を pull して、npm run appstore:status を確認し、ユーザー入力なしで進められるApp Store公開品質改善を実装・検証・commit・pushして。
+ログイン、2FA、外部送信、App Store提出、課金、削除、秘密情報表示だけ止めて。
+```
+
 ## If MacBook Air Shuts Down
 
 Use GitHub as the durable handoff layer:
@@ -67,6 +93,15 @@ Use GitHub as the durable handoff layer:
 - Open the pinned thread on MacBook Pro and continue from `origin/main`.
 - If a local Codex thread cannot resume the same checkout, create or use a Pro checkout of the GitHub repo and ask Codex to continue from that repo.
 - For shareable non-code artifacts, keep the canonical copy in `outputs`; optionally copy selected files to Google Drive for human sharing, but keep source-of-truth code and release packets in GitHub.
+
+Before closing MacBook Air:
+
+```bash
+git status --short
+git log -1 --oneline
+```
+
+The working tree should be clean and the latest useful work should be pushed to `origin/main`. If `git status --short` shows changes, commit and push them first or record exactly why they are intentionally local-only.
 
 ## Approval-Light Progress Rules
 

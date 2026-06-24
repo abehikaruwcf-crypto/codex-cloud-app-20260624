@@ -243,6 +243,20 @@ try {
   );
   await page.locator('input[accept="application/json,.json"]').setInputFiles(duplicateBackupPath);
   await page.getByText("バックアップに重複した管理番号があります: CH-900").waitFor({ timeout: 3000 });
+  const invalidImageReferenceBackupPath = join(tmpdir(), `charm-id-invalid-reference-backup-${Date.now()}.json`);
+  const invalidImageReferenceCharm = backupCharm("invalid-reference-1", "CH-902");
+  invalidImageReferenceCharm.images[1].imageUrl = "javascript:alert(1)";
+  writeFileSync(
+    invalidImageReferenceBackupPath,
+    JSON.stringify({
+      version: 1,
+      exportedAt: "2026-06-25T00:00:00.000Z",
+      charms: [invalidImageReferenceCharm],
+      decisionLogs: [],
+    }),
+  );
+  await page.locator('input[accept="application/json,.json"]').setInputFiles(invalidImageReferenceBackupPath);
+  await page.getByText("CH-902 の画像データ形式が不正です: 裏").waitFor({ timeout: 3000 });
   const validBackupPath = join(tmpdir(), `charm-id-valid-backup-${Date.now()}.json`);
   writeFileSync(
     validBackupPath,
