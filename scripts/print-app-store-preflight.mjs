@@ -16,6 +16,11 @@ const requiredSteps = [
     ],
   },
   {
+    name: "App Store Connect submission checklist",
+    script: "appstore:submission-checklist",
+    expected: ['"screen": "App Information"', '"screen": "Build"', '"remainingManualScreens"'],
+  },
+  {
     name: "Age rating answers",
     script: "appstore:rating",
     expected: ['"expectedRating": "4+"', "Camera: Yes"],
@@ -145,6 +150,7 @@ const preflight = {
     hardGate: "npm run appstore:verify",
     strictGate: "npm run appstore:verify -- --strict",
     status: "npm run appstore:status",
+    submissionChecklist: "npm run appstore:submission-checklist",
     screenshotPacket: "npm run appstore:screenshot-packet",
     xcodePacket: "npm run appstore:xcode-packet",
     testflightPacket: "npm run appstore:testflight-packet",

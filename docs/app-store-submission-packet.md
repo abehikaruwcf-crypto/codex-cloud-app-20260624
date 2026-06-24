@@ -44,6 +44,12 @@ Print the complete App Store Connect transfer packet with:
 npm run appstore:connect-packet
 ```
 
+Print the screen-by-screen App Store Connect submission checklist with:
+
+```bash
+npm run appstore:submission-checklist
+```
+
 Print the combined submission preflight packet with:
 
 ```bash
@@ -201,6 +207,7 @@ Use this table as the direct entry map for App Store Connect.
 | Keywords | Run `npm run appstore:metadata` and copy `japaneseListing.keywords`. |
 | What's New | Run `npm run appstore:metadata` and copy `japaneseListing.whatsNew`. |
 | Full transfer packet | Run `npm run appstore:connect-packet`. |
+| Screen-by-screen submission checklist | Run `npm run appstore:submission-checklist`. |
 | Submission preflight packet | Run `npm run appstore:preflight`. |
 | Screenshot evidence packet | Run `npm run appstore:screenshot-packet` after `npm run appstore:screenshots:submission`. |
 | Xcode upload steps | Use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md) and run `npm run appstore:xcode-packet`. |

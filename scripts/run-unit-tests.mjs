@@ -10,6 +10,7 @@ const testFiles = [
   "release-inputs-cli.test.ts",
   "release-status-cli.test.ts",
   "app-store-preflight.test.ts",
+  "app-store-submission-checklist.test.ts",
   "screenshot-evidence-packet.test.ts",
   "xcode-evidence-packet.test.ts",
   "testflight-evidence-packet.test.ts",
