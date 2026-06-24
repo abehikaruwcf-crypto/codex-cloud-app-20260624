@@ -1,0 +1,10 @@
+{
+  "name": "Charm ID Camera",
+  "short_name": "Charm ID",
+  "description": "Register charms from multiple camera angles and identify them from iPhone photos.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f7f8",
+  "theme_color": "#3a6f68",
+  "orientation": "portrait"
+}
