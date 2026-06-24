@@ -147,6 +147,7 @@ fileExists("scripts/validate-backup.mjs", "Backup validation CLI");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
 fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print script");
 fileExists("scripts/apply-release-inputs.mjs", "Release input application script");
+fileExists("scripts/verify-app-store-release.mjs", "App Store verification script");
 fileExists("scripts/set-release-version.mjs", "Release version script");
 fileExists("scripts/app-store-release-status.mjs", "Release status script");
 
@@ -208,6 +209,8 @@ requireText("docs/release-notes.md", "TestFlight Notes Draft", "Release notes in
 requireText("docs/app-store-submission-packet.md", "release-notes.md", "Submission packet links release notes");
 requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:audit", "CI template runs App Store audit");
 requireText("docs/github-actions-app-store-readiness.md", "macos-latest", "CI template runs on macOS");
+requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:verify", "CI template runs verification gate");
+requireText("docs/github-actions-app-store-readiness.md", "-- --strict", "CI template documents strict verification");
 requireText("docs/github-pages-workflow.md", "gh-pages @", "Pages notes record published branch");
 requireText("docs/github-pages-workflow.md", "does not support GitHub Pages", "Pages notes record current plan blocker");
 requireText("docs/github-pages-workflow.md", "another public static host", "Pages notes include external hosting fallback");
@@ -221,6 +224,7 @@ requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation s
 requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
 requireText("package.json", "\"appstore:apply-inputs\"", "Release input application script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
+requireText("package.json", "\"appstore:verify\"", "App Store verification script entry");
 requireText("package.json", "\"appstore:status\"", "Release status script entry");
 requireText("scripts/apply-release-inputs.mjs", "--support-contact", "Release input script accepts support contact");
 requireText("scripts/apply-release-inputs.mjs", "--privacy-contact", "Release input script accepts privacy contact");
@@ -234,6 +238,9 @@ requireText("tests/matching-and-learning.test.ts", "backup validation rejects du
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects incomplete six-angle models", "Backup angle validation unit test exists");
 requireText("src/backup.ts", "validateBackupPayload", "Backup validation module exists");
 requireText("scripts/validate-backup.mjs", "Backup validation passed", "Backup validation CLI reports success");
+requireText("scripts/verify-app-store-release.mjs", "appstore:status", "Verification script includes release status");
+requireText("scripts/verify-app-store-release.mjs", "--strict", "Verification script supports strict mode");
+requireText("scripts/verify-app-store-release.mjs", "Hard release verification passed", "Verification script allows manual TODOs");
 requireText("tests/backup-cli.test.ts", "backup validation CLI accepts", "Backup validation CLI success test exists");
 requireText("tests/backup-cli.test.ts", "rejects duplicate normalized management numbers", "Backup validation CLI failure test exists");
 requireText("tests/fixtures/valid-backup.json", "\"managementNumber\": \"CH-900\"", "Valid backup fixture exists");
@@ -262,6 +269,7 @@ requireText("scripts/app-store-release-status.mjs", "public/support.html: replac
 requireText("README.md", "npm run appstore:status", "README includes release status command");
 requireText("README.md", "npm run appstore:metadata", "README includes metadata print command");
 requireText("README.md", "npm run backup:validate", "README includes backup validation command");
+requireText("README.md", "npm run appstore:verify", "README includes verification command");
 requireText("README.md", "exits non-zero", "README explains release status failure behavior");
 requireText("README.md", "app-review-final-signoff.md", "README links final signoff");
 requireText("README.md", "docs/release-notes.md", "README links release notes");
@@ -276,12 +284,14 @@ requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final
 requireText("docs/app-review-final-signoff.md", "npm run appstore:apply-inputs", "Final signoff documents release input application command");
 requireText("docs/app-review-final-signoff.md", "Backup validation file", "Final signoff records backup validation file");
 requireText("docs/app-review-final-signoff.md", "Backup import result", "Final signoff records backup import result");
+requireText("docs/app-review-final-signoff.md", "Strict verification result", "Final signoff records strict verification result");
 requireText("docs/app-review-final-signoff.md", "Formal support contact", "Final signoff maps support contact TODO");
 requireText("docs/app-review-final-signoff.md", "Privacy policy contact", "Final signoff maps privacy contact TODO");
 requireText("docs/privacy-policy-draft.md", "Concrete contact information", "Privacy policy draft requires concrete contact");
 requireText("docs/app-store-review-answers.md", "concrete `mailto:` link", "Review answers require concrete support contact");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");
 requireText("docs/testflight-release-checklist.md", "npm run backup:validate", "TestFlight checklist includes backup validation");
+requireText("docs/testflight-release-checklist.md", "npm run appstore:verify", "TestFlight checklist includes verification command");
 requireText("docs/testflight-release-checklist.md", "Exported backup filename", "TestFlight checklist records backup evidence");
 requireText("docs/testflight-release-checklist.md", "Status: Ready for App Review", "TestFlight checklist includes final signoff ready marker");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");

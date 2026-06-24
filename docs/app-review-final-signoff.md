@@ -21,6 +21,7 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - App Review notes from [app-store-review-answers.md](app-store-review-answers.md) are entered in App Store Connect.
 - `npm run appstore:status` reports `0 todo`.
 - `npm run appstore:audit` reports `0 fail`.
+- `npm run appstore:verify -- --strict` passes on the release commit.
 
 ## Signoff Notes
 
@@ -31,6 +32,7 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - Backup validation file:
 - Backup validation result:
 - Backup import result:
+- Strict verification result:
 - Final Privacy Policy URL:
 - Final Support URL:
 - Support contact:

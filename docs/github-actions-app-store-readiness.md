@@ -39,14 +39,16 @@ jobs:
       - name: Build web app
         run: npm run build
 
-      - name: Run UI smoke test
-        run: npm run appstore:smoke
-
-      - name: Run App Store readiness audit
-        run: npm run appstore:audit
-
-      - name: Sync iOS project
-        run: npm run ios:sync
+      - name: Run App Store verification gate
+        run: npm run appstore:verify
 ```
 
 Before App Store release, confirm this workflow is installed and green on the release commit.
+`npm run appstore:verify` includes backup validation, unit tests, metadata export, `npm run appstore:audit`, `npm run ios:sync`, and release status reporting.
+
+After the manual App Review TODOs are complete and `npm run appstore:status` reports `0 todo`, change the verification step to:
+
+```yaml
+      - name: Run strict App Store verification gate
+        run: npm run appstore:verify -- --strict
+```

@@ -13,6 +13,7 @@ npm run backup:validate -- tests/fixtures/valid-backup.json
 npm run appstore:status
 npm run appstore:metadata
 npm run appstore:audit
+npm run appstore:verify
 npm run ios:sync
 ```
 
@@ -42,13 +43,11 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 Current release gate:
 
 ```bash
-npm run backup:validate -- tests/fixtures/valid-backup.json
-npm run appstore:status
-npm run appstore:audit
-npm run ios:sync
+npm run appstore:verify
 ```
 
 `npm run appstore:status` exits non-zero while any App Review TODO remains.
+`npm run appstore:verify` still passes hard checks while manual App Review TODOs remain; run `npm run appstore:verify -- --strict` only after contacts, hosted URLs, Xcode, TestFlight, and final signoff are complete.
 
 Known manual blockers before App Review:
 
