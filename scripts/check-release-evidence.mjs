@@ -71,6 +71,15 @@ addCheck(
 );
 addCheck(
   checks,
+  evidence.xcode?.packetGenerated === true &&
+    evidence.evidenceTargets?.xcodePacket === "npm run appstore:xcode-packet",
+  "Xcode evidence packet",
+  evidence.xcode?.packetGenerated
+    ? "Xcode archive evidence packet is included."
+    : "Run npm run appstore:xcode-packet and check docs/xcode-app-store-upload-guide.md.",
+);
+addCheck(
+  checks,
   evidence.screenshots?.ready === true,
   "Submission screenshots ready",
   evidence.screenshots?.ready
@@ -96,9 +105,11 @@ addCheck(
 );
 addCheck(
   checks,
-  evidence.xcode?.selected === true,
+  evidence.xcode?.selected === true && evidence.xcode?.readyForArchive === true,
   "Full Xcode selected",
-  evidence.xcode?.selected ? evidence.xcode.output : "Select full Xcode before archive/upload.",
+  evidence.xcode?.readyForArchive
+    ? `Ready for archive at ${evidence.xcode.selectedDeveloperPath}.`
+    : "Select full Xcode before archive/upload.",
   true,
 );
 

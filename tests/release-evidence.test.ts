@@ -45,6 +45,7 @@ test("release evidence includes hosted page sources and the current manual gate"
   assert.equal(evidence.evidenceTargets.hostedSupportPageSource, "docs/support.html");
   assert.equal(evidence.evidenceTargets.screenshotDoc, "docs/app-store-screenshots.md");
   assert.equal(evidence.evidenceTargets.screenshotPacket, "npm run appstore:screenshot-packet");
+  assert.equal(evidence.evidenceTargets.xcodePacket, "npm run appstore:xcode-packet");
   assert.equal(evidence.releaseStatus.todo, 4);
   assert.equal(evidence.publishing.publicUrlsReachable, true);
   assert.equal(evidence.nextStrictGate, "npm run appstore:verify -- --strict");
@@ -65,6 +66,21 @@ test("release evidence includes screenshot readiness packet", () => {
   }
 });
 
+test("release evidence includes Xcode archive readiness packet", () => {
+  const evidence = runEvidence();
+
+  assert.equal(evidence.xcode.command, "npm run appstore:xcode-packet");
+  assert.equal(evidence.xcode.packetGenerated, true);
+  assert.equal(evidence.xcode.expectedDeveloperPath, "/Applications/Xcode.app/Contents/Developer");
+  assert.equal(evidence.xcode.projectPath, "ios/App/App.xcodeproj");
+  assert.equal(evidence.xcode.bundleIdConfigured, true);
+  assert.equal(typeof evidence.xcode.readyForArchive, "boolean");
+  assert.deepEqual(
+    evidence.xcode.signoffFields.map((field: { key: string }) => field.key),
+    ["app-store-connect-app-id", "uploaded-build", "strict-verification-result"],
+  );
+});
+
 test("release evidence check allows manual TODOs by default and blocks strict mode", () => {
   const defaultOutput = execFileSync("npm", ["run", "appstore:evidence-check"], {
     cwd: repoRoot,
@@ -74,6 +90,7 @@ test("release evidence check allows manual TODOs by default and blocks strict mo
 
   assert.match(defaultOutput, /\[PASS\] Public App Store URLs/);
   assert.match(defaultOutput, /\[PASS\] Screenshot evidence packet/);
+  assert.match(defaultOutput, /\[PASS\] Xcode evidence packet/);
   assert.match(defaultOutput, /\[TODO\] Final signoff readiness/);
 
   assert.throws(

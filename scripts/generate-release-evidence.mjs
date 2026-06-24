@@ -155,8 +155,10 @@ const xcode = run("xcodebuild", ["-version"]);
 const releaseStatus = run("npm", ["run", "appstore:status"]);
 const publicUrls = run("npm", ["run", "appstore:public-urls"]);
 const screenshotPacket = run("npm", ["run", "appstore:screenshot-packet"]);
+const xcodePacket = run("npm", ["run", "appstore:xcode-packet"]);
 const parsedStatus = parseStatus(releaseStatus.output);
 const parsedScreenshotPacket = parseJsonOutput(screenshotPacket.output);
+const parsedXcodePacket = parseJsonOutput(xcodePacket.output);
 const pagesNotes = hasFile("docs/github-pages-workflow.md")
   ? read("docs/github-pages-workflow.md")
   : "";
@@ -185,7 +187,15 @@ const evidence = {
   },
   finalSignoff: finalSignoffEvidence(),
   xcode: {
-    selected: xcode.ok && xcode.output.includes("Xcode"),
+    command: "npm run appstore:xcode-packet",
+    packetGenerated: xcodePacket.ok && Boolean(parsedXcodePacket),
+    selected: parsedXcodePacket?.xcode?.fullXcodeSelected ?? (xcode.ok && xcode.output.includes("Xcode")),
+    readyForArchive: parsedXcodePacket?.readyForArchive ?? false,
+    selectedDeveloperPath: parsedXcodePacket?.xcode?.selectedDeveloperPath ?? null,
+    expectedDeveloperPath: parsedXcodePacket?.xcode?.expectedDeveloperPath ?? null,
+    projectPath: parsedXcodePacket?.project?.path ?? null,
+    bundleIdConfigured: parsedXcodePacket?.bundleId?.configured ?? null,
+    signoffFields: parsedXcodePacket?.signoffFields ?? [],
     output: xcode.output,
   },
   publishing: {
@@ -227,6 +237,7 @@ const evidence = {
     testFlightChecklist: "docs/testflight-release-checklist.md",
     submissionPacket: "docs/app-store-submission-packet.md",
     screenshotPacket: "npm run appstore:screenshot-packet",
+    xcodePacket: "npm run appstore:xcode-packet",
     screenshotDoc: "docs/app-store-screenshots.md",
     bundledPrivacyPage: "public/privacy.html",
     bundledSupportPage: "public/support.html",

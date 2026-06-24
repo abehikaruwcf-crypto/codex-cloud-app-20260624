@@ -338,11 +338,14 @@ requireText("scripts/verify-app-store-release.mjs", "Hard release verification p
 requireText("scripts/check-release-evidence.mjs", "Release evidence output did not include JSON", "Release evidence check parses evidence JSON");
 requireText("scripts/check-release-evidence.mjs", "Final signoff readiness", "Release evidence check verifies final signoff");
 requireText("scripts/check-release-evidence.mjs", "Submission screenshots ready", "Release evidence check verifies screenshot readiness");
+requireText("scripts/check-release-evidence.mjs", "Xcode evidence packet", "Release evidence check verifies Xcode evidence packet");
 requireText("scripts/check-release-evidence.mjs", "Full Xcode selected", "Release evidence check verifies Xcode");
 requireText("scripts/generate-release-evidence.mjs", "releaseStatus", "Release evidence includes status");
 requireText("scripts/generate-release-evidence.mjs", "finalSignoff", "Release evidence includes final signoff state");
 requireText("scripts/generate-release-evidence.mjs", "screenshots", "Release evidence includes screenshot state");
 requireText("scripts/generate-release-evidence.mjs", "screenshotPacket", "Release evidence includes screenshot packet target");
+requireText("scripts/generate-release-evidence.mjs", "xcodePacket", "Release evidence includes Xcode packet target");
+requireText("scripts/generate-release-evidence.mjs", "readyForArchive", "Release evidence includes Xcode archive readiness");
 requireText("scripts/generate-release-evidence.mjs", "missingFields", "Release evidence includes missing final signoff fields");
 requireText("scripts/generate-release-evidence.mjs", "publicUrlsReachable", "Release evidence includes public URL reachability");
 requireText("scripts/generate-release-evidence.mjs", "remoteGhPages", "Release evidence includes Pages branch");
