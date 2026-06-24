@@ -144,6 +144,7 @@ fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
 fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print script");
+fileExists("scripts/apply-release-inputs.mjs", "Release input application script");
 fileExists("scripts/set-release-version.mjs", "Release version script");
 fileExists("scripts/app-store-release-status.mjs", "Release status script");
 
@@ -214,8 +215,15 @@ requireText("docs/app-store-screenshots.md", "05-learning.jpg", "Screenshot docs
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
+requireText("package.json", "\"appstore:apply-inputs\"", "Release input application script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
 requireText("package.json", "\"appstore:status\"", "Release status script entry");
+requireText("scripts/apply-release-inputs.mjs", "--support-contact", "Release input script accepts support contact");
+requireText("scripts/apply-release-inputs.mjs", "--privacy-contact", "Release input script accepts privacy contact");
+requireText("scripts/apply-release-inputs.mjs", "--privacy-url", "Release input script accepts privacy URL");
+requireText("scripts/apply-release-inputs.mjs", "--support-url", "Release input script accepts support URL");
+requireText("scripts/apply-release-inputs.mjs", "--dry-run", "Release input script supports dry run");
+requireText("scripts/apply-release-inputs.mjs", "https URL", "Release input script requires HTTPS URLs");
 requireText("scripts/print-app-store-metadata.mjs", "fieldLimits", "Metadata print includes field limits");
 requireText("scripts/print-app-store-metadata.mjs", "maxBytes: 100", "Metadata print validates keyword byte limit");
 requireText("scripts/print-app-store-metadata.mjs", "used > max", "Metadata print fails on field limit overflow");
@@ -235,6 +243,7 @@ requireText("scripts/app-store-release-status.mjs", "Next required inputs", "Rel
 requireText("scripts/app-store-release-status.mjs", "Publishing status", "Release status prints publishing status");
 requireText("scripts/app-store-release-status.mjs", "gh-pages branch", "Release status reports Pages branch readiness");
 requireText("scripts/app-store-release-status.mjs", "Pages-capable plan", "Release status reports hosting plan decision");
+requireText("scripts/app-store-release-status.mjs", "appstore:apply-inputs", "Release status points to input application command");
 requireText("scripts/app-store-release-status.mjs", "public/privacy.html: replace the placeholder", "Release status points to privacy contact input");
 requireText("scripts/app-store-release-status.mjs", "public/support.html: replace the placeholder", "Release status points to support contact input");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
@@ -250,6 +259,7 @@ requireText("docs/app-review-final-signoff.md", "concrete support contact", "Fin
 requireText("docs/app-review-final-signoff.md", "concrete privacy contact", "Final signoff requires concrete privacy contact");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:status", "Final signoff includes release status evidence");
 requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final signoff includes TODO resolution inputs");
+requireText("docs/app-review-final-signoff.md", "npm run appstore:apply-inputs", "Final signoff documents release input application command");
 requireText("docs/app-review-final-signoff.md", "Formal support contact", "Final signoff maps support contact TODO");
 requireText("docs/app-review-final-signoff.md", "Privacy policy contact", "Final signoff maps privacy contact TODO");
 requireText("docs/privacy-policy-draft.md", "Concrete contact information", "Privacy policy draft requires concrete contact");

@@ -38,6 +38,12 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 
 Fill these values before changing the status to `Status: Ready for App Review`.
 
+When the final contacts and public URLs are known, apply them with:
+
+```bash
+npm run appstore:apply-inputs -- --support-contact support@example.com --privacy-contact privacy@example.com --privacy-url https://example.com/privacy.html --support-url https://example.com/support.html
+```
+
 | TODO | Required input | Target file or place |
 | --- | --- | --- |
 | Formal support contact | A concrete `mailto:` link, email address, or telephone contact for app support. | `public/support.html` |

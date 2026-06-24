@@ -145,6 +145,7 @@ const manualBlockers = [
 ];
 
 const nextInputs = [
+  "Run npm run appstore:apply-inputs -- --support-contact <contact> --privacy-contact <contact> after contacts are finalized.",
   "public/support.html: replace the placeholder with a concrete app support contact.",
   "public/privacy.html: replace the placeholder with a concrete privacy contact.",
   pagesPlanBlocked
@@ -186,8 +187,9 @@ for (const input of nextInputs) {
 console.log("");
 console.log("Recommended release gate:");
 console.log("1. npm run appstore:audit");
-console.log("2. npm run ios:sync");
-console.log("3. Complete docs/testflight-release-checklist.md");
+console.log("2. npm run appstore:status");
+console.log("3. npm run ios:sync");
+console.log("4. Complete docs/testflight-release-checklist.md");
 
 console.log("");
 console.log(`Status summary: ${checks.length - todoCount} pass, ${todoCount} todo`);
