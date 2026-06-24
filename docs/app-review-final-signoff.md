@@ -18,6 +18,12 @@ Generate a final `appstore:apply-inputs` command with current repository evidenc
 npm run appstore:signoff-command
 ```
 
+Generate a JSON final input template with:
+
+```bash
+npm run appstore:signoff-template
+```
+
 Generate the physical iPhone TestFlight evidence field map with:
 
 ```bash
@@ -95,6 +101,18 @@ To generate a copy/paste command with current commit, public URL verification, a
 
 ```bash
 npm run appstore:signoff-command
+```
+
+To generate a JSON template for the same values, run:
+
+```bash
+npm run appstore:signoff-template
+```
+
+After replacing every placeholder in `release-inputs.json`, apply the values with:
+
+```bash
+npm run appstore:apply-inputs -- --inputs-file release-inputs.json
 ```
 
 When the final contacts, public URLs, and release evidence are known, apply them with:

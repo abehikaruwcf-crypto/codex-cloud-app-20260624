@@ -59,6 +59,11 @@ const requiredSteps = [
     script: "appstore:signoff-command",
     expected: ['"replacePlaceholdersBeforeUse"', "npm run appstore:apply-inputs", "--mark-ready"],
   },
+  {
+    name: "Final signoff input template",
+    script: "appstore:signoff-template",
+    expected: ['"applyCommand"', '"npm run appstore:apply-inputs -- --inputs-file release-inputs.json"', '"mark-ready"'],
+  },
 ];
 
 function runScript(script) {
@@ -144,6 +149,7 @@ const preflight = {
     xcodePacket: "npm run appstore:xcode-packet",
     testflightPacket: "npm run appstore:testflight-packet",
     signoffCommand: "npm run appstore:signoff-command",
+    signoffTemplate: "npm run appstore:signoff-template",
   },
   steps,
   releaseStatus: {

@@ -168,6 +168,72 @@ test("release input CLI applies contacts, hosted URLs, and signoff evidence fiel
   }
 });
 
+test("release input CLI applies values from a JSON inputs file", () => {
+  const fixtureRoot = copyFixtureTree();
+
+  try {
+    const inputsPath = join(fixtureRoot, "release-inputs.json");
+    writeFileSync(
+      inputsPath,
+      JSON.stringify(
+        {
+          "support-contact": "support@example.com",
+          "privacy-contact": "privacy@example.com",
+          "privacy-url": "https://example.com/privacy.html",
+          "support-url": "https://example.com/support.html",
+          "release-commit": "abc1234",
+          "evidence-report-generated": "2026-06-25T00:00:00Z",
+          "app-store-connect-app-id": "1234567890",
+          "uploaded-build": "1.0 (1)",
+          "testflight-device": "iPhone 15 Pro / iOS 18",
+          "backup-validation-file": "charm-id-backup-2026-06-25.json",
+          "backup-validation-result": "passed",
+          "backup-import-result": "passed on physical iPhone",
+          "public-url-verification-result": "passed with npm run appstore:public-urls",
+          "strict-verification-result": "passed with npm run appstore:verify -- --strict",
+          "accessibility-label-result": "reviewed against physical iPhone test",
+          "age-rating-result": "4+ confirmed in App Store Connect",
+          "signoff-owner": "Release owner",
+          "signoff-date": "2026-06-25",
+        },
+        null,
+        2,
+      ),
+    );
+
+    const result = runApplyInputs(fixtureRoot, ["--inputs-file", inputsPath, "--mark-ready"]);
+
+    assert.equal(result.ok, true);
+    assert.match(result.output, /Release inputs applied/);
+
+    const finalSignoff = readFileSync(join(fixtureRoot, "docs/app-review-final-signoff.md"), "utf8");
+    const supportPage = readFileSync(join(fixtureRoot, "public/support.html"), "utf8");
+
+    assert.match(finalSignoff, /Status: Ready for App Review/);
+    assert.match(finalSignoff, /- App Store Connect app ID: 1234567890/);
+    assert.match(finalSignoff, /- Uploaded build: 1\.0 \(1\)/);
+    assert.match(supportPage, /mailto:support@example\.com/);
+  } finally {
+    rmSync(fixtureRoot, { force: true, recursive: true });
+  }
+});
+
+test("release input CLI rejects unknown JSON input keys", () => {
+  const fixtureRoot = copyFixtureTree();
+
+  try {
+    const inputsPath = join(fixtureRoot, "release-inputs.json");
+    writeFileSync(inputsPath, JSON.stringify({ "support-contact": "support@example.com", unexpected: "value" }));
+
+    const result = runApplyInputs(fixtureRoot, ["--inputs-file", inputsPath]);
+
+    assert.equal(result.ok, false);
+    assert.match(result.output, /Unknown option in --inputs-file: unexpected/);
+  } finally {
+    rmSync(fixtureRoot, { force: true, recursive: true });
+  }
+});
+
 test("release input CLI refuses to mark final signoff ready when evidence is incomplete", () => {
   const fixtureRoot = copyFixtureTree();
 

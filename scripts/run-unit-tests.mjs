@@ -14,6 +14,7 @@ const testFiles = [
   "xcode-evidence-packet.test.ts",
   "testflight-evidence-packet.test.ts",
   "release-signoff-command.test.ts",
+  "release-input-template.test.ts",
   "release-version-cli.test.ts",
   "release-evidence.test.ts",
 ];

@@ -1,5 +1,5 @@
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
+import { isAbsolute, join } from "node:path";
 
 const root = process.cwd();
 
@@ -14,6 +14,7 @@ Options:
   --privacy-contact  Concrete privacy email, mailto link, tel link, or telephone number.
   --privacy-url      Final public Privacy Policy URL.
   --support-url      Final public Support URL.
+  --inputs-file      JSON file containing the same option keys without leading --.
   --mark-ready       Mark final signoff as Ready for App Review after all required evidence fields are filled.
   --dry-run          Validate inputs without writing files.
 
@@ -57,6 +58,7 @@ const validKeys = new Set([
   "privacy-contact",
   "privacy-url",
   "support-url",
+  "inputs-file",
   "dry-run",
   "mark-ready",
   ...signoffInputs.map(([key]) => key),
@@ -88,6 +90,27 @@ function parseArgs() {
     parsed[key] = value;
     index += 1;
   }
+  return parsed;
+}
+
+function readInputsFile(path) {
+  const fullPath = isAbsolute(path) ? path : join(root, path);
+  let parsed;
+  try {
+    parsed = JSON.parse(readFileSync(fullPath, "utf8"));
+  } catch (error) {
+    throw new Error(`Could not read --inputs-file JSON: ${error.message}`);
+  }
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
+    throw new Error("--inputs-file must contain a JSON object.");
+  }
+
+  for (const key of Object.keys(parsed)) {
+    if (key === "inputs-file" || !validKeys.has(key)) {
+      throw new Error(`Unknown option in --inputs-file: ${key}`);
+    }
+  }
+
   return parsed;
 }
 
@@ -267,7 +290,10 @@ try {
     }
   }
 
-  const parsed = parseArgs();
+  const cliParsed = parseArgs();
+  const fileParsed = cliParsed["inputs-file"] ? readInputsFile(cliParsed["inputs-file"]) : {};
+  const parsed = { ...fileParsed, ...cliParsed };
+  delete parsed["inputs-file"];
   const supportContact = parsed["support-contact"];
   const privacyContact = parsed["privacy-contact"];
   const privacyUrl = parsed["privacy-url"];
