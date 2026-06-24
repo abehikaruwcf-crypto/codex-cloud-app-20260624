@@ -770,6 +770,15 @@ function App() {
   }
 
   function confirmCandidate(candidate: Candidate) {
+    const confirmed = window.confirm(
+      `${candidate.charm.managementNumber} を正解として、今回の撮影画像を追加学習しますか？`,
+    );
+
+    if (!confirmed) {
+      setMessage("追加学習を中止しました。管理番号を確認してから確定してください。");
+      return;
+    }
+
     const learnedImages = imagesForLearning(queryImages);
 
     setCharms((current) =>
@@ -786,6 +795,15 @@ function App() {
   function applyCorrection() {
     if (!selectedCorrectionTarget || !topCandidate) {
       setMessage("正しい管理番号を選択してください。");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `${selectedCorrectionTarget.managementNumber} を正解として、今回の撮影画像を追加学習しますか？`,
+    );
+
+    if (!confirmed) {
+      setMessage("追加学習を中止しました。管理番号を確認してから確定してください。");
       return;
     }
 

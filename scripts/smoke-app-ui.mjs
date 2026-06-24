@@ -248,6 +248,30 @@ try {
     identify.identifyFileLabels.includes("表の識別写真を撮影"),
     "Identify file inputs should expose accessible labels.",
   );
+  page.once("dialog", async (dialog) => {
+    expect(dialog.type() === "confirm", "Correct candidate learning should require confirmation.");
+    expect(dialog.message().includes("CH-001"), "Learning confirmation should name the candidate management number.");
+    await dialog.dismiss();
+  });
+  await page.getByRole("button", { name: "正解にする" }).first().click();
+  await page.getByText("追加学習を中止しました。管理番号を確認してから確定してください。").waitFor({
+    timeout: 3000,
+  });
+  const cancelledLearning = await readState(page);
+  expect(
+    cancelledLearning.statusText === "追加学習を中止しました。管理番号を確認してから確定してください。",
+    "Dismissed learning confirmation should not learn.",
+  );
+  page.once("dialog", async (dialog) => {
+    await dialog.accept();
+  });
+  await page.getByRole("button", { name: "正解にする" }).first().click();
+  await page.getByText("CH-001 を確定し、2枚を追加学習しました。").waitFor({ timeout: 3000 });
+  const confirmedLearning = await readState(page);
+  expect(
+    confirmedLearning.statusText === "CH-001 を確定し、2枚を追加学習しました。",
+    "Accepted learning confirmation should add query images to the model.",
+  );
 
   await page.goto(`${baseUrl}/?appshot=register`);
   const register = await readState(page);

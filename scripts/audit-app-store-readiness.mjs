@@ -168,6 +168,7 @@ requireText("public/support.html", "Charm ID Support", "Support page title");
 requireText("public/support.html", `Version ${packageVersion()}`, "Support page release version");
 requireText("src/main.tsx", "APP_VERSION", "In-app release version display");
 requireText("src/main.tsx", 'href="/support.html"', "In-app support link");
+requireText("src/main.tsx", "追加学習しますか？", "Learning confirmation prompt");
 requireText("docs/app-store-review-answers.md", "Sign-in required: No", "Review sign-in answer");
 requireText("docs/app-store-review-answers.md", "Expected rating: 4+", "Age rating draft");
 requireText("docs/app-store-review-answers.md", "custom cryptography", "Export compliance draft");
