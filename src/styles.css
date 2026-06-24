@@ -966,6 +966,12 @@ h3 {
   line-height: 1.6;
 }
 
+.app-info-panel .app-version {
+  color: #38484f;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
 .app-info-panel a {
   display: flex;
   min-height: 42px;

@@ -46,4 +46,9 @@ const project = read(projectPath)
   .replace(/CURRENT_PROJECT_VERSION = [^;]+;/g, `CURRENT_PROJECT_VERSION = ${buildNumber};`);
 write(projectPath, project);
 
+const supportPath = "public/support.html";
+if (read(supportPath).includes("Version ")) {
+  write(supportPath, read(supportPath).replace(/Version \d+\.\d+\.\d+/g, `Version ${packageVersion}`));
+}
+
 console.log(`Release version set: package ${packageVersion}, iOS ${marketingVersion} (${buildNumber})`);

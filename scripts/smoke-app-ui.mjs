@@ -1,5 +1,5 @@
 import { spawn } from "node:child_process";
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { createServer } from "node:net";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -7,6 +7,7 @@ import { setTimeout as delay } from "node:timers/promises";
 import { chromium } from "playwright";
 
 const root = process.cwd();
+const packageVersion = JSON.parse(readFileSync(join(root, "package.json"), "utf8")).version;
 
 async function getFreePort() {
   return new Promise((resolve, reject) => {
@@ -162,6 +163,7 @@ try {
   expect(library.privacyLink === "プライバシーポリシー", "Library should expose the privacy policy link.");
   expect(library.supportLink === "サポート", "Library should expose the support page link.");
   expect(library.infoPanel?.includes("端末内に保存"), "Library should explain local-only storage.");
+  expect(library.infoPanel?.includes(`Version ${packageVersion}`), "Library should show the package version.");
   await page.getByRole("button", { name: "詳細" }).first().click();
   const detailedLibrary = await readState(page);
   expect(detailedLibrary.libraryDetailImages === 6, "Library detail should render six angle images.");

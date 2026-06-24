@@ -1,5 +1,6 @@
 import React, { ChangeEvent, Component, FormEvent, ReactNode, useEffect, useMemo, useState } from "react";
 import { createRoot } from "react-dom/client";
+import packageJson from "../package.json";
 import {
   angleSuggestions,
   BackupPayload,
@@ -18,6 +19,7 @@ const STORAGE_KEY = "charm-id-camera-app-charms";
 const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
 const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
 const MAX_IMAGES_PER_ANGLE = 8;
+const APP_VERSION = packageJson.version;
 
 type AppShotMode = "onboarding" | "register" | "identify" | "library";
 type LibrarySort = "recent" | "managementAsc" | "managementDesc";
@@ -1323,6 +1325,7 @@ function App() {
           <p>
             照合エンジンは公開前検証用のプロトタイプです。候補を確定する前に、管理番号を目視で確認してください。
           </p>
+          <p className="app-version">Version {APP_VERSION}</p>
           <a href="/privacy.html" target="_blank" rel="noreferrer">
             プライバシーポリシー
           </a>

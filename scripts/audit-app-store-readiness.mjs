@@ -165,6 +165,8 @@ requireText("ios/App/App/Info.plist", "Charm ID", "Display name");
 requireText("package.json", "\"version\"", "Package release version");
 requireText("public/privacy.html", "Charm ID Privacy Policy", "Privacy policy page title");
 requireText("public/support.html", "Charm ID Support", "Support page title");
+requireText("public/support.html", `Version ${packageVersion()}`, "Support page release version");
+requireText("src/main.tsx", "APP_VERSION", "In-app release version display");
 requireText("src/main.tsx", 'href="/support.html"', "In-app support link");
 requireText("docs/app-store-review-answers.md", "Sign-in required: No", "Review sign-in answer");
 requireText("docs/app-store-review-answers.md", "Expected rating: 4+", "Age rating draft");
@@ -175,6 +177,7 @@ requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages d
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
+requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
