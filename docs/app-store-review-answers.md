@@ -16,6 +16,8 @@ This draft collects App Store Connect fields that are separate from product-page
 
 ```text
 Charm ID can be used without login. The first-run screen includes demo data so review can test registration, identification, candidate review, and local-only learning without photographing a real item. Camera access is used only for item registration and identification. The app does not upload item photos, management numbers, or correction history in the current build.
+
+If camera access is denied during review, the capture screens show recovery guidance: open the iPhone Settings app, allow Camera access for Charm ID, return to the app, and try the shot again. When iOS offers photo library selection, existing photos can also be used for registration or identification.
 ```
 
 ## Age Rating Draft
@@ -30,6 +32,7 @@ Current content assumptions:
 - No gambling, contests, alcohol, tobacco, medical, or financial advice.
 - No unrestricted internet access.
 - Camera access is limited to item photos for registration and identification.
+- Camera permission denial is recoverable through in-app Settings guidance.
 
 ## Export Compliance Draft
 

@@ -174,9 +174,12 @@ requireText("public/privacy.html", "端末内データをリセット", "Privacy
 requireText("src/main.tsx", "APP_VERSION", "In-app release version display");
 requireText("src/main.tsx", 'href="/support.html"', "In-app support link");
 requireText("src/main.tsx", "追加学習しますか？", "Learning confirmation prompt");
+requireText("src/main.tsx", "設定アプリで Charm ID > カメラ を許可", "Camera permission recovery guidance");
+requireText("src/main.tsx", "写真ライブラリから選べる場合", "Photo library fallback guidance");
 requireText("docs/app-store-review-answers.md", "Sign-in required: No", "Review sign-in answer");
 requireText("docs/app-store-review-answers.md", "Expected rating: 4+", "Age rating draft");
 requireText("docs/app-store-review-answers.md", "custom cryptography", "Export compliance draft");
+requireText("docs/app-store-review-answers.md", "camera access is denied", "Review notes cover camera permission denial");
 requireText("docs/app-store-submission-packet.md", "app-store-review-answers.md", "Review answers linked from submission packet");
 requireText("docs/app-store-metadata.md", "Japanese Metadata Draft", "Japanese App Store metadata draft");
 requireText("docs/app-store-metadata.md", "小物を撮影して管理番号を確認", "Japanese subtitle draft");
@@ -198,6 +201,7 @@ requireText("README.md", "docs/release-notes.md", "README links release notes");
 requireText("README.md", "public/support.html", "README references support page");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");
+requireText("docs/testflight-release-checklist.md", "Camera permission denial and retry path", "TestFlight checklist covers camera permission denial");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",

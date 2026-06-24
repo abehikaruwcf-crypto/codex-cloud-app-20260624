@@ -99,6 +99,7 @@ async function readState(page) {
     supportLink: document.querySelector('.app-info-panel a[href="/support.html"]')?.textContent?.trim() ?? null,
     infoPanel: document.querySelector(".app-info-panel")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     dataToolsText: document.querySelector(".data-tools")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+    permissionNoteText: document.querySelector(".view.is-active .permission-note")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
     statusRole: document.querySelector(".status-message")?.getAttribute("role") ?? null,
     statusText: document.querySelector(".status-message")?.textContent?.trim() ?? null,
     librarySortValue: document.querySelector(".library-sort select")?.value ?? null,
@@ -251,6 +252,10 @@ try {
     identify.identifyFileLabels.includes("表の識別写真を撮影"),
     "Identify file inputs should expose accessible labels.",
   );
+  expect(
+    identify.permissionNoteText?.includes("設定アプリで Charm ID > カメラ を許可"),
+    "Identify view should explain how to recover from denied camera permission.",
+  );
   page.once("dialog", async (dialog) => {
     expect(dialog.type() === "confirm", "Correct candidate learning should require confirmation.");
     expect(dialog.message().includes("CH-001"), "Learning confirmation should name the candidate management number.");
@@ -284,6 +289,10 @@ try {
   expect(
     register.identifyFileLabels.includes("表の登録写真を撮影"),
     "Register file inputs should expose accessible labels.",
+  );
+  expect(
+    register.permissionNoteText?.includes("写真ライブラリから選べる場合"),
+    "Register view should mention photo library fallback when camera capture is unavailable.",
   );
   await page.getByPlaceholder("例: CH-1042").fill(" ch-001 ");
   await page.getByRole("button", { name: "登録する" }).click();

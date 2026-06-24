@@ -20,6 +20,8 @@ const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
 const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
 const MAX_IMAGES_PER_ANGLE = 8;
 const APP_VERSION = packageJson.version;
+const CAMERA_PERMISSION_HELP =
+  "カメラが開かない場合は、iPhoneの設定アプリで Charm ID > カメラ を許可し、この画面に戻って撮り直してください。写真ライブラリから選べる場合は、既存写真でも登録・識別できます。";
 
 type AppShotMode = "onboarding" | "register" | "identify" | "library";
 type LibrarySort = "recent" | "managementAsc" | "managementDesc";
@@ -483,6 +485,10 @@ function loadCharms() {
 
 function onboardingDismissed() {
   return localStorage.getItem(ONBOARDING_STORAGE_KEY) === "true";
+}
+
+function CameraPermissionHelp() {
+  return <p className="permission-note">{CAMERA_PERMISSION_HELP}</p>;
 }
 
 function App() {
@@ -1068,9 +1074,7 @@ function App() {
                 );
               })}
             </div>
-            <p className="permission-note">
-              カメラが開かない場合は、iPhoneの設定でCharm IDのカメラ権限を許可してください。
-            </p>
+            <CameraPermissionHelp />
           </div>
         ) : (
           <>
@@ -1095,9 +1099,7 @@ function App() {
               <span>候補が割れたら裏・側面を追加する</span>
               <span>同じ背景と明るさで撮る</span>
             </div>
-            <p className="permission-note">
-              カメラが開かない場合は、iPhoneの設定でCharm IDのカメラ権限を許可してください。
-            </p>
+            <CameraPermissionHelp />
           </>
         )}
       </section>
@@ -1171,9 +1173,7 @@ function App() {
               );
             })}
           </div>
-          <p className="permission-note">
-            カメラが開かない場合は、iPhoneの設定でCharm IDのカメラ権限を許可してください。
-          </p>
+          <CameraPermissionHelp />
 
           <button className="primary-action" type="submit" disabled={isProcessing}>
             {isProcessing ? "処理中..." : "登録する"}
