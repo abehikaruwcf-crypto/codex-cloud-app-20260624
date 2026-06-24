@@ -15,6 +15,7 @@ const testFiles = [
   "screenshot-evidence-packet.test.ts",
   "xcode-evidence-packet.test.ts",
   "testflight-evidence-packet.test.ts",
+  "release-handoff-packet.test.ts",
   "release-signoff-command.test.ts",
   "release-input-template.test.ts",
   "release-version-cli.test.ts",

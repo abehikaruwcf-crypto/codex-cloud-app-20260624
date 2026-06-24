@@ -160,6 +160,7 @@ fileExists("scripts/print-app-privacy-answers.mjs", "App Privacy answers print s
 fileExists("scripts/print-app-age-rating-answers.mjs", "App age rating answers print script");
 fileExists("scripts/print-app-accessibility-answers.mjs", "App accessibility answers print script");
 fileExists("scripts/print-testflight-evidence-packet.mjs", "TestFlight evidence packet script");
+fileExists("scripts/print-release-handoff-packet.mjs", "Release handoff packet script");
 fileExists("scripts/print-app-review-signoff-draft.mjs", "App Review signoff draft script");
 fileExists("scripts/print-release-signoff-command.mjs", "Release signoff command script");
 fileExists("scripts/print-release-input-template.mjs", "Release input template script");
@@ -284,6 +285,7 @@ requireText("package.json", "\"appstore:privacy\"", "App Privacy script entry");
 requireText("package.json", "\"appstore:rating\"", "App age rating script entry");
 requireText("package.json", "\"appstore:accessibility\"", "App accessibility script entry");
 requireText("package.json", "\"appstore:testflight-packet\"", "TestFlight evidence packet script entry");
+requireText("package.json", "\"appstore:handoff\"", "Release handoff packet script entry");
 requireText("package.json", "\"appstore:signoff-draft\"", "App Review signoff draft script entry");
 requireText("package.json", "\"appstore:signoff-command\"", "Release signoff command script entry");
 requireText("package.json", "\"appstore:signoff-template\"", "Release input template script entry");
@@ -333,6 +335,7 @@ requireText("tests/app-store-submission-checklist.test.ts", "maps Connect packet
 requireText("tests/screenshot-evidence-packet.test.ts", "maps App Store image sets", "Screenshot evidence packet unit test exists");
 requireText("tests/xcode-evidence-packet.test.ts", "maps archive prerequisites to signoff fields", "Xcode evidence packet unit test exists");
 requireText("tests/testflight-evidence-packet.test.ts", "maps physical QA to signoff fields", "TestFlight evidence packet unit test exists");
+requireText("tests/release-handoff-packet.test.ts", "maps remaining release work to owners and inputs", "Release handoff packet unit test exists");
 requireText("tests/release-signoff-command.test.ts", "release signoff command packet keeps placeholders explicit", "Release signoff command unit test exists");
 requireText("tests/release-input-template.test.ts", "maps final signoff values to apply-inputs JSON", "Release input template unit test exists");
 requireText("tests/matching-and-learning.test.ts", "matching ranks the closest charm", "Matching ranking unit test exists");
@@ -425,6 +428,7 @@ requireText("README.md", "npm run appstore:privacy", "README includes App Privac
 requireText("README.md", "--copyright-holder", "README includes copyright holder input");
 requireText("README.md", "npm run appstore:rating", "README includes age rating command");
 requireText("README.md", "npm run appstore:accessibility", "README includes accessibility command");
+requireText("README.md", "npm run appstore:handoff", "README includes release handoff command");
 requireText("README.md", "npm run appstore:screenshots:submission", "README includes submission screenshot command");
 requireText("README.md", "npm run appstore:signoff-draft", "README includes signoff draft command");
 requireText("README.md", "npm run appstore:signoff-template", "README includes signoff template command");
@@ -513,6 +517,7 @@ requireText("scripts/print-app-store-preflight.mjs", "appstore:accessibility", "
 requireText("scripts/print-app-store-preflight.mjs", "appstore:screenshot-packet", "Preflight includes screenshot evidence packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:xcode-packet", "Preflight includes Xcode evidence packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:testflight-packet", "Preflight includes TestFlight evidence packet");
+requireText("scripts/print-app-store-preflight.mjs", "appstore:handoff", "Preflight includes release handoff packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-draft", "Preflight includes signoff draft");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-command", "Preflight includes signoff command");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-template", "Preflight includes signoff template");

@@ -55,6 +55,11 @@ const requiredSteps = [
     expected: ['"sourceDoc": "docs/testflight-release-checklist.md"', '"backupValidationCommand"', '"signoffCommandFragment"'],
   },
   {
+    name: "Release handoff packet",
+    script: "appstore:handoff",
+    expected: ['"purpose": "Manual handoff packet', '"requiredManualWork"', '"readyCommand"'],
+  },
+  {
     name: "Public URL verification",
     script: "appstore:public-urls",
     expected: ["Public App Store URLs are reachable."],
@@ -160,6 +165,7 @@ const preflight = {
     screenshotPacket: "npm run appstore:screenshot-packet",
     xcodePacket: "npm run appstore:xcode-packet",
     testflightPacket: "npm run appstore:testflight-packet",
+    handoffPacket: "npm run appstore:handoff",
     signoffCommand: "npm run appstore:signoff-command",
     signoffTemplate: "npm run appstore:signoff-template",
   },

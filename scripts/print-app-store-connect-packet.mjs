@@ -130,10 +130,6 @@ if (!metadataResult.ok) {
   throw new Error(`Could not print App Store metadata:\n${metadataResult.output}`);
 }
 
-if (!publicUrlsResult.ok) {
-  throw new Error(`Public App Store URLs are not reachable:\n${publicUrlsResult.output}`);
-}
-
 const packet = {
   generatedAt: new Date().toISOString(),
   release: {
@@ -156,6 +152,8 @@ const packet = {
     support: findRequiredUrl(pagesNotes, "support"),
     verificationCommand: "npm run appstore:public-urls",
     verificationPassed: publicUrlsResult.ok,
+    verificationOutput: publicUrlsResult.ok ? publicUrlsResult.output : null,
+    verificationError: publicUrlsResult.ok ? null : publicUrlsResult.output,
   },
   appStoreListing: {
     appName: metadata.japaneseListing.appName,

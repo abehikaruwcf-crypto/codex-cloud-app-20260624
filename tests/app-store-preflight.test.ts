@@ -35,6 +35,7 @@ test("App Store preflight stays parseable and reports the current manual gate", 
   assert.equal(preflight.commands.screenshotPacket, "npm run appstore:screenshot-packet");
   assert.equal(preflight.commands.xcodePacket, "npm run appstore:xcode-packet");
   assert.equal(preflight.commands.testflightPacket, "npm run appstore:testflight-packet");
+  assert.equal(preflight.commands.handoffPacket, "npm run appstore:handoff");
   assert.equal(preflight.commands.signoffCommand, "npm run appstore:signoff-command");
   assert.equal(preflight.commands.signoffTemplate, "npm run appstore:signoff-template");
   assert.equal(preflight.releaseStatus.todo, 5);
@@ -63,6 +64,7 @@ test("App Store preflight confirms every submission packet substep", () => {
     "Screenshot evidence packet",
     "Xcode evidence packet",
     "TestFlight evidence packet",
+    "Release handoff packet",
     "Public URL verification",
     "App Review signoff draft",
     "Final signoff apply command",

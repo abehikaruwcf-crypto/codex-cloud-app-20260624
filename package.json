@@ -23,6 +23,7 @@
     "appstore:rating": "node scripts/print-app-age-rating-answers.mjs",
     "appstore:accessibility": "node scripts/print-app-accessibility-answers.mjs",
     "appstore:testflight-packet": "node scripts/print-testflight-evidence-packet.mjs",
+    "appstore:handoff": "node scripts/print-release-handoff-packet.mjs",
     "appstore:signoff-draft": "node scripts/print-app-review-signoff-draft.mjs",
     "appstore:signoff-command": "node scripts/print-release-signoff-command.mjs",
     "appstore:signoff-template": "node scripts/print-release-input-template.mjs",

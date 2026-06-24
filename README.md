@@ -16,6 +16,7 @@ npm run appstore:connect-packet
 npm run appstore:submission-checklist
 npm run appstore:rating
 npm run appstore:accessibility
+npm run appstore:handoff
 npm run appstore:screenshots:submission
 npm run appstore:xcode-packet
 npm run appstore:signoff-draft
@@ -49,6 +50,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - `npm run appstore:rating` prints the current App Store age rating questionnaire draft.
 - `npm run appstore:accessibility` prints the current Accessibility Nutrition Labels draft.
 - `npm run appstore:testflight-packet` prints the physical iPhone TestFlight QA evidence fields needed for final signoff.
+- `npm run appstore:handoff` prints the owner/input handoff packet for moving the release from current TODOs to 0 TODOs.
 - `npm run appstore:screenshots:submission` generates 6.9 inch and 6.5 inch App Store screenshot-size review assets.
 - `npm run appstore:screenshot-packet` prints the generated App Store screenshot asset evidence.
 - `npm run appstore:xcode-packet` prints local Xcode archive readiness and the upload signoff field map.
