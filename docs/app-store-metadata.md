@@ -45,6 +45,8 @@ Use "デモデータで試す" on the first screen to load sample models with al
 5. Confirm the correct item and add learning examples.
 6. Browse the registered library with six-angle demo models.
 
+Development screenshot outputs are listed in [app-store-screenshots.md](app-store-screenshots.md).
+
 ## Required Before Submission
 
 - Final app icon. A branded placeholder is already installed for development builds.

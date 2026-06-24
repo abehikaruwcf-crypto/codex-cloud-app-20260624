@@ -19,6 +19,8 @@ const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
 const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
 const MAX_IMAGES_PER_ANGLE = 8;
 
+type AppShotMode = "onboarding" | "register" | "identify" | "library";
+
 const angleSignatureOffsets: Record<string, Partial<ImageSignature>> = {
   表: { brightness: 0 },
   裏: { brightness: -12 },
@@ -111,6 +113,40 @@ const sampleCharms: Charm[] = [
     { red: 166, green: 177, blue: 186, brightness: 176 },
   ),
 ];
+
+function appShotMode(): AppShotMode | null {
+  const mode = new URLSearchParams(window.location.search).get("appshot");
+
+  if (mode === "onboarding" || mode === "register" || mode === "identify" || mode === "library") {
+    return mode;
+  }
+
+  return null;
+}
+
+function demoDecisionLogs(): DecisionLog[] {
+  return [
+    {
+      id: "demo-decision-1",
+      managementNumber: "CH-001",
+      decision: "confirmed",
+      score: 91,
+      learnedImages: 2,
+      createdAt: new Date().toISOString(),
+    },
+  ];
+}
+
+function demoQueryImages(): CharmImage[] {
+  return sampleCharms[0].images
+    .filter((image) => image.angleLabel === "表" || image.angleLabel === "裏")
+    .map((image) => ({
+      ...image,
+      id: `query-${image.id}`,
+      source: "confirmed-identification",
+      createdAt: new Date().toISOString(),
+    }));
+}
 
 function makeId(prefix: string) {
   return `${prefix}-${crypto.randomUUID()}`;
@@ -340,26 +376,45 @@ function onboardingDismissed() {
 }
 
 function App() {
-  const [activeView, setActiveView] = useState<View>("identify");
-  const [charms, setCharms] = useState<Charm[]>(loadCharms);
+  const shotMode = appShotMode();
+  const [activeView, setActiveView] = useState<View>(
+    shotMode === "register" ? "register" : shotMode === "library" ? "library" : "identify",
+  );
+  const [charms, setCharms] = useState<Charm[]>(shotMode ? sampleCharms : loadCharms);
   const [managementNumber, setManagementNumber] = useState("");
   const [note, setNote] = useState("");
-  const [draftImages, setDraftImages] = useState<CharmImage[]>([]);
-  const [queryImages, setQueryImages] = useState<CharmImage[]>([]);
-  const [decisionLogs, setDecisionLogs] = useState<DecisionLog[]>(loadDecisions);
+  const [draftImages, setDraftImages] = useState<CharmImage[]>(
+    shotMode === "register" ? sampleCharms[0].images : [],
+  );
+  const [queryImages, setQueryImages] = useState<CharmImage[]>(
+    shotMode === "identify" ? demoQueryImages() : [],
+  );
+  const [decisionLogs, setDecisionLogs] = useState<DecisionLog[]>(
+    shotMode ? demoDecisionLogs() : loadDecisions,
+  );
   const [correctionTargetId, setCorrectionTargetId] = useState("");
-  const [showOnboarding, setShowOnboarding] = useState(!onboardingDismissed());
+  const [showOnboarding, setShowOnboarding] = useState(
+    shotMode === "onboarding" ? true : shotMode ? false : !onboardingDismissed(),
+  );
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
   const [importSummary, setImportSummary] = useState("");
 
   useEffect(() => {
+    if (shotMode) {
+      return;
+    }
+
     localStorage.setItem(STORAGE_KEY, JSON.stringify(charms));
-  }, [charms]);
+  }, [charms, shotMode]);
 
   useEffect(() => {
+    if (shotMode) {
+      return;
+    }
+
     localStorage.setItem(DECISION_STORAGE_KEY, JSON.stringify(decisionLogs));
-  }, [decisionLogs]);
+  }, [decisionLogs, shotMode]);
 
   const candidates = useMemo(() => {
     if (queryImages.length === 0) {
@@ -632,16 +687,7 @@ function App() {
 
   function loadDemoDataset() {
     setCharms(sampleCharms);
-    setDecisionLogs([
-      {
-        id: "demo-decision-1",
-        managementNumber: "CH-001",
-        decision: "confirmed",
-        score: 91,
-        learnedImages: 2,
-        createdAt: new Date().toISOString(),
-      },
-    ]);
+    setDecisionLogs(demoDecisionLogs());
     setQueryImages([]);
     setCorrectionTargetId("");
     setImportSummary("");
@@ -726,26 +772,6 @@ function App() {
           </div>
         </div>
 
-        <div className="capture-protocol">
-          {captureAngles.map((angle) => {
-            const image = queryImages.find((query) => query.angleLabel === angle.label);
-
-            return (
-              <label className={image ? "angle-capture is-complete" : "angle-capture"} key={angle.id}>
-                <span>{angle.label}</span>
-                <small>{image ? "撮影済み" : angle.hint}</small>
-                {image ? <img src={image.imageUrl} alt={`${angle.label}の識別写真`} /> : null}
-                <input
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={(event) => identifyImage(event, angle.label)}
-                />
-              </label>
-            );
-          })}
-        </div>
-
         {queryImages.length > 0 ? (
           <div className="result-layout">
             {topCandidate ? (
@@ -813,14 +839,52 @@ function App() {
                 選択したモデルに学習
               </button>
             </div>
+            <div className="capture-protocol compact-capture-protocol">
+              {captureAngles.map((angle) => {
+                const image = queryImages.find((query) => query.angleLabel === angle.label);
+
+                return (
+                  <label
+                    className={image ? "angle-capture is-complete" : "angle-capture"}
+                    key={angle.id}
+                  >
+                    <span>{angle.label}</span>
+                    <small>{image ? "撮影済み" : angle.hint}</small>
+                    {image ? <img src={image.imageUrl} alt={`${angle.label}の識別写真`} /> : null}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={(event) => identifyImage(event, angle.label)}
+                    />
+                  </label>
+                );
+              })}
+            </div>
           </div>
         ) : (
-          <div className="empty-state identify-guide">
-            <strong>撮影のコツ</strong>
-            <span>まず表を撮影する</span>
-            <span>候補が割れたら裏・側面を追加する</span>
-            <span>同じ背景と明るさで撮る</span>
-          </div>
+          <>
+            <div className="capture-protocol">
+              {captureAngles.map((angle) => (
+                <label className="angle-capture" key={angle.id}>
+                  <span>{angle.label}</span>
+                  <small>{angle.hint}</small>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    capture="environment"
+                    onChange={(event) => identifyImage(event, angle.label)}
+                  />
+                </label>
+              ))}
+            </div>
+            <div className="empty-state identify-guide">
+              <strong>撮影のコツ</strong>
+              <span>まず表を撮影する</span>
+              <span>候補が割れたら裏・側面を追加する</span>
+              <span>同じ背景と明るさで撮る</span>
+            </div>
+          </>
         )}
       </section>
 
