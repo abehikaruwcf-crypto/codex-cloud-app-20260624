@@ -30,6 +30,7 @@ test("App Store preflight stays parseable and reports the current manual gate", 
   assert.equal(preflight.release.bundleId, "com.wcf.charmid");
   assert.equal(preflight.commands.hardGate, "npm run appstore:verify");
   assert.equal(preflight.commands.strictGate, "npm run appstore:verify -- --strict");
+  assert.equal(preflight.commands.signoffCommand, "npm run appstore:signoff-command");
   assert.equal(preflight.releaseStatus.todo, 4);
   assert.equal(preflight.releaseStatus.expectedManualTodoCount, 4);
   assert.equal(preflight.manualGate.readyForAppReview, false);
@@ -52,6 +53,7 @@ test("App Store preflight confirms every submission packet substep", () => {
     "Accessibility answers",
     "Public URL verification",
     "App Review signoff draft",
+    "Final signoff apply command",
   ]);
 
   for (const step of preflight.steps) {

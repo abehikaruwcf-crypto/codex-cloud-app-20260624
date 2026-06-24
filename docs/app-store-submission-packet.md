@@ -158,6 +158,7 @@ Use Xcode Organizer to upload the archive to App Store Connect. Follow the manua
 
 Before submitting for App Review, complete [app-review-final-signoff.md](app-review-final-signoff.md) and confirm `npm run appstore:status` reports `0 todo`.
 Generate the current signoff draft with `npm run appstore:signoff-draft`.
+Generate the final signoff application command with `npm run appstore:signoff-command`, replace the placeholders, then run it only after the manual App Review checks are complete.
 
 ## App Store Connect Entry Checklist
 
@@ -184,6 +185,7 @@ Use this table as the direct entry map for App Store Connect.
 | Submission preflight packet | Run `npm run appstore:preflight`. |
 | Xcode upload steps | Use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md). |
 | Final signoff draft | Run `npm run appstore:signoff-draft`. |
+| Final signoff apply command | Run `npm run appstore:signoff-command`, replace placeholders, then run the printed command after all manual checks pass. |
 | App Review notes | Use [app-store-review-answers.md](app-store-review-answers.md). |
 | TestFlight notes | Use [release-notes.md](release-notes.md). |
 | App Privacy answers | Use [app-privacy-answers.md](app-privacy-answers.md). |

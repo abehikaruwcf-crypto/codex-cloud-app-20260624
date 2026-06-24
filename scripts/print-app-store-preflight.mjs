@@ -35,6 +35,11 @@ const requiredSteps = [
     script: "appstore:signoff-draft",
     expected: ["App Review Signoff Draft", "App Store status:"],
   },
+  {
+    name: "Final signoff apply command",
+    script: "appstore:signoff-command",
+    expected: ['"replacePlaceholdersBeforeUse"', "npm run appstore:apply-inputs", "--mark-ready"],
+  },
 ];
 
 function runScript(script) {
@@ -116,6 +121,7 @@ const preflight = {
     hardGate: "npm run appstore:verify",
     strictGate: "npm run appstore:verify -- --strict",
     status: "npm run appstore:status",
+    signoffCommand: "npm run appstore:signoff-command",
   },
   steps,
   releaseStatus: {

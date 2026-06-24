@@ -12,6 +12,12 @@ Generate a current copy/paste draft with:
 npm run appstore:signoff-draft
 ```
 
+Generate a final `appstore:apply-inputs` command with current repository evidence and placeholders for manual App Review values with:
+
+```bash
+npm run appstore:signoff-command
+```
+
 Generate the current submission preflight packet with:
 
 ```bash
@@ -66,6 +72,12 @@ npm run appstore:preflight
 ## TODO Resolution Inputs
 
 Fill these values before changing the status to `Status: Ready for App Review`.
+
+To generate a copy/paste command with current commit, public URL verification, and remaining placeholders, run:
+
+```bash
+npm run appstore:signoff-command
+```
 
 When the final contacts, public URLs, and release evidence are known, apply them with:
 
