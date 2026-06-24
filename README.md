@@ -27,6 +27,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - [docs/app-store-submission-packet.md](docs/app-store-submission-packet.md) consolidates App Store Connect inputs.
 - [docs/testflight-release-checklist.md](docs/testflight-release-checklist.md) covers the Xcode/TestFlight upload flow.
 - [docs/app-privacy-answers.md](docs/app-privacy-answers.md) documents the current local-only privacy answers.
+- `public/privacy.html` can be published through the GitHub Pages workflow template in [docs/github-pages-workflow.md](docs/github-pages-workflow.md) and used as the App Store privacy policy URL.
 
 ## Codex Cloud
 

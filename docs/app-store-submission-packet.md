@@ -86,4 +86,5 @@ Use Xcode Organizer to upload the archive to App Store Connect.
 - Apple Developer Program team must be selected in Xcode.
 - App Store Connect app record must be created.
 - Final screenshots and public privacy policy URL are still required.
-- `public/privacy.html` is ready to publish, but the final public URL must be hosted and entered in App Store Connect.
+- `public/privacy.html` is ready to publish.
+- A GitHub Pages workflow template is included in [github-pages-workflow.md](github-pages-workflow.md). Once GitHub Pages is enabled for this repository, the privacy policy should be available at `/privacy.html` on the Pages site.
