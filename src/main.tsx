@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "rea
 import { createRoot } from "react-dom/client";
 import {
   angleSuggestions,
+  BackupPayload,
   Candidate,
   captureAngles,
   Charm,
@@ -57,6 +58,10 @@ const sampleCharms: Charm[] = [
 
 function makeId(prefix: string) {
   return `${prefix}-${crypto.randomUUID()}`;
+}
+
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === "object" && value !== null;
 }
 
 async function fileToDataUrl(file: File): Promise<string> {
@@ -161,6 +166,99 @@ function loadDecisions() {
   }
 }
 
+function normalizeDecisionLog(value: unknown): DecisionLog | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const decision = value.decision === "rejected" ? "rejected" : "confirmed";
+
+  return {
+    id: typeof value.id === "string" ? value.id : makeId("decision"),
+    managementNumber:
+      typeof value.managementNumber === "string" ? value.managementNumber : "UNKNOWN",
+    decision,
+    score: typeof value.score === "number" ? value.score : 0,
+    learnedImages: typeof value.learnedImages === "number" ? value.learnedImages : 0,
+    createdAt: typeof value.createdAt === "string" ? value.createdAt : new Date().toISOString(),
+  };
+}
+
+function normalizeCharmImage(value: unknown): CharmImage | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const signature = isRecord(value.signature) ? value.signature : {};
+  const source =
+    value.source === "confirmed-identification" ? "confirmed-identification" : "registration";
+
+  return {
+    id: typeof value.id === "string" ? value.id : makeId("image"),
+    imageUrl: typeof value.imageUrl === "string" ? value.imageUrl : "",
+    angleLabel: typeof value.angleLabel === "string" ? value.angleLabel : captureAngles[0].label,
+    signature: {
+      red: typeof signature.red === "number" ? signature.red : 0,
+      green: typeof signature.green === "number" ? signature.green : 0,
+      blue: typeof signature.blue === "number" ? signature.blue : 0,
+      brightness: typeof signature.brightness === "number" ? signature.brightness : 0,
+    },
+    source,
+    createdAt: typeof value.createdAt === "string" ? value.createdAt : new Date().toISOString(),
+  };
+}
+
+function normalizeCharm(value: unknown): Charm | null {
+  if (!isRecord(value)) {
+    return null;
+  }
+
+  const images = Array.isArray(value.images)
+    ? value.images.map(normalizeCharmImage).filter((image): image is CharmImage => Boolean(image))
+    : [];
+
+  if (images.length === 0) {
+    return null;
+  }
+
+  return {
+    id: typeof value.id === "string" ? value.id : makeId("charm"),
+    managementNumber:
+      typeof value.managementNumber === "string" ? value.managementNumber : "UNKNOWN",
+    note: typeof value.note === "string" ? value.note : "",
+    images,
+    createdAt: typeof value.createdAt === "string" ? value.createdAt : new Date().toISOString(),
+  };
+}
+
+function normalizeBackupPayload(value: unknown): BackupPayload | null {
+  if (!isRecord(value) || !Array.isArray(value.charms)) {
+    return null;
+  }
+
+  const charms = value.charms
+    .map(normalizeCharm)
+    .filter((charm): charm is Charm => Boolean(charm));
+
+  if (charms.length === 0) {
+    return null;
+  }
+
+  const decisionLogs = Array.isArray(value.decisionLogs)
+    ? value.decisionLogs
+        .map(normalizeDecisionLog)
+        .filter((log): log is DecisionLog => Boolean(log))
+    : [];
+
+  return {
+    charms,
+    decisionLogs,
+    exportedAt:
+      typeof value.exportedAt === "string" ? value.exportedAt : new Date().toISOString(),
+    version: 1,
+  };
+}
+
 function loadCharms() {
   const stored = localStorage.getItem(STORAGE_KEY);
 
@@ -197,6 +295,7 @@ function App() {
   const [showOnboarding, setShowOnboarding] = useState(!onboardingDismissed());
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
+  const [importSummary, setImportSummary] = useState("");
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(charms));
@@ -423,7 +522,11 @@ function App() {
   }
 
   function exportDataset() {
-    const payload = JSON.stringify({ charms, decisionLogs, exportedAt: new Date().toISOString() });
+    const payload = JSON.stringify(
+      { charms, decisionLogs, exportedAt: new Date().toISOString(), version: 1 },
+      null,
+      2,
+    );
     const blob = new Blob([payload], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const anchor = document.createElement("a");
@@ -431,6 +534,39 @@ function App() {
     anchor.download = `charm-id-backup-${new Date().toISOString().slice(0, 10)}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
+  }
+
+  async function importDataset(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    try {
+      const text = await file.text();
+      const parsed = JSON.parse(text) as unknown;
+      const backup = normalizeBackupPayload(parsed);
+
+      if (!backup) {
+        setMessage("バックアップJSONを読み込めませんでした。形式を確認してください。");
+        return;
+      }
+
+      setCharms(backup.charms);
+      setDecisionLogs(backup.decisionLogs);
+      setQueryImages([]);
+      setCorrectionTargetId("");
+      setImportSummary(
+        `${backup.charms.length}件のモデル、${backup.decisionLogs.length}件の判定履歴を復元しました。`,
+      );
+      setMessage("バックアップを復元しました。");
+      setActiveView("library");
+    } catch {
+      setMessage("バックアップJSONを読み込めませんでした。");
+    } finally {
+      event.target.value = "";
+    }
   }
 
   function dismissOnboarding() {
@@ -452,6 +588,7 @@ function App() {
     setCharms(sampleCharms);
     setDecisionLogs([]);
     setQueryImages([]);
+    setImportSummary("");
     setMessage("端末内データをリセットしました。");
   }
 
@@ -715,10 +852,17 @@ function App() {
           <button type="button" onClick={exportDataset}>
             データを書き出す
           </button>
+          <label className="import-action">
+            バックアップを読み込む
+            <input type="file" accept="application/json,.json" onChange={importDataset} />
+          </label>
           <button className="danger-action" type="button" onClick={resetLocalData}>
             端末内データをリセット
           </button>
-          <p>今は端末内保存です。バックアップを残すと機種変更や本番DB移行で使えます。</p>
+          <p>
+            今は端末内保存です。バックアップを書き出しておくと、機種変更や本番DB移行で使えます。
+          </p>
+          {importSummary ? <strong>{importSummary}</strong> : null}
         </div>
 
         {decisionLogs.length > 0 ? (

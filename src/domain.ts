@@ -42,6 +42,13 @@ export type DecisionLog = {
   createdAt: string;
 };
 
+export type BackupPayload = {
+  charms: Charm[];
+  decisionLogs: DecisionLog[];
+  exportedAt: string;
+  version: 1;
+};
+
 export const captureAngles = [
   { id: "front", label: "表", hint: "正面の模様や刻印が見える向き" },
   { id: "back", label: "裏", hint: "裏側の形状や留め具が見える向き" },

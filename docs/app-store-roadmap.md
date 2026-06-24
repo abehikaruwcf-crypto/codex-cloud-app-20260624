@@ -30,6 +30,7 @@ Possible later variants:
 - Add onboarding for first-time users.
 - Add empty states and recovery flows.
 - Add dataset reset/import.
+- Add backup export and restore validation for local datasets.
 - Add clear limitations around prototype matching.
 
 ### Data and AI
@@ -37,6 +38,7 @@ Possible later variants:
 - Move from color-signature prototype matching to image embeddings or a server-side model.
 - Store confirmed usage examples separately from original registration images.
 - Preserve a clear engine boundary so model changes do not require rewriting the product UI.
+- Add local backup import/export before cloud sync.
 - Add cloud backup/sync before production release.
 - Add safeguards against wrong confirmations poisoning the model.
 

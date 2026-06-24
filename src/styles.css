@@ -681,18 +681,43 @@ h3 {
   padding: 13px;
 }
 
-.data-tools button {
+.data-tools button,
+.import-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 44px;
   border: 0;
   border-radius: 8px;
   color: #ffffff;
   background: #172026;
   font-weight: 900;
+  text-align: center;
+}
+
+.import-action {
+  position: relative;
+  overflow: hidden;
+  color: #172026;
+  border: 1px solid rgba(23, 32, 38, 0.14);
+  background: #ffffff;
+}
+
+.import-action input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
 }
 
 .data-tools .danger-action {
   color: #8a3328;
   background: #f8e9e6;
+}
+
+.data-tools strong {
+  color: #19594d;
+  font-size: 0.88rem;
+  line-height: 1.5;
 }
 
 .decision-list {
