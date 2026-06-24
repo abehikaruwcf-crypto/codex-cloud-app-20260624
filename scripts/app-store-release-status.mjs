@@ -42,6 +42,11 @@ function hasConcreteContact(content) {
   );
 }
 
+function remoteBranchExists(branch) {
+  const result = run("git", ["ls-remote", "--heads", "origin", branch]);
+  return result.ok && result.output.includes(`refs/heads/${branch}`);
+}
+
 const packageVersion = hasFile("package.json") ? readJson("package.json").version : "unknown";
 const xcode = run("xcodebuild", ["-version"]);
 const xcodeSelected = xcode.ok && xcode.output.includes("Xcode");
@@ -63,6 +68,8 @@ const hostedUrlsReady =
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/privacy.html") &&
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/support.html");
 const finalSignoffReady = /^Status: Ready for App Review$/m.test(finalSignoff);
+const ghPagesBranchReady = remoteBranchExists("gh-pages");
+const pagesPlanBlocked = pagesWorkflow.includes("does not support GitHub Pages for this repository");
 
 const checks = [
   {
@@ -140,6 +147,9 @@ const manualBlockers = [
 const nextInputs = [
   "public/support.html: replace the placeholder with a concrete app support contact.",
   "public/privacy.html: replace the placeholder with a concrete privacy contact.",
+  pagesPlanBlocked
+    ? "Publishing: make the repository public, upgrade/move to a Pages-capable plan, or publish dist on another public static host."
+    : "Publishing: enable GitHub Pages or another public host for privacy.html and support.html.",
   "docs/github-pages-workflow.md and App Store Connect: replace placeholder Pages URLs with final public Privacy/Support URLs.",
   "docs/app-review-final-signoff.md: record Xcode, App Store Connect, uploaded build, TestFlight, URL, contact, owner, and date evidence.",
   "docs/app-review-final-signoff.md: change Status to Ready for App Review only after appstore:status reports 0 todo.",
@@ -154,6 +164,12 @@ for (const check of checks) {
 }
 
 const todoCount = checks.filter((check) => !check.ok).length;
+
+console.log("");
+console.log("Publishing status:");
+console.log(`- gh-pages branch: ${ghPagesBranchReady ? "ready" : "not found on origin"}`);
+console.log(`- GitHub Pages plan: ${pagesPlanBlocked ? "blocked for current private repository plan" : "not recorded as blocked"}`);
+console.log(`- Public URL status: ${hostedUrlsReady ? "final URLs documented" : "final Privacy/Support URLs still required"}`);
 
 console.log("");
 console.log("Manual items before App Review:");

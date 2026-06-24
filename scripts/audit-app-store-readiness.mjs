@@ -232,6 +232,9 @@ requireText("scripts/app-store-release-status.mjs", "^Status: Ready for App Revi
 requireText("scripts/app-store-release-status.mjs", "todoCount > 0", "Release status fails when TODO items remain");
 requireText("scripts/app-store-release-status.mjs", "Status summary", "Release status prints summary");
 requireText("scripts/app-store-release-status.mjs", "Next required inputs", "Release status prints next required inputs");
+requireText("scripts/app-store-release-status.mjs", "Publishing status", "Release status prints publishing status");
+requireText("scripts/app-store-release-status.mjs", "gh-pages branch", "Release status reports Pages branch readiness");
+requireText("scripts/app-store-release-status.mjs", "Pages-capable plan", "Release status reports hosting plan decision");
 requireText("scripts/app-store-release-status.mjs", "public/privacy.html: replace the placeholder", "Release status points to privacy contact input");
 requireText("scripts/app-store-release-status.mjs", "public/support.html: replace the placeholder", "Release status points to support contact input");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
