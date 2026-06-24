@@ -178,6 +178,9 @@ requireText("docs/app-store-review-answers.md", "Sign-in required: No", "Review 
 requireText("docs/app-store-review-answers.md", "Expected rating: 4+", "Age rating draft");
 requireText("docs/app-store-review-answers.md", "custom cryptography", "Export compliance draft");
 requireText("docs/app-store-submission-packet.md", "app-store-review-answers.md", "Review answers linked from submission packet");
+requireText("docs/app-store-metadata.md", "Japanese Metadata Draft", "Japanese App Store metadata draft");
+requireText("docs/app-store-metadata.md", "小物を撮影して管理番号を確認", "Japanese subtitle draft");
+requireText("docs/app-store-submission-packet.md", "Primary language: Japanese", "Submission packet primary language");
 requireText("docs/release-notes.md", "App Store What's New Draft", "Release notes include What's New");
 requireText("docs/release-notes.md", "TestFlight Notes Draft", "Release notes include TestFlight notes");
 requireText("docs/app-store-submission-packet.md", "release-notes.md", "Submission packet links release notes");
