@@ -39,11 +39,15 @@ const xcode = run("xcodebuild", ["-version"]);
 const xcodeSelected = xcode.ok && xcode.output.includes("Xcode");
 const supportPage = hasFile("public/support.html") ? readText("public/support.html") : "";
 const pagesWorkflow = hasFile("docs/github-pages-workflow.md") ? readText("docs/github-pages-workflow.md") : "";
+const finalSignoff = hasFile("docs/app-review-final-signoff.md")
+  ? readText("docs/app-review-final-signoff.md")
+  : "";
 const hasSupportPlaceholder =
   supportPage.includes("正式なサポート連絡先") || supportPage.includes("配布元の担当者");
 const hostedUrlsReady =
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/privacy.html") &&
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/support.html");
+const finalSignoffReady = /^Status: Ready for App Review$/m.test(finalSignoff);
 
 const checks = [
   {
@@ -86,6 +90,13 @@ const checks = [
     detail: "docs/testflight-release-checklist.md",
   },
   {
+    ok: finalSignoffReady,
+    title: "Final App Review signoff",
+    detail: finalSignoffReady
+      ? "docs/app-review-final-signoff.md is marked ready."
+      : "Complete docs/app-review-final-signoff.md and mark Status: Ready for App Review.",
+  },
+  {
     ok: xcodeSelected,
     title: "Full Xcode selected",
     detail: xcodeSelected ? xcode.output.split("\n")[0] : "Run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer",
@@ -99,6 +110,7 @@ const manualBlockers = [
   "Replace the support-page placeholder with the final support contact.",
   "Capture final App Store screenshots from release build at Apple-supported sizes.",
   "Run physical iPhone TestFlight validation.",
+  "Complete docs/app-review-final-signoff.md.",
   "Archive and upload from Xcode Organizer.",
 ];
 

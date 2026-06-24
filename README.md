@@ -29,6 +29,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - [docs/app-store-roadmap.md](docs/app-store-roadmap.md) tracks the release path.
 - [docs/app-store-submission-packet.md](docs/app-store-submission-packet.md) consolidates App Store Connect inputs.
 - [docs/testflight-release-checklist.md](docs/testflight-release-checklist.md) covers the Xcode/TestFlight upload flow.
+- [docs/app-review-final-signoff.md](docs/app-review-final-signoff.md) captures the final App Review evidence.
 - [docs/release-notes.md](docs/release-notes.md) contains the App Store What's New and TestFlight notes draft.
 - [docs/app-privacy-answers.md](docs/app-privacy-answers.md) documents the current local-only privacy answers.
 - [docs/github-actions-app-store-readiness.md](docs/github-actions-app-store-readiness.md) contains the GitHub Actions readiness workflow template.
@@ -53,6 +54,7 @@ Known manual blockers before App Review:
 - Replace the support-page placeholder with the final support contact.
 - Capture final App Store screenshots from the release build.
 - Run physical iPhone TestFlight validation.
+- Complete [docs/app-review-final-signoff.md](docs/app-review-final-signoff.md).
 
 ## Codex Cloud
 

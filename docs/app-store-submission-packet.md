@@ -102,11 +102,14 @@ open ios/App/App.xcodeproj
 
 Use Xcode Organizer to upload the archive to App Store Connect.
 
+Before submitting for App Review, complete [app-review-final-signoff.md](app-review-final-signoff.md) and confirm `npm run appstore:status` reports `0 todo`.
+
 ## Current Blocking Items
 
 - Full Xcode is not active on this Mac, so archive/upload validation cannot run here yet.
 - Apple Developer Program team must be selected in Xcode.
 - App Store Connect app record must be created.
 - Final screenshots and public URLs are still required after GitHub Pages or another host is enabled.
+- Final App Review signoff must be completed in [app-review-final-signoff.md](app-review-final-signoff.md).
 - `public/privacy.html` and `public/support.html` are ready to publish.
 - A GitHub Pages workflow template is included in [github-pages-workflow.md](github-pages-workflow.md). Once GitHub Pages is enabled for this repository, the pages should be available at `/privacy.html` and `/support.html` on the Pages site.

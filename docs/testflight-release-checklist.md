@@ -81,5 +81,7 @@ After processing:
 - Replace development placeholder icon if final brand artwork is available.
 - Capture final screenshots at required Apple sizes.
 - Publish privacy policy URL.
+- Complete [app-review-final-signoff.md](app-review-final-signoff.md) and mark `Status: Ready for App Review`.
+- Confirm `npm run appstore:status` reports `0 todo`.
 - Re-run `npm run appstore:audit`.
 - Confirm no new SDK or cloud feature changed privacy answers.

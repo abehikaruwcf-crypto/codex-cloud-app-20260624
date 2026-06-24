@@ -136,6 +136,7 @@ fileExists("docs/release-notes.md", "Release notes");
 fileExists("docs/app-store-screenshots.md", "Screenshot documentation");
 fileExists("docs/app-store-submission-packet.md", "Submission packet");
 fileExists("docs/testflight-release-checklist.md", "TestFlight release checklist");
+fileExists("docs/app-review-final-signoff.md", "App Review final signoff");
 fileExists("public/privacy.html", "Public privacy policy page");
 fileExists("public/support.html", "Public support page");
 fileExists("docs/github-actions-app-store-readiness.md", "App Store readiness CI workflow template");
@@ -204,16 +205,24 @@ requireText("package.json", "\"appstore:status\"", "Release status script entry"
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
 requireText("scripts/app-store-release-status.mjs", "Formal support contact", "Release status checks support contact");
 requireText("scripts/app-store-release-status.mjs", "Hosted privacy/support URLs", "Release status checks hosted URLs");
+requireText("scripts/app-store-release-status.mjs", "Final App Review signoff", "Release status checks final signoff");
+requireText("scripts/app-store-release-status.mjs", "^Status: Ready for App Review$", "Release status checks exact final signoff status");
 requireText("scripts/app-store-release-status.mjs", "todoCount > 0", "Release status fails when TODO items remain");
 requireText("scripts/app-store-release-status.mjs", "Status summary", "Release status prints summary");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
 requireText("README.md", "exits non-zero", "README explains release status failure behavior");
+requireText("README.md", "app-review-final-signoff.md", "README links final signoff");
 requireText("README.md", "docs/release-notes.md", "README links release notes");
 requireText("README.md", "public/support.html", "README references support page");
 requireText("README.md", "final support contact", "README tracks support contact blocker");
+requireText("docs/app-review-final-signoff.md", "Status: Pending", "Final signoff starts pending");
+requireText("docs/app-review-final-signoff.md", "Status: Ready for App Review", "Final signoff ready marker");
+requireText("docs/app-review-final-signoff.md", "npm run appstore:status", "Final signoff includes release status evidence");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");
+requireText("docs/testflight-release-checklist.md", "Status: Ready for App Review", "TestFlight checklist includes final signoff ready marker");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");
 requireText("docs/testflight-release-checklist.md", "Camera permission denial and retry path", "TestFlight checklist covers camera permission denial");
+requireText("docs/app-store-submission-packet.md", "app-review-final-signoff.md", "Submission packet links final signoff");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
