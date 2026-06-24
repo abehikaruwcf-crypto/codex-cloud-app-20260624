@@ -108,9 +108,9 @@ function screenshotInfo(path, label) {
 
   const result = run("file", [join(root, path)]);
   const size = statSync(join(root, path)).size;
-  const isExpectedSize = result.output.includes("390x844") || result.output.includes("1170x2532");
+  const isExpectedSize = result.output.includes("1170x2532");
   const ok = result.ok && isExpectedSize && size > 10_000;
-  addCheck(label, ok ? "pass" : "warn", `${result.output}; ${size} bytes`);
+  addCheck(label, ok ? "pass" : "fail", `${result.output}; ${size} bytes`);
 }
 
 function plistCheck(path, label) {
@@ -218,6 +218,8 @@ requireText("docs/github-pages-workflow.md", "another public static host", "Page
 requireText("docs/github-pages-workflow.md", "/support.html", "Support page Pages URL");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
 requireText("docs/app-store-screenshots.md", "05-learning.jpg", "Screenshot docs include learning success shot");
+requireText("scripts/generate-app-store-screenshots.mjs", "clip: { x: 0, y: 0, width: viewport.width, height: viewport.height }", "Screenshot generation uses exact viewport clip");
+requireText("scripts/generate-app-store-screenshots.mjs", "failed screenshot validation", "Screenshot generation validates output dimensions");
 requireText("package.json", "\"test:unit\"", "Unit test script entry");
 requireText("package.json", "\"backup:validate\"", "Backup validation script entry");
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");

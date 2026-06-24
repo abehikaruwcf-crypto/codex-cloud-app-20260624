@@ -1,5 +1,6 @@
 import { spawn } from "node:child_process";
-import { mkdirSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import { mkdirSync, statSync } from "node:fs";
 import { createServer } from "node:net";
 import { join } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
@@ -8,6 +9,11 @@ import { chromium } from "playwright";
 const root = process.cwd();
 const outputDir = join(root, "outputs", "app-store-screenshots");
 const viewport = { width: 390, height: 844 };
+const deviceScaleFactor = 3;
+const expectedScreenshotSize = {
+  width: viewport.width * deviceScaleFactor,
+  height: viewport.height * deviceScaleFactor,
+};
 
 const shots = [
   { file: "01-onboarding.jpg", url: "/?appshot=onboarding" },
@@ -75,6 +81,55 @@ async function confirmFirstCandidate(page) {
   await page.getByText("CH-001 を確定し、2枚を追加学習しました。").waitFor({ timeout: 3_000 });
 }
 
+async function waitForStableShot(page) {
+  await page.locator(".app-shell").waitFor({ timeout: 5_000 });
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  });
+}
+
+function screenshotInfo(path) {
+  const fileOutput = execFileSync("file", [path], { encoding: "utf8" });
+  const size = statSync(path).size;
+  const sizePattern = `${expectedScreenshotSize.width}x${expectedScreenshotSize.height}`;
+
+  return {
+    ok: fileOutput.includes(sizePattern) && size > 10_000,
+    detail: `${fileOutput.trim()}; ${size} bytes`,
+  };
+}
+
+async function captureScreenshot(page, shot) {
+  const outputPath = join(outputDir, shot.file);
+
+  for (let attempt = 1; attempt <= 3; attempt += 1) {
+    await waitForStableShot(page);
+    await page.screenshot({
+      animations: "disabled",
+      caret: "hide",
+      clip: { x: 0, y: 0, width: viewport.width, height: viewport.height },
+      fullPage: false,
+      path: outputPath,
+      quality: 92,
+      type: "jpeg",
+    });
+
+    const info = screenshotInfo(outputPath);
+
+    if (info.ok) {
+      console.log(`Generated ${shot.file}`);
+      return;
+    }
+
+    if (attempt === 3) {
+      throw new Error(`Generated ${shot.file} failed screenshot validation: ${info.detail}`);
+    }
+
+    await delay(250);
+  }
+}
+
 await run("npm", ["run", "build"]);
 mkdirSync(outputDir, { recursive: true });
 
@@ -102,7 +157,7 @@ try {
 
   const browser = await chromium.launch();
   const page = await browser.newPage({
-    deviceScaleFactor: 3,
+    deviceScaleFactor,
     isMobile: true,
     viewport,
   });
@@ -110,13 +165,7 @@ try {
   for (const shot of shots) {
     await page.goto(`${baseUrl}${shot.url}`, { waitUntil: "networkidle" });
     await shot.setup?.(page);
-    await page.screenshot({
-      fullPage: false,
-      path: join(outputDir, shot.file),
-      quality: 92,
-      type: "jpeg",
-    });
-    console.log(`Generated ${shot.file}`);
+    await captureScreenshot(page, shot);
   }
 
   await browser.close();
