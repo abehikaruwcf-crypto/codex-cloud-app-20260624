@@ -16,6 +16,7 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - `npm run appstore:public-urls` confirms the final Privacy Policy and Support URLs return HTTP 200 and expected page titles.
 - Final App Store screenshots are captured from the release build at Apple-supported sizes.
 - TestFlight build is uploaded and processed in App Store Connect.
+- Xcode archive and upload followed [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md).
 - Physical iPhone TestFlight validation completed against the uploaded build.
 - Exported backup from the release build validates with `npm run backup:validate -- <exported-backup.json>` and imports successfully on a physical iPhone.
 - App Privacy answers from [app-privacy-answers.md](app-privacy-answers.md) match the uploaded build.

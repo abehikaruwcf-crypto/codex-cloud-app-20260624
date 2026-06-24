@@ -1,6 +1,6 @@
 # TestFlight Release Checklist
 
-Use this checklist once full Xcode is installed and selected.
+Use this checklist once full Xcode is installed and selected. For the complete Xcode archive and App Store Connect upload flow, use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md).
 
 ## 1. Local Prep
 

@@ -137,6 +137,7 @@ fileExists("docs/app-store-screenshots.md", "Screenshot documentation");
 fileExists("docs/app-store-submission-packet.md", "Submission packet");
 fileExists("docs/testflight-release-checklist.md", "TestFlight release checklist");
 fileExists("docs/app-review-final-signoff.md", "App Review final signoff");
+fileExists("docs/xcode-app-store-upload-guide.md", "Xcode App Store upload guide");
 fileExists("public/privacy.html", "Public privacy policy page");
 fileExists("public/support.html", "Public support page");
 fileExists("docs/privacy.html", "Pages privacy policy page");
@@ -217,6 +218,7 @@ requireText("docs/app-store-submission-packet.md", "iOS development region: `ja`
 requireText("docs/app-store-submission-packet.md", "npm run appstore:metadata", "Submission packet includes metadata print command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:connect-packet", "Submission packet includes App Store Connect packet command");
 requireText("docs/app-store-submission-packet.md", "npm run appstore:public-urls", "Submission packet includes public URL verification command");
+requireText("docs/app-store-submission-packet.md", "xcode-app-store-upload-guide.md", "Submission packet links Xcode upload guide");
 requireText("docs/app-store-submission-packet.md", "keywords 100 bytes", "Submission packet documents metadata limits");
 requireText("docs/app-store-submission-packet.md", "App Store Connect Entry Checklist", "Submission packet includes App Store Connect entry map");
 requireText("docs/app-store-submission-packet.md", "Formal support and privacy contacts", "Submission packet tracks remaining contact blocker");
@@ -329,6 +331,7 @@ requireText("docs/app-review-final-signoff.md", "Backup validation file", "Final
 requireText("docs/app-review-final-signoff.md", "Backup import result", "Final signoff records backup import result");
 requireText("docs/app-review-final-signoff.md", "Public URL verification result", "Final signoff records public URL verification");
 requireText("docs/app-review-final-signoff.md", "Strict verification result", "Final signoff records strict verification result");
+requireText("docs/app-review-final-signoff.md", "xcode-app-store-upload-guide.md", "Final signoff links Xcode upload guide");
 requireText("docs/app-review-final-signoff.md", "Formal support contact", "Final signoff maps support contact TODO");
 requireText("docs/app-review-final-signoff.md", "Privacy policy contact", "Final signoff maps privacy contact TODO");
 requireText("docs/privacy-policy-draft.md", "Concrete contact information", "Privacy policy draft requires concrete contact");
@@ -342,7 +345,13 @@ requireText("docs/testflight-release-checklist.md", "Exported backup filename", 
 requireText("docs/testflight-release-checklist.md", "Status: Ready for App Review", "TestFlight checklist includes final signoff ready marker");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");
 requireText("docs/testflight-release-checklist.md", "Camera permission denial and retry path", "TestFlight checklist covers camera permission denial");
+requireText("docs/testflight-release-checklist.md", "xcode-app-store-upload-guide.md", "TestFlight checklist links Xcode upload guide");
 requireText("docs/app-store-submission-packet.md", "app-review-final-signoff.md", "Submission packet links final signoff");
+requireText("docs/xcode-app-store-upload-guide.md", "sudo xcode-select -s /Applications/Xcode.app/Contents/Developer", "Xcode guide selects full Xcode");
+requireText("docs/xcode-app-store-upload-guide.md", "Product > Archive", "Xcode guide covers archive");
+requireText("docs/xcode-app-store-upload-guide.md", "Distribute App", "Xcode guide covers upload");
+requireText("docs/xcode-app-store-upload-guide.md", "npm run appstore:connect-packet", "Xcode guide uses transfer packet");
+requireText("docs/xcode-app-store-upload-guide.md", "npm run appstore:verify -- --strict", "Xcode guide includes strict verification");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
