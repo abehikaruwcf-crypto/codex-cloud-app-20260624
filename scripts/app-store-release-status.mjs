@@ -12,6 +12,10 @@ function readJson(path) {
   return JSON.parse(readFileSync(join(root, path), "utf8"));
 }
 
+function readText(path) {
+  return readFileSync(join(root, path), "utf8");
+}
+
 function run(command, args) {
   try {
     return {
@@ -33,6 +37,13 @@ function mark(ok) {
 const packageVersion = hasFile("package.json") ? readJson("package.json").version : "unknown";
 const xcode = run("xcodebuild", ["-version"]);
 const xcodeSelected = xcode.ok && xcode.output.includes("Xcode");
+const supportPage = hasFile("public/support.html") ? readText("public/support.html") : "";
+const pagesWorkflow = hasFile("docs/github-pages-workflow.md") ? readText("docs/github-pages-workflow.md") : "";
+const hasSupportPlaceholder =
+  supportPage.includes("正式なサポート連絡先") || supportPage.includes("配布元の担当者");
+const hostedUrlsReady =
+  !pagesWorkflow.includes("https://<owner>.github.io/<repo>/privacy.html") &&
+  !pagesWorkflow.includes("https://<owner>.github.io/<repo>/support.html");
 
 const checks = [
   {
@@ -44,6 +55,20 @@ const checks = [
     ok: hasFile("public/privacy.html") && hasFile("public/support.html"),
     title: "Public policy/support pages",
     detail: "public/privacy.html and public/support.html",
+  },
+  {
+    ok: !hasSupportPlaceholder,
+    title: "Formal support contact",
+    detail: hasSupportPlaceholder
+      ? "Replace support-page placeholder with final App Review support contact."
+      : "public/support.html includes final support contact.",
+  },
+  {
+    ok: hostedUrlsReady,
+    title: "Hosted privacy/support URLs",
+    detail: hostedUrlsReady
+      ? "Final hosted URLs are documented."
+      : "Enable GitHub Pages or another host, then replace <owner>/<repo> URL placeholders.",
   },
   {
     ok: hasFile("docs/app-store-submission-packet.md"),
@@ -71,6 +96,7 @@ const manualBlockers = [
   "Select Apple Developer Program team in Xcode.",
   "Create App Store Connect app record for Bundle ID com.wcf.charmid.",
   "Enable/publish public Privacy Policy and Support URLs.",
+  "Replace the support-page placeholder with the final support contact.",
   "Capture final App Store screenshots from release build at Apple-supported sizes.",
   "Run physical iPhone TestFlight validation.",
   "Archive and upload from Xcode Organizer.",

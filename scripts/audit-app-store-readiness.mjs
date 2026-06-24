@@ -198,9 +198,12 @@ requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation s
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
 requireText("package.json", "\"appstore:status\"", "Release status script entry");
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
+requireText("scripts/app-store-release-status.mjs", "Formal support contact", "Release status checks support contact");
+requireText("scripts/app-store-release-status.mjs", "Hosted privacy/support URLs", "Release status checks hosted URLs");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
 requireText("README.md", "docs/release-notes.md", "README links release notes");
 requireText("README.md", "public/support.html", "README references support page");
+requireText("README.md", "final support contact", "README tracks support contact blocker");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");
 requireText("docs/testflight-release-checklist.md", "Camera permission denial and retry path", "TestFlight checklist covers camera permission denial");

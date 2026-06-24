@@ -48,6 +48,7 @@ Known manual blockers before App Review:
 - Select the Apple Developer Program team in Xcode.
 - Create the App Store Connect app record.
 - Publish final Privacy Policy and Support URLs.
+- Replace the support-page placeholder with the final support contact.
 - Capture final App Store screenshots from the release build.
 - Run physical iPhone TestFlight validation.
 
