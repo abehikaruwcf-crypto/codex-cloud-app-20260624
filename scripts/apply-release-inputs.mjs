@@ -171,6 +171,26 @@ function requireCopyrightHolder(value) {
   }
 }
 
+function requirePattern(value, pattern, label, example) {
+  if (value && !pattern.test(value)) {
+    throw new Error(`${label} must look like ${example}.`);
+  }
+}
+
+function requireFinalSignoffEvidence(signoffValues) {
+  const validations = [
+    ["Release commit", /^[0-9a-f]{7,40}$/i, "a git SHA such as abc1234"],
+    ["Evidence report generated", /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$/, "an ISO UTC timestamp such as 2026-06-25T00:00:00Z"],
+    ["App Store Connect app ID", /^\d{6,12}$/, "a numeric App Store Connect app ID such as 1234567890"],
+    ["Uploaded build", /^\d+\.\d+(?:\.\d+)? \(\d+\)$/, "a version/build pair such as 1.0 (1)"],
+    ["Signoff date", /^\d{4}-\d{2}-\d{2}$/, "a date such as 2026-06-25"],
+  ];
+
+  for (const [label, pattern, example] of validations) {
+    requirePattern(signoffValues[label], pattern, `--${signoffInputs.find(([, field]) => field === label)?.[0]}`, example);
+  }
+}
+
 function replaceOrThrow(content, search, replacement, label) {
   if (!content.includes(search)) {
     throw new Error(`Could not find ${label}.`);
@@ -338,6 +358,7 @@ try {
   if (copyrightHolder) {
     requireCopyrightHolder(copyrightHolder);
   }
+  requireFinalSignoffEvidence(signoffValues);
   if ((privacyUrl && !supportUrl) || (!privacyUrl && supportUrl)) {
     throw new Error("--privacy-url and --support-url must be supplied together.");
   }

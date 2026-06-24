@@ -241,6 +241,28 @@ test("release input CLI rejects unknown JSON input keys", () => {
   }
 });
 
+test("release input CLI rejects malformed final signoff evidence values", () => {
+  const fixtureRoot = copyFixtureTree();
+
+  try {
+    const result = runApplyInputs(fixtureRoot, [
+      "--release-commit",
+      "not-a-sha",
+      "--app-store-connect-app-id",
+      "abc",
+      "--uploaded-build",
+      "build one",
+      "--signoff-date",
+      "25/06/2026",
+    ]);
+
+    assert.equal(result.ok, false);
+    assert.match(result.output, /--release-commit must look like a git SHA such as abc1234/);
+  } finally {
+    rmSync(fixtureRoot, { force: true, recursive: true });
+  }
+});
+
 test("release input CLI refuses to mark final signoff ready when evidence is incomplete", () => {
   const fixtureRoot = copyFixtureTree();
 

@@ -307,6 +307,7 @@ requireText("scripts/apply-release-inputs.mjs", "--age-rating-result", "Release 
 requireText("scripts/apply-release-inputs.mjs", "--mark-ready", "Release input script can mark final signoff ready");
 requireText("scripts/apply-release-inputs.mjs", "--dry-run", "Release input script supports dry run");
 requireText("scripts/apply-release-inputs.mjs", "https URL", "Release input script requires HTTPS URLs");
+requireText("scripts/apply-release-inputs.mjs", "requireFinalSignoffEvidence", "Release input script validates final signoff evidence formats");
 requireText("scripts/apply-release-inputs.mjs", "docs/support.html", "Release input script updates Pages support page");
 requireText("scripts/apply-release-inputs.mjs", "docs/privacy.html", "Release input script updates Pages privacy page");
 requireText("tests/release-inputs-cli.test.ts", "release input CLI validates dry-run inputs", "Release input CLI dry-run unit test exists");
@@ -314,6 +315,7 @@ requireText("tests/release-inputs-cli.test.ts", "rejects non-https public URLs",
 requireText("tests/release-inputs-cli.test.ts", "applies contacts, hosted URLs, and signoff evidence fields", "Release input CLI apply test exists");
 requireText("tests/release-inputs-cli.test.ts", "applies values from a JSON inputs file", "Release input CLI JSON file test exists");
 requireText("tests/release-inputs-cli.test.ts", "Copyright holder: WCF Inc", "Release input CLI verifies copyright holder update");
+requireText("tests/release-inputs-cli.test.ts", "rejects malformed final signoff evidence values", "Release input CLI malformed evidence test exists");
 requireText("tests/release-inputs-cli.test.ts", "refuses to mark final signoff ready", "Release input CLI ready guard test exists");
 requireText("tests/release-inputs-cli.test.ts", "pagesSupportPage", "Release input CLI verifies Pages support contact update");
 requireText("tests/release-inputs-cli.test.ts", "pagesPrivacyPage", "Release input CLI verifies Pages privacy contact update");
