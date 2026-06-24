@@ -103,6 +103,36 @@ h3 {
   line-height: 1.6;
 }
 
+.metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.metrics-strip div {
+  border: 1px solid rgba(23, 32, 38, 0.1);
+  border-radius: 8px;
+  padding: 10px;
+  background: #ffffff;
+}
+
+.metrics-strip span {
+  display: block;
+  color: #172026;
+  font-size: 1.08rem;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.metrics-strip p {
+  margin-top: 4px;
+  color: #607078;
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
 .view {
   display: none;
 }
@@ -174,6 +204,43 @@ h3 {
   background: #dce4e7;
 }
 
+.match-summary,
+.training-meter,
+.data-tools,
+.decision-list {
+  border: 1px solid rgba(23, 32, 38, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.match-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+}
+
+.match-summary p {
+  color: #607078;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.match-summary h3 {
+  margin-top: 2px;
+  font-size: 1.36rem;
+}
+
+.match-summary strong {
+  min-width: 62px;
+  border-radius: 8px;
+  padding: 9px 12px;
+  color: #ffffff;
+  background: #3a6f68;
+  text-align: center;
+}
+
 .result-list,
 .library-list,
 .register-form {
@@ -222,12 +289,51 @@ h3 {
   background: #e4eaed;
 }
 
+.candidate-actions {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.candidate-actions button {
+  min-height: 40px;
+  border: 0;
+  border-radius: 8px;
+  color: #172026;
+  background: #edf4f2;
+  font-size: 0.88rem;
+  font-weight: 900;
+}
+
+.candidate-actions button:last-child {
+  color: #7a3b32;
+  background: #f8e9e6;
+}
+
 .empty-state {
   margin-top: 16px;
   padding: 18px;
   color: #5d6c73;
   font-size: 0.95rem;
   line-height: 1.7;
+}
+
+.identify-guide {
+  display: grid;
+  gap: 8px;
+}
+
+.identify-guide strong {
+  color: #172026;
+}
+
+.identify-guide span {
+  display: block;
+  border: 1px solid rgba(23, 32, 38, 0.09);
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
 }
 
 .register-form label {
@@ -251,6 +357,41 @@ h3 {
 
 .register-form textarea {
   resize: vertical;
+}
+
+.training-meter {
+  display: grid;
+  gap: 8px;
+  padding: 13px;
+}
+
+.training-meter div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.training-meter span {
+  color: #38484f;
+  font-size: 0.88rem;
+  font-weight: 900;
+}
+
+.training-meter strong {
+  color: #3a6f68;
+}
+
+.training-meter meter {
+  width: 100%;
+  height: 12px;
+}
+
+.training-meter p,
+.data-tools p {
+  color: #607078;
+  font-size: 0.84rem;
+  line-height: 1.55;
 }
 
 .photo-grid {
@@ -283,6 +424,18 @@ h3 {
   padding: 9px;
   color: #5d6c73;
   font-size: 0.82rem;
+}
+
+.photo-grid select {
+  min-width: 0;
+  width: 100%;
+  border: 1px solid rgba(23, 32, 38, 0.12);
+  border-radius: 8px;
+  padding: 7px 8px;
+  color: #38484f;
+  background: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 800;
 }
 
 .photo-grid button,
@@ -337,6 +490,42 @@ h3 {
   line-height: 1.45;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.data-tools {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 13px;
+}
+
+.data-tools button {
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #172026;
+  font-weight: 900;
+}
+
+.decision-list {
+  display: grid;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 13px;
+}
+
+.decision-list p {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: #607078;
+  font-size: 0.88rem;
+}
+
+.decision-list span {
+  color: #172026;
+  font-weight: 900;
 }
 
 .tab-bar {

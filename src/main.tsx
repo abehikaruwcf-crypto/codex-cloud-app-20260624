@@ -33,7 +33,16 @@ type Candidate = {
   bestImage?: CharmImage;
 };
 
+type DecisionLog = {
+  id: string;
+  managementNumber: string;
+  decision: "confirmed" | "rejected";
+  score: number;
+  createdAt: string;
+};
+
 const STORAGE_KEY = "charm-id-camera-app-charms";
+const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
 
 const sampleCharms: Charm[] = [
   {
@@ -161,6 +170,40 @@ function findCandidates(query: ImageSignature, charms: Charm[]): Candidate[] {
     .slice(0, 3);
 }
 
+function confidenceLabel(score: number) {
+  if (score >= 88) {
+    return "高";
+  }
+
+  if (score >= 74) {
+    return "中";
+  }
+
+  return "要確認";
+}
+
+function qualityScore(images: CharmImage[]) {
+  const angleCount = new Set(images.map((image) => image.angleLabel)).size;
+  const imageScore = Math.min(images.length, 6) * 12;
+  const angleScore = Math.min(angleCount, 6) * 5;
+
+  return Math.min(100, imageScore + angleScore);
+}
+
+function loadDecisions() {
+  const stored = localStorage.getItem(DECISION_STORAGE_KEY);
+
+  if (!stored) {
+    return [];
+  }
+
+  try {
+    return JSON.parse(stored) as DecisionLog[];
+  } catch {
+    return [];
+  }
+}
+
 function loadCharms() {
   const stored = localStorage.getItem(STORAGE_KEY);
 
@@ -183,12 +226,17 @@ function App() {
   const [draftImages, setDraftImages] = useState<CharmImage[]>([]);
   const [queryImage, setQueryImage] = useState<string | null>(null);
   const [querySignature, setQuerySignature] = useState<ImageSignature | null>(null);
+  const [decisionLogs, setDecisionLogs] = useState<DecisionLog[]>(loadDecisions);
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(charms));
   }, [charms]);
+
+  useEffect(() => {
+    localStorage.setItem(DECISION_STORAGE_KEY, JSON.stringify(decisionLogs));
+  }, [decisionLogs]);
 
   const candidates = useMemo(() => {
     if (!querySignature) {
@@ -197,6 +245,9 @@ function App() {
 
     return findCandidates(querySignature, charms);
   }, [charms, querySignature]);
+
+  const topCandidate = candidates[0];
+  const currentQualityScore = qualityScore(draftImages);
 
   async function addImages(event: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(event.target.files ?? []);
@@ -291,8 +342,42 @@ function App() {
     setDraftImages((current) => current.filter((image) => image.id !== imageId));
   }
 
+  function updateDraftAngle(imageId: string, angleLabel: string) {
+    setDraftImages((current) =>
+      current.map((image) => (image.id === imageId ? { ...image, angleLabel } : image)),
+    );
+  }
+
   function deleteCharm(charmId: string) {
     setCharms((current) => current.filter((charm) => charm.id !== charmId));
+  }
+
+  function logDecision(candidate: Candidate, decision: DecisionLog["decision"]) {
+    const nextLog: DecisionLog = {
+      id: makeId("decision"),
+      managementNumber: candidate.charm.managementNumber,
+      decision,
+      score: candidate.score,
+      createdAt: new Date().toISOString(),
+    };
+
+    setDecisionLogs((current) => [nextLog, ...current].slice(0, 20));
+    setMessage(
+      decision === "confirmed"
+        ? `${candidate.charm.managementNumber} を確定しました。`
+        : `${candidate.charm.managementNumber} を違う候補として記録しました。`,
+    );
+  }
+
+  function exportDataset() {
+    const payload = JSON.stringify({ charms, decisionLogs, exportedAt: new Date().toISOString() });
+    const blob = new Blob([payload], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `charm-id-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
   }
 
   return (
@@ -304,6 +389,21 @@ function App() {
         </div>
         <div className="count-badge">{charms.length}件</div>
       </header>
+
+      <section className="metrics-strip" aria-label="登録状況">
+        <div>
+          <span>{charms.reduce((total, charm) => total + charm.images.length, 0)}</span>
+          <p>参照写真</p>
+        </div>
+        <div>
+          <span>{decisionLogs.length}</span>
+          <p>判定履歴</p>
+        </div>
+        <div>
+          <span>{topCandidate ? `${topCandidate.score}%` : "-"}</span>
+          <p>最新候補</p>
+        </div>
+      </section>
 
       {message ? <p className="status-message">{message}</p> : null}
 
@@ -328,6 +428,15 @@ function App() {
         {queryImage ? (
           <div className="result-layout">
             <img className="query-preview" src={queryImage} alt="識別対象のチャーム" />
+            {topCandidate ? (
+              <article className="match-summary">
+                <div>
+                  <p>最有力候補</p>
+                  <h3>{topCandidate.charm.managementNumber}</h3>
+                </div>
+                <strong>{confidenceLabel(topCandidate.score)}</strong>
+              </article>
+            ) : null}
             <div className="result-list">
               {candidates.length > 0 ? (
                 candidates.map((candidate, index) => (
@@ -335,11 +444,21 @@ function App() {
                     <div className="candidate-rank">{index + 1}</div>
                     <div>
                       <h3>{candidate.charm.managementNumber}</h3>
-                      <p>{candidate.score}%一致</p>
+                      <p>
+                        {candidate.score}%一致 / {confidenceLabel(candidate.score)}
+                      </p>
                     </div>
                     {candidate.bestImage ? (
                       <img src={candidate.bestImage.imageUrl} alt="" />
                     ) : null}
+                    <div className="candidate-actions">
+                      <button type="button" onClick={() => logDecision(candidate, "confirmed")}>
+                        確定
+                      </button>
+                      <button type="button" onClick={() => logDecision(candidate, "rejected")}>
+                        違う
+                      </button>
+                    </div>
                   </article>
                 ))
               ) : (
@@ -348,8 +467,11 @@ function App() {
             </div>
           </div>
         ) : (
-          <div className="empty-state">
-            まずは登録済みチャームを撮影してください。候補の管理番号を最大3件表示します。
+          <div className="empty-state identify-guide">
+            <strong>撮影のコツ</strong>
+            <span>チャームを画面中央に置く</span>
+            <span>背景は無地に近づける</span>
+            <span>明るさを揃えて撮る</span>
           </div>
         )}
       </section>
@@ -383,6 +505,15 @@ function App() {
             />
           </label>
 
+          <div className="training-meter">
+            <div>
+              <span>登録品質</span>
+              <strong>{currentQualityScore}%</strong>
+            </div>
+            <meter min="0" max="100" value={currentQualityScore} />
+            <p>最低2枚、できれば正面・裏面・斜めの3方向以上を登録してください。</p>
+          </div>
+
           <label className="camera-button secondary">
             <span>写真を追加</span>
             <input
@@ -399,7 +530,16 @@ function App() {
               <figure key={image.id}>
                 <img src={image.imageUrl} alt={image.angleLabel} />
                 <figcaption>
-                  <span>{image.angleLabel}</span>
+                  <select
+                    value={image.angleLabel}
+                    onChange={(event) => updateDraftAngle(image.id, event.target.value)}
+                  >
+                    {angleSuggestions.map((angle) => (
+                      <option key={angle} value={angle}>
+                        {angle}
+                      </option>
+                    ))}
+                  </select>
                   <button type="button" onClick={() => removeDraftImage(image.id)}>
                     削除
                   </button>
@@ -439,6 +579,25 @@ function App() {
             </article>
           ))}
         </div>
+
+        <div className="data-tools">
+          <button type="button" onClick={exportDataset}>
+            データを書き出す
+          </button>
+          <p>今は端末内保存です。バックアップを残すと機種変更や本番DB移行で使えます。</p>
+        </div>
+
+        {decisionLogs.length > 0 ? (
+          <div className="decision-list">
+            <h3>最近の判定</h3>
+            {decisionLogs.slice(0, 5).map((log) => (
+              <p key={log.id}>
+                <span>{log.managementNumber}</span>
+                {log.decision === "confirmed" ? "確定" : "違う"} / {log.score}%
+              </p>
+            ))}
+          </div>
+        ) : null}
       </section>
 
       <nav className="tab-bar" aria-label="主要メニュー">
