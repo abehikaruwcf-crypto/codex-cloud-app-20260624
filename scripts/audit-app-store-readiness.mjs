@@ -198,6 +198,7 @@ requireText("docs/github-actions-app-store-readiness.md", "npm run appstore:audi
 requireText("docs/github-actions-app-store-readiness.md", "macos-latest", "CI template runs on macOS");
 requireText("docs/github-pages-workflow.md", "/support.html", "Support page Pages URL");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
+requireText("docs/app-store-screenshots.md", "05-learning.jpg", "Screenshot docs include learning success shot");
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
@@ -242,7 +243,7 @@ addCheck(
   screenshots.output.split("\n").slice(-8).join("\n"),
 );
 
-for (const name of ["01-onboarding", "02-library", "03-identify", "04-register"]) {
+for (const name of ["01-onboarding", "02-library", "03-identify", "04-register", "05-learning"]) {
   screenshotInfo(`outputs/app-store-screenshots/${name}.jpg`, `Screenshot ${name}`);
 }
 

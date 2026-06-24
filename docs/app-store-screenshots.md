@@ -24,6 +24,7 @@ Current set:
 2. `02-library.jpg` - six-angle demo models and detail view in the registered library.
 3. `03-identify.jpg` - candidate ranking and confirmation flow.
 4. `04-register.jpg` - guided six-angle registration flow.
+5. `05-learning.jpg` - human-confirmed learning success state.
 
 Capture size:
 

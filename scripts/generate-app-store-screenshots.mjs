@@ -14,6 +14,7 @@ const shots = [
   { file: "02-library.jpg", url: "/?appshot=library", setup: openFirstLibraryDetail },
   { file: "03-identify.jpg", url: "/?appshot=identify" },
   { file: "04-register.jpg", url: "/?appshot=register" },
+  { file: "05-learning.jpg", url: "/?appshot=identify", setup: confirmFirstCandidate },
 ];
 
 async function getFreePort() {
@@ -62,8 +63,16 @@ async function waitForPreview(baseUrl) {
 }
 
 async function openFirstLibraryDetail(page) {
-  await page.getByRole("button", { name: "詳細" }).first().click();
+  await page.getByRole("button", { name: "CH-001の詳細を開く" }).click();
   await page.locator(".library-detail").waitFor({ timeout: 3_000 });
+}
+
+async function confirmFirstCandidate(page) {
+  page.once("dialog", async (dialog) => {
+    await dialog.accept();
+  });
+  await page.getByRole("button", { name: "CH-001を正解にする" }).click();
+  await page.getByText("CH-001 を確定し、2枚を追加学習しました。").waitFor({ timeout: 3_000 });
 }
 
 await run("npm", ["run", "build"]);
