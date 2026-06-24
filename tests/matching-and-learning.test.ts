@@ -204,6 +204,29 @@ test("backup validation rejects incomplete six-angle models", () => {
   );
 });
 
+test("backup validation rejects empty image data before import", () => {
+  const payload = normalizeBackupPayload(
+    {
+      charms: [
+        {
+          managementNumber: "CH-035",
+          images: captureAngles.map((angle) => ({
+            ...image(`empty-${angle.id}`, angle.label, gold),
+            imageUrl: angle.label === "表" ? "" : `data:test/${angle.id}`,
+          })),
+        },
+      ],
+    },
+    backupOptions,
+  );
+
+  assert.ok(payload);
+  assert.equal(
+    validateBackupPayload({ version: 1 }, payload),
+    "CH-035 の画像データが空です: 表",
+  );
+});
+
 test("backup validation rejects future backup versions before import", () => {
   const payload = normalizeBackupPayload(
     {

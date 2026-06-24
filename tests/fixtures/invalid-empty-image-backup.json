@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-25T09:00:00.000Z",
+  "charms": [
+    {
+      "id": "fixture-empty-image",
+      "managementNumber": "CH-902",
+      "images": [
+        { "id": "front", "imageUrl": "", "angleLabel": "表", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "back", "imageUrl": "data:test/back", "angleLabel": "裏", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "right", "imageUrl": "data:test/right", "angleLabel": "右側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "left", "imageUrl": "data:test/left", "angleLabel": "左側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "top", "imageUrl": "data:test/top", "angleLabel": "上側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" },
+        { "id": "bottom", "imageUrl": "data:test/bottom", "angleLabel": "下側面", "signature": {}, "source": "registration", "createdAt": "2026-06-25T09:00:00.000Z" }
+      ]
+    }
+  ],
+  "decisionLogs": []
+}

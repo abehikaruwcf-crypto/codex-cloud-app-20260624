@@ -35,3 +35,12 @@ test("backup validation CLI rejects duplicate normalized management numbers", ()
   assert.match(result.output, /Invalid backup:/);
   assert.match(result.output, /CH-901/);
 });
+
+test("backup validation CLI rejects empty image data", () => {
+  const result = runBackupValidation("tests/fixtures/invalid-empty-image-backup.json");
+
+  assert.equal(result.ok, false);
+  assert.match(result.output, /Invalid backup:/);
+  assert.match(result.output, /画像データが空です/);
+  assert.match(result.output, /CH-902/);
+});

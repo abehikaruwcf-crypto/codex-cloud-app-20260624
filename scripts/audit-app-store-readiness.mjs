@@ -370,7 +370,9 @@ requireText("tests/matching-and-learning.test.ts", "matching ranks the closest c
 requireText("tests/matching-and-learning.test.ts", "learning merge keeps the latest examples", "Learning cap unit test exists");
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects duplicate management numbers", "Backup duplicate validation unit test exists");
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects incomplete six-angle models", "Backup angle validation unit test exists");
+requireText("tests/matching-and-learning.test.ts", "backup validation rejects empty image data", "Backup empty image validation unit test exists");
 requireText("src/backup.ts", "validateBackupPayload", "Backup validation module exists");
+requireText("src/backup.ts", "画像データが空です", "Backup validation rejects empty image data");
 requireText("src/backup.ts", "createBackupPayload", "Backup export payload helper exists");
 requireText("src/main.tsx", "バックアップを書き出せませんでした", "Backup export validates before download");
 requireText("tests/matching-and-learning.test.ts", "backup export payload validates", "Backup export validation unit test exists");

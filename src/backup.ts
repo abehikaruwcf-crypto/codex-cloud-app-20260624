@@ -180,6 +180,14 @@ export function validateBackupPayload(value: unknown, backup: BackupPayload) {
         .map((angle) => angle.label)
         .join(" / ")}`;
     }
+
+    const emptyImageAngles = charm.images
+      .filter((image) => image.imageUrl.trim().length === 0)
+      .map((image) => image.angleLabel);
+
+    if (emptyImageAngles.length > 0) {
+      return `${normalizedManagementNumber} の画像データが空です: ${emptyImageAngles.join(" / ")}`;
+    }
   }
 
   return null;
