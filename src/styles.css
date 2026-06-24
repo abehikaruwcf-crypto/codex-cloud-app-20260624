@@ -446,6 +446,18 @@ h3 {
   background: #ffffff;
 }
 
+.permission-note {
+  margin-top: 10px;
+  border: 1px solid rgba(196, 138, 38, 0.22);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: #6e4b12;
+  background: #fff9ec;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
 .capture-protocol {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -692,6 +704,35 @@ h3 {
   line-height: 1.45;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.library-empty {
+  display: grid;
+  gap: 10px;
+  margin-top: 0;
+}
+
+.library-empty strong {
+  color: #172026;
+}
+
+.library-empty span {
+  display: block;
+}
+
+.library-empty button {
+  min-height: 42px;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #3a6f68;
+  font-weight: 900;
+}
+
+.library-empty button:last-child {
+  color: #172026;
+  border: 1px solid rgba(23, 32, 38, 0.14);
+  background: #ffffff;
 }
 
 .data-tools {

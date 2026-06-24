@@ -355,7 +355,7 @@ function loadCharms() {
   const stored = localStorage.getItem(STORAGE_KEY);
 
   if (!stored) {
-    return sampleCharms;
+    return [];
   }
 
   try {
@@ -367,7 +367,7 @@ function loadCharms() {
       })),
     }));
   } catch {
-    return sampleCharms;
+    return [];
   }
 }
 
@@ -380,7 +380,9 @@ function App() {
   const [activeView, setActiveView] = useState<View>(
     shotMode === "register" ? "register" : shotMode === "library" ? "library" : "identify",
   );
-  const [charms, setCharms] = useState<Charm[]>(shotMode ? sampleCharms : loadCharms);
+  const [charms, setCharms] = useState<Charm[]>(
+    shotMode && shotMode !== "onboarding" ? sampleCharms : loadCharms,
+  );
   const [managementNumber, setManagementNumber] = useState("");
   const [note, setNote] = useState("");
   const [draftImages, setDraftImages] = useState<CharmImage[]>(
@@ -546,6 +548,12 @@ function App() {
   }
 
   function deleteCharm(charmId: string) {
+    const confirmed = window.confirm("この登録データを削除します。元に戻せません。実行しますか？");
+
+    if (!confirmed) {
+      return;
+    }
+
     setCharms((current) => current.filter((charm) => charm.id !== charmId));
   }
 
@@ -708,7 +716,7 @@ function App() {
 
     localStorage.removeItem(STORAGE_KEY);
     localStorage.removeItem(DECISION_STORAGE_KEY);
-    setCharms(sampleCharms);
+    setCharms([]);
     setDecisionLogs([]);
     setQueryImages([]);
     setImportSummary("");
@@ -746,7 +754,7 @@ function App() {
         <section className="onboarding-card">
           <div>
             <p className="eyebrow">Getting started</p>
-            <h2>6方向で登録し、現場写真で育てます</h2>
+            <h2>6方向登録と追加学習</h2>
             <p>
               まず登録タブで管理番号と6方向写真を保存します。識別時は候補から正解を選ぶと、
               その撮影画像が追加学習されます。
@@ -861,6 +869,9 @@ function App() {
                 );
               })}
             </div>
+            <p className="permission-note">
+              カメラが開かない場合は、iPhoneの設定でCharm IDのカメラ権限を許可してください。
+            </p>
           </div>
         ) : (
           <>
@@ -884,6 +895,9 @@ function App() {
               <span>候補が割れたら裏・側面を追加する</span>
               <span>同じ背景と明るさで撮る</span>
             </div>
+            <p className="permission-note">
+              カメラが開かない場合は、iPhoneの設定でCharm IDのカメラ権限を許可してください。
+            </p>
           </>
         )}
       </section>
@@ -956,6 +970,9 @@ function App() {
               );
             })}
           </div>
+          <p className="permission-note">
+            カメラが開かない場合は、iPhoneの設定でCharm IDのカメラ権限を許可してください。
+          </p>
 
           <button className="primary-action" type="submit" disabled={isProcessing}>
             {isProcessing ? "処理中..." : "登録する"}
@@ -972,26 +989,39 @@ function App() {
         </div>
 
         <div className="library-list">
-          {charms.map((charm) => (
-            <article className="library-card" key={charm.id}>
-              <div className="library-main">
-                <img src={charm.images[0]?.imageUrl} alt="" />
-                <div>
-                  <h3>{charm.managementNumber}</h3>
-                  <p>{charm.note || "メモなし"}</p>
-                  <span>
-                    {captureAngles.filter((angle) =>
-                      charm.images.some((image) => image.angleLabel === angle.label),
-                    ).length}
-                    /6方向・追加学習{learningImageCount(charm)}枚
-                  </span>
+          {charms.length > 0 ? (
+            charms.map((charm) => (
+              <article className="library-card" key={charm.id}>
+                <div className="library-main">
+                  <img src={charm.images[0]?.imageUrl} alt="" />
+                  <div>
+                    <h3>{charm.managementNumber}</h3>
+                    <p>{charm.note || "メモなし"}</p>
+                    <span>
+                      {captureAngles.filter((angle) =>
+                        charm.images.some((image) => image.angleLabel === angle.label),
+                      ).length}
+                      /6方向・追加学習{learningImageCount(charm)}枚
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <button type="button" onClick={() => deleteCharm(charm.id)}>
-                削除
+                <button type="button" onClick={() => deleteCharm(charm.id)}>
+                  削除
+                </button>
+              </article>
+            ))
+          ) : (
+            <div className="empty-state library-empty">
+              <strong>登録データがありません</strong>
+              <span>登録タブで6方向写真を保存するか、デモデータを読み込めます。</span>
+              <button type="button" onClick={() => setActiveView("register")}>
+                登録を始める
               </button>
-            </article>
-          ))}
+              <button type="button" onClick={loadDemoDataset}>
+                デモデータを読み込む
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="data-tools">
