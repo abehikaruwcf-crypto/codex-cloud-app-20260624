@@ -88,6 +88,8 @@ async function readState(page) {
     libraryCards: document.querySelectorAll(".library-card").length,
     libraryCardTitles: [...document.querySelectorAll(".library-card h3")].map((heading) => heading.textContent?.trim()),
     libraryEmptyText: document.querySelector(".library-empty")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+    libraryDetailText: document.querySelector(".library-detail")?.textContent?.replace(/\s+/g, " ").trim() ?? null,
+    libraryDetailImages: document.querySelectorAll(".library-angle-grid img").length,
     candidateCards: document.querySelectorAll(".candidate-card").length,
     completedRegisterAngles: document.querySelectorAll(".register-form .angle-card.is-complete").length,
     completedIdentifyAngles: document.querySelectorAll(".compact-capture-protocol .angle-capture.is-complete").length,
@@ -158,6 +160,11 @@ try {
   expect(library.libraryCards === 2, "Library appshot should render two library cards.");
   expect(library.privacyLink === "プライバシーポリシー", "Library should expose the privacy policy link.");
   expect(library.infoPanel?.includes("端末内に保存"), "Library should explain local-only storage.");
+  await page.getByRole("button", { name: "詳細" }).first().click();
+  const detailedLibrary = await readState(page);
+  expect(detailedLibrary.libraryDetailImages === 6, "Library detail should render six angle images.");
+  expect(detailedLibrary.libraryDetailText?.includes("登録日"), "Library detail should show registration metadata.");
+  expect(detailedLibrary.libraryDetailText?.includes("追加学習"), "Library detail should show learned image metadata.");
   await page.getByPlaceholder("例: CH-001").fill("ch-002");
   const searchedLibrary = await readState(page);
   expect(searchedLibrary.libraryCards === 1, "Library search should filter to one model.");

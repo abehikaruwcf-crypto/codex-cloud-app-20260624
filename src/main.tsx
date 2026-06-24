@@ -295,6 +295,20 @@ function learningImageCount(charm: Charm) {
   return charm.images.filter((image) => image.source === "confirmed-identification").length;
 }
 
+function formatDate(value: string) {
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "日時不明";
+  }
+
+  return date.toLocaleDateString("ja-JP", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+}
+
 function missingAngles(images: CharmImage[]) {
   return captureAngles.filter((angle) => !images.some((image) => image.angleLabel === angle.label));
 }
@@ -501,6 +515,7 @@ function App() {
   const [importSummary, setImportSummary] = useState("");
   const [librarySearch, setLibrarySearch] = useState("");
   const [librarySort, setLibrarySort] = useState<LibrarySort>("recent");
+  const [selectedLibraryCharmId, setSelectedLibraryCharmId] = useState("");
 
   useEffect(() => {
     if (shotMode) {
@@ -531,6 +546,7 @@ function App() {
   const missingDraftAngles = missingAngles(draftImages);
   const missingQueryAngles = missingAngles(queryImages);
   const selectedCorrectionTarget = charms.find((charm) => charm.id === correctionTargetId);
+  const selectedLibraryCharm = charms.find((charm) => charm.id === selectedLibraryCharmId);
   const normalizedLibrarySearch = normalizeManagementNumber(librarySearch);
   const filteredCharms = useMemo(() => {
     const matchingCharms = normalizedLibrarySearch
@@ -689,6 +705,7 @@ function App() {
     }
 
     setCharms((current) => current.filter((charm) => charm.id !== charmId));
+    setSelectedLibraryCharmId((current) => (current === charmId ? "" : current));
   }
 
   function clearQueryImages() {
@@ -1163,26 +1180,80 @@ function App() {
 
         <div className="library-list">
           {charms.length > 0 && filteredCharms.length > 0 ? (
-            filteredCharms.map((charm) => (
-              <article className="library-card" key={charm.id}>
-                <div className="library-main">
-                  <img src={charm.images[0]?.imageUrl} alt="" />
-                  <div>
-                    <h3>{charm.managementNumber}</h3>
-                    <p>{charm.note || "メモなし"}</p>
-                    <span>
-                      {captureAngles.filter((angle) =>
-                        charm.images.some((image) => image.angleLabel === angle.label),
-                      ).length}
-                      /6方向・追加学習{learningImageCount(charm)}枚
-                    </span>
+            filteredCharms.map((charm) => {
+              const isSelected = selectedLibraryCharm?.id === charm.id;
+
+              return (
+                <article className={isSelected ? "library-card is-expanded" : "library-card"} key={charm.id}>
+                  <div className="library-card-summary">
+                    <div className="library-main">
+                      <img src={charm.images[0]?.imageUrl} alt="" />
+                      <div>
+                        <h3>{charm.managementNumber}</h3>
+                        <p>{charm.note || "メモなし"}</p>
+                        <span>
+                          {captureAngles.filter((angle) =>
+                            charm.images.some((image) => image.angleLabel === angle.label),
+                          ).length}
+                          /6方向・追加学習{learningImageCount(charm)}枚
+                        </span>
+                      </div>
+                    </div>
+                    <div className="library-actions">
+                      <button
+                        type="button"
+                        onClick={() => setSelectedLibraryCharmId(isSelected ? "" : charm.id)}
+                      >
+                        {isSelected ? "閉じる" : "詳細"}
+                      </button>
+                      <button type="button" onClick={() => deleteCharm(charm.id)}>
+                        削除
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <button type="button" onClick={() => deleteCharm(charm.id)}>
-                  削除
-                </button>
-              </article>
-            ))
+
+                  {isSelected ? (
+                    <div className="library-detail">
+                      <dl>
+                        <div>
+                          <dt>登録日</dt>
+                          <dd>{formatDate(charm.createdAt)}</dd>
+                        </div>
+                        <div>
+                          <dt>登録写真</dt>
+                          <dd>{charm.images.filter((image) => image.source === "registration").length}枚</dd>
+                        </div>
+                        <div>
+                          <dt>追加学習</dt>
+                          <dd>{learningImageCount(charm)}枚</dd>
+                        </div>
+                      </dl>
+
+                      <div className="library-angle-grid" aria-label={`${charm.managementNumber}の6方向写真`}>
+                        {captureAngles.map((angle) => {
+                          const angleImages = charm.images.filter((image) => image.angleLabel === angle.label);
+                          const primaryImage = angleImages[angleImages.length - 1];
+
+                          return (
+                            <figure key={angle.id}>
+                              {primaryImage ? (
+                                <img src={primaryImage.imageUrl} alt={`${charm.managementNumber} ${angle.label}`} />
+                              ) : (
+                                <div className="missing-angle">未登録</div>
+                              )}
+                              <figcaption>
+                                <strong>{angle.label}</strong>
+                                <span>{angleImages.length}枚</span>
+                              </figcaption>
+                            </figure>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : null}
+                </article>
+              );
+            })
           ) : charms.length > 0 ? (
             <div className="empty-state library-empty">
               <strong>一致する登録がありません</strong>

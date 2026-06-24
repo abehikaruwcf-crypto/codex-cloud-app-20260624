@@ -687,8 +687,7 @@ h3 {
   font-weight: 800;
 }
 
-.photo-grid button,
-.library-card button {
+.photo-grid button {
   border: 0;
   border-radius: 8px;
   padding: 8px 9px;
@@ -703,11 +702,16 @@ h3 {
 }
 
 .library-card {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+}
+
+.library-card-summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 12px;
 }
 
 .library-main {
@@ -739,6 +743,113 @@ h3 {
   line-height: 1.45;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.library-actions {
+  display: grid;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.library-actions button {
+  min-width: 62px;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 9px;
+  color: #172026;
+  background: #edf4f2;
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
+.library-actions button:last-child {
+  color: #8a3328;
+  background: #f8e9e6;
+}
+
+.library-detail {
+  display: grid;
+  gap: 12px;
+  border-top: 1px solid rgba(23, 32, 38, 0.1);
+  padding-top: 12px;
+}
+
+.library-detail dl {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 0;
+}
+
+.library-detail dl div {
+  display: grid;
+  gap: 3px;
+  border-radius: 8px;
+  padding: 10px;
+  background: #f5f8f8;
+}
+
+.library-detail dt {
+  color: #607078;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.library-detail dd {
+  margin: 0;
+  color: #172026;
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.library-angle-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.library-angle-grid figure {
+  overflow: hidden;
+  margin: 0;
+  border: 1px solid rgba(23, 32, 38, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.library-angle-grid img,
+.missing-angle {
+  display: grid;
+  width: 100%;
+  aspect-ratio: 1;
+  place-items: center;
+  object-fit: cover;
+  color: #607078;
+  background: #dce4e7;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.library-angle-grid figcaption {
+  display: grid;
+  gap: 2px;
+  padding: 8px;
+}
+
+.library-angle-grid strong,
+.library-angle-grid span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.library-angle-grid strong {
+  color: #172026;
+  font-size: 0.78rem;
+}
+
+.library-angle-grid span {
+  color: #607078;
+  font-size: 0.72rem;
 }
 
 .library-controls {
