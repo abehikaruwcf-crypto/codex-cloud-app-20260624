@@ -49,6 +49,45 @@ function requireText(path, needle, label) {
   addCheck(label, content.includes(needle) ? "pass" : "fail", `${path} contains ${needle}`);
 }
 
+function packageVersion() {
+  if (!hasFile("package.json")) {
+    return "";
+  }
+
+  return JSON.parse(read("package.json")).version;
+}
+
+function iosMarketingVersionFromPackage(version) {
+  const parts = version.split(".");
+  return parts.length >= 2 ? `${parts[0]}.${parts[1]}` : version;
+}
+
+function uniqueMatches(content, pattern) {
+  return [...new Set([...content.matchAll(pattern)].map((match) => match[1]))];
+}
+
+function requireProjectVersionSync() {
+  if (!hasFile("ios/App/App.xcodeproj/project.pbxproj") || !hasFile("package.json")) {
+    addCheck("Release version sync", "fail", "Missing project or package manifest");
+    return;
+  }
+
+  const version = packageVersion();
+  const expectedMarketingVersion = iosMarketingVersionFromPackage(version);
+  const project = read("ios/App/App.xcodeproj/project.pbxproj");
+  const marketingVersions = uniqueMatches(project, /MARKETING_VERSION = ([^;]+);/g);
+  const buildNumbers = uniqueMatches(project, /CURRENT_PROJECT_VERSION = ([^;]+);/g);
+  const marketingOk =
+    marketingVersions.length === 1 && marketingVersions[0] === expectedMarketingVersion;
+  const buildOk = buildNumbers.length === 1 && /^\d+$/.test(buildNumbers[0]);
+
+  addCheck(
+    "Release version sync",
+    marketingOk && buildOk ? "pass" : "fail",
+    `package=${version}, iOS marketing=${marketingVersions.join(",") || "missing"}, build=${buildNumbers.join(",") || "missing"}`,
+  );
+}
+
 function pngInfo(path, expectedSize, label) {
   if (!hasFile(path)) {
     addCheck(label, "fail", `Missing: ${path}`);
@@ -97,6 +136,7 @@ fileExists("docs/testflight-release-checklist.md", "TestFlight release checklist
 fileExists("public/privacy.html", "Public privacy policy page");
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
+fileExists("scripts/set-release-version.mjs", "Release version script");
 
 plistCheck("ios/App/App/Info.plist", "Info.plist is valid");
 plistCheck("ios/App/App/PrivacyInfo.xcprivacy", "Privacy manifest is valid");
@@ -116,13 +156,13 @@ requireText(
 );
 requireText("capacitor.config.ts", 'appId: "com.wcf.charmid"', "Capacitor app ID");
 requireText("ios/App/App.xcodeproj/project.pbxproj", "PRODUCT_BUNDLE_IDENTIFIER = com.wcf.charmid;", "Xcode Bundle ID");
-requireText("ios/App/App.xcodeproj/project.pbxproj", "MARKETING_VERSION = 1.0;", "Xcode marketing version");
-requireText("ios/App/App.xcodeproj/project.pbxproj", "CURRENT_PROJECT_VERSION = 1;", "Xcode build number");
+requireProjectVersionSync();
 requireText("ios/App/App/Info.plist", "Charm ID", "Display name");
-requireText("package.json", "\"version\": \"1.0.0\"", "Package release version");
+requireText("package.json", "\"version\"", "Package release version");
 requireText("public/privacy.html", "Charm ID Privacy Policy", "Privacy policy page title");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
+requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",

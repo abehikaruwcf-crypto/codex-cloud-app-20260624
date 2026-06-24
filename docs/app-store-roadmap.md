@@ -23,6 +23,7 @@ Possible later variants:
 - Matching logic is isolated behind a replaceable matching engine.
 - Branded placeholder app icon and splash artwork are installed in the iOS asset catalog.
 - App Store readiness audit script is available through `npm run appstore:audit`.
+- Release version sync is available through `npm run appstore:set-version -- <version> <build>`.
 - Submission and TestFlight handoff docs are available in [app-store-submission-packet.md](app-store-submission-packet.md) and [testflight-release-checklist.md](testflight-release-checklist.md).
 
 ## Release-Quality Gaps
@@ -96,6 +97,7 @@ The audit checks:
 - Capacitor iOS doctor.
 - Browser-based UI smoke test for first launch, library, identify, and register states.
 - Xcode availability.
+- Package/Xcode release version sync.
 - Submission packet and TestFlight checklist docs.
 
 Known current warning:

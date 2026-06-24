@@ -6,6 +6,7 @@ Use this checklist once full Xcode is installed and selected.
 
 ```bash
 npm install
+npm run appstore:set-version -- 1.0 1
 npm run ios:sync
 npm run appstore:audit
 ```
@@ -35,6 +36,7 @@ In Xcode:
 - Confirm Signing & Capabilities uses automatic signing unless the team requires manual profiles.
 - Set Version to the planned marketing version.
 - Increment Build for every upload.
+- Prefer updating Version and Build through `npm run appstore:set-version -- <version> <build>` before opening Xcode.
 - Confirm the privacy manifest is included in the target resources.
 
 ## 3. Device QA

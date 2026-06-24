@@ -8,6 +8,7 @@ Mobile-first app concept for identifying physical charms from smartphone camera 
 npm install
 npm run dev
 npm run build
+npm run appstore:set-version -- 1.0 1
 npm run appstore:audit
 ```
 
