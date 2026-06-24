@@ -1,0 +1,101 @@
+import { execFileSync } from "node:child_process";
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+
+const root = process.cwd();
+
+function hasFile(path) {
+  return existsSync(join(root, path));
+}
+
+function readJson(path) {
+  return JSON.parse(readFileSync(join(root, path), "utf8"));
+}
+
+function run(command, args) {
+  try {
+    return {
+      ok: true,
+      output: execFileSync(command, args, { cwd: root, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim(),
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      output: `${error.stdout ?? ""}${error.stderr ?? ""}`.trim(),
+    };
+  }
+}
+
+function mark(ok) {
+  return ok ? "PASS" : "TODO";
+}
+
+const packageVersion = hasFile("package.json") ? readJson("package.json").version : "unknown";
+const xcode = run("xcodebuild", ["-version"]);
+const xcodeSelected = xcode.ok && xcode.output.includes("Xcode");
+
+const checks = [
+  {
+    ok: hasFile("ios/App/App.xcodeproj"),
+    title: "iOS Xcode project",
+    detail: "ios/App/App.xcodeproj",
+  },
+  {
+    ok: hasFile("public/privacy.html") && hasFile("public/support.html"),
+    title: "Public policy/support pages",
+    detail: "public/privacy.html and public/support.html",
+  },
+  {
+    ok: hasFile("docs/app-store-submission-packet.md"),
+    title: "Submission packet",
+    detail: "docs/app-store-submission-packet.md",
+  },
+  {
+    ok: hasFile("docs/app-store-review-answers.md"),
+    title: "Review answers",
+    detail: "docs/app-store-review-answers.md",
+  },
+  {
+    ok: hasFile("docs/testflight-release-checklist.md"),
+    title: "TestFlight checklist",
+    detail: "docs/testflight-release-checklist.md",
+  },
+  {
+    ok: xcodeSelected,
+    title: "Full Xcode selected",
+    detail: xcodeSelected ? xcode.output.split("\n")[0] : "Run: sudo xcode-select -s /Applications/Xcode.app/Contents/Developer",
+  },
+];
+
+const manualBlockers = [
+  "Select Apple Developer Program team in Xcode.",
+  "Create App Store Connect app record for Bundle ID com.wcf.charmid.",
+  "Enable/publish public Privacy Policy and Support URLs.",
+  "Capture final App Store screenshots from release build at Apple-supported sizes.",
+  "Run physical iPhone TestFlight validation.",
+  "Archive and upload from Xcode Organizer.",
+];
+
+console.log(`Charm ID App Store Release Status`);
+console.log(`Version: ${packageVersion}`);
+console.log("");
+
+for (const check of checks) {
+  console.log(`[${mark(check.ok)}] ${check.title}: ${check.detail}`);
+}
+
+console.log("");
+console.log("Manual items before App Review:");
+for (const blocker of manualBlockers) {
+  console.log(`- ${blocker}`);
+}
+
+console.log("");
+console.log("Recommended release gate:");
+console.log("1. npm run appstore:audit");
+console.log("2. npm run ios:sync");
+console.log("3. Complete docs/testflight-release-checklist.md");
+
+if (!xcodeSelected) {
+  process.exitCode = 1;
+}

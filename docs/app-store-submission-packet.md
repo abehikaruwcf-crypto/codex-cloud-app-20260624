@@ -90,9 +90,10 @@ Archive from Xcode after running:
 
 ```bash
 npm install
+npm run appstore:status
 npm run ios:sync
 npm run appstore:audit
-open ios/App/App.xcworkspace
+open ios/App/App.xcodeproj
 ```
 
 Use Xcode Organizer to upload the archive to App Store Connect.

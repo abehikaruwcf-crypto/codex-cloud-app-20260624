@@ -7,6 +7,7 @@ Use this checklist once full Xcode is installed and selected.
 ```bash
 npm install
 npm run appstore:set-version -- 1.0 1
+npm run appstore:status
 npm run ios:sync
 npm run appstore:audit
 ```
@@ -25,7 +26,7 @@ xcodebuild -version
 Open:
 
 ```bash
-open ios/App/App.xcworkspace
+open ios/App/App.xcodeproj
 ```
 
 In Xcode:

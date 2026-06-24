@@ -142,6 +142,7 @@ fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
 fileExists("scripts/set-release-version.mjs", "Release version script");
+fileExists("scripts/app-store-release-status.mjs", "Release status script");
 
 plistCheck("ios/App/App/Info.plist", "Info.plist is valid");
 plistCheck("ios/App/App/PrivacyInfo.xcprivacy", "Privacy manifest is valid");
@@ -181,7 +182,10 @@ requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages d
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
+requireText("package.json", "\"appstore:status\"", "Release status script entry");
 requireText("scripts/set-release-version.mjs", "public/support.html", "Release version script updates support page");
+requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");
+requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",
