@@ -108,7 +108,8 @@ function screenshotInfo(path, label) {
 
   const result = run("file", [join(root, path)]);
   const size = statSync(join(root, path)).size;
-  const ok = result.ok && result.output.includes("390x844") && size > 10_000;
+  const isExpectedSize = result.output.includes("390x844") || result.output.includes("1170x2532");
+  const ok = result.ok && isExpectedSize && size > 10_000;
   addCheck(label, ok ? "pass" : "warn", `${result.output}; ${size} bytes`);
 }
 
@@ -136,6 +137,7 @@ fileExists("docs/testflight-release-checklist.md", "TestFlight release checklist
 fileExists("public/privacy.html", "Public privacy policy page");
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
+fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
 fileExists("scripts/set-release-version.mjs", "Release version script");
 
 plistCheck("ios/App/App/Info.plist", "Info.plist is valid");
@@ -162,6 +164,7 @@ requireText("package.json", "\"version\"", "Package release version");
 requireText("public/privacy.html", "Charm ID Privacy Policy", "Privacy policy page title");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
+requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:set-version\"", "Release version script entry");
 
 pngInfo(

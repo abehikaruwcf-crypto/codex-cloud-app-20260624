@@ -10,6 +10,7 @@
     "ios:sync": "npm run build && npx cap sync ios",
     "ios:open": "npx cap open ios",
     "appstore:set-version": "node scripts/set-release-version.mjs",
+    "appstore:screenshots": "node scripts/generate-app-store-screenshots.mjs",
     "appstore:smoke": "node scripts/smoke-app-ui.mjs",
     "appstore:audit": "node scripts/audit-app-store-readiness.mjs"
   },

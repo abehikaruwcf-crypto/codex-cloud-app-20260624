@@ -57,6 +57,12 @@ Charm ID can be used without login. On the first screen, tap "デモデータで
 
 Development screenshot references are documented in [app-store-screenshots.md](app-store-screenshots.md).
 
+Regenerate the development review set with:
+
+```bash
+npm run appstore:screenshots
+```
+
 Final App Store screenshots still need to be captured from a physical iPhone or iOS Simulator at Apple-required dimensions before submission.
 
 Recommended final screenshot set:
