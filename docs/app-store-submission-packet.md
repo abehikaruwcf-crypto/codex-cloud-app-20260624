@@ -99,9 +99,15 @@ Regenerate the development review set with:
 npm run appstore:screenshots
 ```
 
+Generate App Store submission-size review assets with:
+
+```bash
+npm run appstore:screenshots:submission
+```
+
 `npm run appstore:audit` also regenerates the development screenshot set before validating image dimensions and file size.
 
-Final App Store screenshots still need to be captured from a physical iPhone or iOS Simulator at Apple-required dimensions before submission.
+Final App Store screenshots still need to be reviewed against the release build before submission. The repository can now generate 6.9 inch `1320 x 2868` and 6.5 inch `1242 x 2688` portrait JPEG sets that match accepted App Store screenshot dimensions.
 
 Recommended final screenshot set:
 

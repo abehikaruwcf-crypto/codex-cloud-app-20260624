@@ -13,6 +13,7 @@
     "ios:open": "npx cap open ios",
     "appstore:set-version": "node scripts/set-release-version.mjs",
     "appstore:screenshots": "node scripts/generate-app-store-screenshots.mjs",
+    "appstore:screenshots:submission": "node scripts/generate-app-store-screenshots.mjs --profile=submission",
     "appstore:metadata": "node scripts/print-app-store-metadata.mjs",
     "appstore:connect-packet": "node scripts/print-app-store-connect-packet.mjs",
     "appstore:signoff-draft": "node scripts/print-app-review-signoff-draft.mjs",

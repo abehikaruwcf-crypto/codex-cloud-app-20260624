@@ -7,13 +7,48 @@ import { setTimeout as delay } from "node:timers/promises";
 import { chromium } from "playwright";
 
 const root = process.cwd();
-const outputDir = join(root, "outputs", "app-store-screenshots");
-const viewport = { width: 390, height: 844 };
-const deviceScaleFactor = 3;
-const expectedScreenshotSize = {
-  width: viewport.width * deviceScaleFactor,
-  height: viewport.height * deviceScaleFactor,
+
+const profiles = {
+  "iphone-6-1": {
+    label: "iPhone 6.1 inch development baseline",
+    outputDir: join(root, "outputs", "app-store-screenshots"),
+    viewport: { width: 390, height: 844 },
+    deviceScaleFactor: 3,
+    expectedScreenshotSize: { width: 1170, height: 2532 },
+  },
+  "iphone-6-5": {
+    label: "iPhone 6.5 inch App Store fallback",
+    outputDir: join(root, "outputs", "app-store-screenshots-6-5"),
+    viewport: { width: 414, height: 896 },
+    deviceScaleFactor: 3,
+    expectedScreenshotSize: { width: 1242, height: 2688 },
+  },
+  "iphone-6-9": {
+    label: "iPhone 6.9 inch App Store primary",
+    outputDir: join(root, "outputs", "app-store-screenshots-6-9"),
+    viewport: { width: 440, height: 956 },
+    deviceScaleFactor: 3,
+    expectedScreenshotSize: { width: 1320, height: 2868 },
+  },
 };
+
+function selectedProfiles() {
+  const profileArg = process.argv.find((arg) => arg.startsWith("--profile="));
+  const profileValue = profileArg?.split("=")[1] ?? "iphone-6-1";
+
+  if (profileValue === "submission") {
+    return [profiles["iphone-6-9"], profiles["iphone-6-5"]];
+  }
+
+  const profile = profiles[profileValue];
+
+  if (!profile) {
+    const choices = [...Object.keys(profiles), "submission"].join(", ");
+    throw new Error(`Unknown screenshot profile: ${profileValue}. Use one of: ${choices}`);
+  }
+
+  return [profile];
+}
 
 const shots = [
   { file: "01-onboarding.jpg", url: "/?appshot=onboarding" },
@@ -89,10 +124,10 @@ async function waitForStableShot(page) {
   });
 }
 
-function screenshotInfo(path) {
+function screenshotInfo(path, profile) {
   const fileOutput = execFileSync("file", [path], { encoding: "utf8" });
   const size = statSync(path).size;
-  const sizePattern = `${expectedScreenshotSize.width}x${expectedScreenshotSize.height}`;
+  const sizePattern = `${profile.expectedScreenshotSize.width}x${profile.expectedScreenshotSize.height}`;
 
   return {
     ok: fileOutput.includes(sizePattern) && size > 10_000,
@@ -100,25 +135,25 @@ function screenshotInfo(path) {
   };
 }
 
-async function captureScreenshot(page, shot) {
-  const outputPath = join(outputDir, shot.file);
+async function captureScreenshot(page, shot, profile) {
+  const outputPath = join(profile.outputDir, shot.file);
 
   for (let attempt = 1; attempt <= 3; attempt += 1) {
     await waitForStableShot(page);
     await page.screenshot({
       animations: "disabled",
       caret: "hide",
-      clip: { x: 0, y: 0, width: viewport.width, height: viewport.height },
+      clip: { x: 0, y: 0, width: profile.viewport.width, height: profile.viewport.height },
       fullPage: false,
       path: outputPath,
       quality: 92,
       type: "jpeg",
     });
 
-    const info = screenshotInfo(outputPath);
+    const info = screenshotInfo(outputPath, profile);
 
     if (info.ok) {
-      console.log(`Generated ${shot.file}`);
+      console.log(`Generated ${shot.file} (${profile.expectedScreenshotSize.width}x${profile.expectedScreenshotSize.height})`);
       return;
     }
 
@@ -131,7 +166,6 @@ async function captureScreenshot(page, shot) {
 }
 
 await run("npm", ["run", "build"]);
-mkdirSync(outputDir, { recursive: true });
 
 const port = await getFreePort();
 const baseUrl = `http://127.0.0.1:${port}`;
@@ -156,16 +190,25 @@ try {
   await waitForPreview(baseUrl);
 
   const browser = await chromium.launch();
-  const page = await browser.newPage({
-    deviceScaleFactor,
-    isMobile: true,
-    viewport,
-  });
+  const captureProfiles = selectedProfiles();
 
-  for (const shot of shots) {
-    await page.goto(`${baseUrl}${shot.url}`, { waitUntil: "networkidle" });
-    await shot.setup?.(page);
-    await captureScreenshot(page, shot);
+  for (const profile of captureProfiles) {
+    mkdirSync(profile.outputDir, { recursive: true });
+    console.log(`Generating ${profile.label}`);
+
+    const page = await browser.newPage({
+      deviceScaleFactor: profile.deviceScaleFactor,
+      isMobile: true,
+      viewport: profile.viewport,
+    });
+
+    for (const shot of shots) {
+      await page.goto(`${baseUrl}${shot.url}`, { waitUntil: "networkidle" });
+      await shot.setup?.(page);
+      await captureScreenshot(page, shot, profile);
+    }
+
+    await page.close();
   }
 
   await browser.close();
