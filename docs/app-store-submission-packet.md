@@ -45,6 +45,11 @@ Current local-only assumption:
 
 The app includes `ios/App/App/PrivacyInfo.xcprivacy` and declares UserDefaults required-reason API usage.
 
+Static public pages included in the build:
+
+- Privacy Policy: `public/privacy.html`
+- Support: `public/support.html`
+
 ## Review Notes
 
 Use [app-store-review-answers.md](app-store-review-answers.md) for App Review information, age rating assumptions, export compliance notes, content rights notes, and final manual checks.
@@ -93,6 +98,6 @@ Use Xcode Organizer to upload the archive to App Store Connect.
 - Full Xcode is not active on this Mac, so archive/upload validation cannot run here yet.
 - Apple Developer Program team must be selected in Xcode.
 - App Store Connect app record must be created.
-- Final screenshots, public support URL, and public privacy policy URL are still required.
-- `public/privacy.html` is ready to publish.
-- A GitHub Pages workflow template is included in [github-pages-workflow.md](github-pages-workflow.md). Once GitHub Pages is enabled for this repository, the privacy policy should be available at `/privacy.html` on the Pages site.
+- Final screenshots and public URLs are still required after GitHub Pages or another host is enabled.
+- `public/privacy.html` and `public/support.html` are ready to publish.
+- A GitHub Pages workflow template is included in [github-pages-workflow.md](github-pages-workflow.md). Once GitHub Pages is enabled for this repository, the pages should be available at `/privacy.html` and `/support.html` on the Pages site.

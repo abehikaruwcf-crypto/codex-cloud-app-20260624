@@ -63,3 +63,9 @@ After enabling GitHub Pages with GitHub Actions, the privacy policy should be av
 ```text
 https://<owner>.github.io/<repo>/privacy.html
 ```
+
+The App Store support page should be available at:
+
+```text
+https://<owner>.github.io/<repo>/support.html
+```

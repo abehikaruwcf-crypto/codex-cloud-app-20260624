@@ -51,11 +51,11 @@ Before submission, confirm the final App Store Connect export compliance questio
 
 Required before submission:
 
-- Public support URL.
-- Public privacy policy URL.
+- Public support URL after hosting is enabled.
+- Public privacy policy URL after hosting is enabled.
 - Developer contact path for support requests.
 
-The repository currently includes `public/privacy.html` and a GitHub Pages deployment template. Add a public support page or external support URL before App Review submission.
+The repository currently includes `public/privacy.html`, `public/support.html`, and a GitHub Pages deployment template. Add the final hosted URLs and formal support contact before App Review submission.
 
 ## Final Manual Checks
 
