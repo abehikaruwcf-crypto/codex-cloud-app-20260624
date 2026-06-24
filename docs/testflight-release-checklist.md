@@ -7,10 +7,11 @@ Use this checklist once full Xcode is installed and selected.
 ```bash
 npm install
 npm run appstore:set-version -- 1.0 1
+npm run appstore:evidence
 npm run appstore:verify
 ```
 
-The audit should finish with zero failures. The Xcode warning should disappear after full Xcode is active.
+The evidence report should show the intended release commit and version. The audit should finish with zero failures. The Xcode warning should disappear after full Xcode is active.
 When every App Review TODO is complete, run `npm run appstore:verify -- --strict` before final submission.
 
 If Xcode is installed but the command line still points to Command Line Tools, select Xcode:

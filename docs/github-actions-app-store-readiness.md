@@ -44,7 +44,7 @@ jobs:
 ```
 
 Before App Store release, confirm this workflow is installed and green on the release commit.
-`npm run appstore:verify` includes backup validation, unit tests, metadata export, `npm run appstore:audit`, `npm run ios:sync`, and release status reporting.
+`npm run appstore:verify` includes backup validation, unit tests, metadata export, release evidence JSON, `npm run appstore:audit`, `npm run ios:sync`, and release status reporting.
 
 After the manual App Review TODOs are complete and `npm run appstore:status` reports `0 todo`, change the verification step to:
 

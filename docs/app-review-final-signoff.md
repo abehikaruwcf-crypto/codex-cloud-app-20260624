@@ -19,6 +19,7 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - Exported backup from the release build validates with `npm run backup:validate -- <exported-backup.json>` and imports successfully on a physical iPhone.
 - App Privacy answers from [app-privacy-answers.md](app-privacy-answers.md) match the uploaded build.
 - App Review notes from [app-store-review-answers.md](app-store-review-answers.md) are entered in App Store Connect.
+- `npm run appstore:evidence` has been generated on the release commit and reviewed against this signoff page.
 - `npm run appstore:status` reports `0 todo`.
 - `npm run appstore:audit` reports `0 fail`.
 - `npm run appstore:verify -- --strict` passes on the release commit.
@@ -26,6 +27,7 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 ## Signoff Notes
 
 - Release commit:
+- Evidence report generated:
 - App Store Connect app ID:
 - Uploaded build:
 - TestFlight device:
