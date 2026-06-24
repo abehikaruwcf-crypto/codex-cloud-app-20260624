@@ -1,5 +1,7 @@
 # Privacy Policy Draft
 
+An app-hostable HTML version is available at `public/privacy.html`.
+
 Last updated: 2026-06-25
 
 Charm ID helps users register and identify small items using camera photos.

@@ -94,6 +94,7 @@ fileExists("docs/privacy-policy-draft.md", "Privacy policy draft");
 fileExists("docs/app-store-screenshots.md", "Screenshot documentation");
 fileExists("docs/app-store-submission-packet.md", "Submission packet");
 fileExists("docs/testflight-release-checklist.md", "TestFlight release checklist");
+fileExists("public/privacy.html", "Public privacy policy page");
 
 plistCheck("ios/App/App/Info.plist", "Info.plist is valid");
 plistCheck("ios/App/App/PrivacyInfo.xcprivacy", "Privacy manifest is valid");
@@ -117,6 +118,7 @@ requireText("ios/App/App.xcodeproj/project.pbxproj", "MARKETING_VERSION = 1.0;",
 requireText("ios/App/App.xcodeproj/project.pbxproj", "CURRENT_PROJECT_VERSION = 1;", "Xcode build number");
 requireText("ios/App/App/Info.plist", "Charm ID", "Display name");
 requireText("package.json", "\"version\": \"1.0.0\"", "Package release version");
+requireText("public/privacy.html", "Charm ID Privacy Policy", "Privacy policy page title");
 
 pngInfo(
   "ios/App/App/Assets.xcassets/AppIcon.appiconset/AppIcon-512@2x.png",

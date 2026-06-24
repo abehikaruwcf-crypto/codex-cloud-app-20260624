@@ -86,3 +86,4 @@ Use Xcode Organizer to upload the archive to App Store Connect.
 - Apple Developer Program team must be selected in Xcode.
 - App Store Connect app record must be created.
 - Final screenshots and public privacy policy URL are still required.
+- `public/privacy.html` is ready to publish, but the final public URL must be hosted and entered in App Store Connect.
