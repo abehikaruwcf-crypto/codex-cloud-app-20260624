@@ -44,7 +44,7 @@ The camera is used to capture item photos for registration and identification.
 
 ## Required Before Submission
 
-- Final app icon.
+- Final app icon. A branded placeholder is already installed for development builds.
 - Final screenshots.
 - Public privacy policy URL.
 - Final Bundle ID and developer team.

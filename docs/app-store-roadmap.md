@@ -21,6 +21,7 @@ Possible later variants:
 - Local device storage.
 - Capacitor iOS wrapper is being introduced.
 - Matching logic is isolated behind a replaceable matching engine.
+- Branded placeholder app icon and splash artwork are installed in the iOS asset catalog.
 
 ## Release-Quality Gaps
 
@@ -45,7 +46,7 @@ Possible later variants:
 ### iOS
 
 - Confirm final Bundle ID.
-- Add app icons and launch screen.
+- Replace placeholder app icon and launch screen with final brand-approved artwork.
 - Add camera/photo usage descriptions.
 - Build and run from Xcode.
 - Test on physical iPhone.
