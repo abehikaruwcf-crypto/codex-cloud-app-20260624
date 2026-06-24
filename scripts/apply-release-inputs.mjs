@@ -136,6 +136,8 @@ function updateHostingDocs(privacyUrl, supportUrl) {
   let content = read(path);
   content = content.replaceAll("https://<owner>.github.io/<repo>/privacy.html", privacyUrl);
   content = content.replaceAll("https://<owner>.github.io/<repo>/support.html", supportUrl);
+  content = content.replace(/https:\/\/[^\s`]+\/privacy\.html/g, privacyUrl);
+  content = content.replace(/https:\/\/[^\s`]+\/support\.html/g, supportUrl);
   write(path, content);
 }
 

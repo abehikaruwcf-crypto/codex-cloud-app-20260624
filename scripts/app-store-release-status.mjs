@@ -70,9 +70,11 @@ const hasSupportContact = hasConcreteContact(supportPage);
 const hasPrivacyContact = hasConcreteContact(privacyPage);
 const formalSupportContactReady = !hasSupportPlaceholder && hasSupportContact;
 const privacyContactReady = !hasPrivacyPlaceholder && hasPrivacyContact;
+const pagesBuildBlocked = /GitHub Pages build status:\s*(errored|failed)/i.test(pagesWorkflow);
 const hostedUrlsReady =
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/privacy.html") &&
-  !pagesWorkflow.includes("https://<owner>.github.io/<repo>/support.html");
+  !pagesWorkflow.includes("https://<owner>.github.io/<repo>/support.html") &&
+  !pagesBuildBlocked;
 const requiredSignoffFields = [
   "Release commit",
   "Evidence report generated",
@@ -127,7 +129,9 @@ const checks = [
     title: "Hosted privacy/support URLs",
     detail: hostedUrlsReady
       ? "Final hosted URLs are documented."
-      : "Enable GitHub Pages or another host, then replace <owner>/<repo> URL placeholders.",
+      : pagesBuildBlocked
+        ? "GitHub Pages is configured, but the latest build is not serving the final URLs yet."
+        : "Enable GitHub Pages or another host, then replace <owner>/<repo> URL placeholders.",
   },
   {
     ok: hasFile("docs/app-store-submission-packet.md"),
@@ -178,6 +182,8 @@ const nextInputs = [
   "public/privacy.html: replace the placeholder with a concrete privacy contact.",
   pagesPlanBlocked
     ? "Publishing: make the repository public, upgrade/move to a Pages-capable plan, or publish dist on another public static host."
+    : pagesBuildBlocked
+      ? "Publishing: GitHub Pages is configured but currently not serving; resolve the Pages build or publish on another public static host."
     : "Publishing: enable GitHub Pages or another public host for privacy.html and support.html.",
   "docs/github-pages-workflow.md and App Store Connect: replace placeholder Pages URLs with final public Privacy/Support URLs.",
   "docs/app-review-final-signoff.md: record Xcode, App Store Connect, uploaded build, TestFlight, URL, contact, owner, and date evidence.",
@@ -198,6 +204,7 @@ console.log("");
 console.log("Publishing status:");
 console.log(`- gh-pages branch: ${ghPagesBranchReady ? "ready" : "not found on origin"}`);
 console.log(`- GitHub Pages plan: ${pagesPlanBlocked ? "blocked for current private repository plan" : "not recorded as blocked"}`);
+console.log(`- GitHub Pages build: ${pagesBuildBlocked ? "errored or failed in recorded API checks" : "not recorded as failed"}`);
 console.log(`- Public URL status: ${hostedUrlsReady ? "final URLs documented" : "final Privacy/Support URLs still required"}`);
 
 console.log("");

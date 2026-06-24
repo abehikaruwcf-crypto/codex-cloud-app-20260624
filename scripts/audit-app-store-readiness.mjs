@@ -281,6 +281,7 @@ requireText("scripts/app-store-release-status.mjs", "hasConcreteContact", "Relea
 requireText("scripts/app-store-release-status.mjs", "mailto:", "Release status accepts mailto support contact");
 requireText("scripts/app-store-release-status.mjs", "tel:", "Release status accepts telephone support contact");
 requireText("scripts/app-store-release-status.mjs", "Hosted privacy/support URLs", "Release status checks hosted URLs");
+requireText("scripts/app-store-release-status.mjs", "pagesBuildBlocked", "Release status blocks failed Pages builds");
 requireText("scripts/app-store-release-status.mjs", "Final App Review signoff", "Release status checks final signoff");
 requireText("scripts/app-store-release-status.mjs", "^Status: Ready for App Review$", "Release status checks exact final signoff status");
 requireText("scripts/app-store-release-status.mjs", "requiredSignoffFields", "Release status requires final signoff evidence fields");
