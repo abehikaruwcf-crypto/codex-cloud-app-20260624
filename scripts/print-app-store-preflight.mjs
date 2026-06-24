@@ -26,6 +26,11 @@ const requiredSteps = [
     expected: ['"sourceDoc": "docs/app-accessibility-answers.md"', "Do not claim yet"],
   },
   {
+    name: "TestFlight evidence packet",
+    script: "appstore:testflight-packet",
+    expected: ['"sourceDoc": "docs/testflight-release-checklist.md"', '"backupValidationCommand"', '"signoffCommandFragment"'],
+  },
+  {
     name: "Public URL verification",
     script: "appstore:public-urls",
     expected: ["Public App Store URLs are reachable."],
@@ -121,6 +126,7 @@ const preflight = {
     hardGate: "npm run appstore:verify",
     strictGate: "npm run appstore:verify -- --strict",
     status: "npm run appstore:status",
+    testflightPacket: "npm run appstore:testflight-packet",
     signoffCommand: "npm run appstore:signoff-command",
   },
   steps,

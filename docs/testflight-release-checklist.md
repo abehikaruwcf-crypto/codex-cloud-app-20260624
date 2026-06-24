@@ -2,6 +2,12 @@
 
 Use this checklist once full Xcode is installed and selected. For the complete Xcode archive and App Store Connect upload flow, use [xcode-app-store-upload-guide.md](xcode-app-store-upload-guide.md).
 
+Print the machine-readable TestFlight evidence packet with:
+
+```bash
+npm run appstore:testflight-packet
+```
+
 ## 1. Local Prep
 
 ```bash
@@ -62,6 +68,8 @@ Record backup evidence:
 - Exported backup filename:
 - `npm run backup:validate` result:
 - Import result on physical iPhone:
+
+The values recorded here map to the final signoff inputs printed by `npm run appstore:testflight-packet`.
 
 ## 4. Archive
 

@@ -43,6 +43,7 @@ See [docs/product-requirements.md](docs/product-requirements.md) for the current
 - `npm run appstore:connect-packet` prints the complete App Store Connect transfer packet.
 - `npm run appstore:rating` prints the current App Store age rating questionnaire draft.
 - `npm run appstore:accessibility` prints the current Accessibility Nutrition Labels draft.
+- `npm run appstore:testflight-packet` prints the physical iPhone TestFlight QA evidence fields needed for final signoff.
 - `npm run appstore:screenshots:submission` generates 6.9 inch and 6.5 inch App Store screenshot-size review assets.
 - `npm run appstore:signoff-draft` prints the current App Review signoff draft.
 - `npm run appstore:signoff-command` prints the final `appstore:apply-inputs` command with current repo evidence and placeholders for manual App Review values.

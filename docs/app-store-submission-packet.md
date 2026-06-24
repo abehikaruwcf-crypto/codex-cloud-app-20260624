@@ -96,6 +96,12 @@ npm run appstore:accessibility
 
 Do not claim an accessibility feature in App Store Connect until the uploaded TestFlight build has been tested against the relevant common tasks on a physical iPhone.
 
+Print the physical iPhone TestFlight evidence packet with:
+
+```bash
+npm run appstore:testflight-packet
+```
+
 ## Review Notes
 
 Use [app-store-review-answers.md](app-store-review-answers.md) for App Review information, age rating assumptions, export compliance notes, content rights notes, and final manual checks.
@@ -190,6 +196,7 @@ Use this table as the direct entry map for App Store Connect.
 | TestFlight notes | Use [release-notes.md](release-notes.md). |
 | App Privacy answers | Use [app-privacy-answers.md](app-privacy-answers.md). |
 | Accessibility Nutrition Labels | Use [app-accessibility-answers.md](app-accessibility-answers.md) or run `npm run appstore:accessibility`. |
+| TestFlight evidence packet | Run `npm run appstore:testflight-packet` after upload to map physical iPhone QA results into final signoff fields. |
 | Export compliance | No custom cryptography; confirm in App Store Connect before upload/submission. |
 
 ## Current Blocking Items

@@ -155,6 +155,7 @@ fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print scr
 fileExists("scripts/print-app-store-connect-packet.mjs", "App Store Connect packet script");
 fileExists("scripts/print-app-age-rating-answers.mjs", "App age rating answers print script");
 fileExists("scripts/print-app-accessibility-answers.mjs", "App accessibility answers print script");
+fileExists("scripts/print-testflight-evidence-packet.mjs", "TestFlight evidence packet script");
 fileExists("scripts/print-app-review-signoff-draft.mjs", "App Review signoff draft script");
 fileExists("scripts/print-release-signoff-command.mjs", "Release signoff command script");
 fileExists("scripts/print-app-store-preflight.mjs", "App Store preflight print script");
@@ -268,6 +269,7 @@ requireText("package.json", "\"appstore:metadata\"", "Metadata print script entr
 requireText("package.json", "\"appstore:connect-packet\"", "App Store Connect packet script entry");
 requireText("package.json", "\"appstore:rating\"", "App age rating script entry");
 requireText("package.json", "\"appstore:accessibility\"", "App accessibility script entry");
+requireText("package.json", "\"appstore:testflight-packet\"", "TestFlight evidence packet script entry");
 requireText("package.json", "\"appstore:signoff-draft\"", "App Review signoff draft script entry");
 requireText("package.json", "\"appstore:signoff-command\"", "Release signoff command script entry");
 requireText("package.json", "\"appstore:preflight\"", "App Store preflight script entry");
@@ -305,6 +307,7 @@ requireText("tests/release-status-cli.test.ts", "status and required evidence fi
 requireText("tests/release-status-cli.test.ts", "exits nonzero while App Review TODOs remain", "Release status TODO-blocking test exists");
 requireText("tests/app-store-preflight.test.ts", "App Store preflight stays parseable", "App Store preflight JSON unit test exists");
 requireText("tests/app-store-preflight.test.ts", "confirms every submission packet substep", "App Store preflight substep unit test exists");
+requireText("tests/testflight-evidence-packet.test.ts", "maps physical QA to signoff fields", "TestFlight evidence packet unit test exists");
 requireText("tests/release-signoff-command.test.ts", "release signoff command packet keeps placeholders explicit", "Release signoff command unit test exists");
 requireText("tests/matching-and-learning.test.ts", "matching ranks the closest charm", "Matching ranking unit test exists");
 requireText("tests/matching-and-learning.test.ts", "learning merge keeps the latest examples", "Learning cap unit test exists");
@@ -424,6 +427,7 @@ requireText("docs/testflight-release-checklist.md", "npm run appstore:evidence",
 requireText("docs/testflight-release-checklist.md", "npm run backup:validate", "TestFlight checklist includes backup validation");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:verify", "TestFlight checklist includes verification command");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:public-urls", "TestFlight checklist includes public URL verification");
+requireText("docs/testflight-release-checklist.md", "npm run appstore:testflight-packet", "TestFlight checklist includes evidence packet command");
 requireText("docs/testflight-release-checklist.md", "Exported backup filename", "TestFlight checklist records backup evidence");
 requireText("docs/testflight-release-checklist.md", "Status: Ready for App Review", "TestFlight checklist includes final signoff ready marker");
 requireText("docs/testflight-release-checklist.md", "open ios/App/App.xcodeproj", "TestFlight checklist opens Xcode project");
@@ -438,12 +442,15 @@ requireText("docs/xcode-app-store-upload-guide.md", "npm run appstore:verify -- 
 requireText("scripts/print-app-review-signoff-draft.mjs", "App Review Signoff Draft", "Signoff draft prints heading");
 requireText("scripts/print-app-review-signoff-draft.mjs", "npm run appstore:public-urls", "Signoff draft records public URL check");
 requireText("scripts/print-app-review-signoff-draft.mjs", "npm run appstore:status", "Signoff draft records release status");
+requireText("scripts/print-testflight-evidence-packet.mjs", "backupValidationCommand", "TestFlight packet records backup validation command");
+requireText("scripts/print-testflight-evidence-packet.mjs", "signoffCommandFragment", "TestFlight packet maps evidence to signoff command fragment");
 requireText("scripts/print-release-signoff-command.mjs", "replacePlaceholdersBeforeUse", "Signoff command lists placeholder inputs");
 requireText("scripts/print-release-signoff-command.mjs", "npm run appstore:apply-inputs", "Signoff command prints apply-inputs command");
 requireText("scripts/print-release-signoff-command.mjs", "--mark-ready", "Signoff command includes ready marker after placeholders");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:connect-packet", "Preflight includes App Store Connect packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:rating", "Preflight includes age rating packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:accessibility", "Preflight includes accessibility packet");
+requireText("scripts/print-app-store-preflight.mjs", "appstore:testflight-packet", "Preflight includes TestFlight evidence packet");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-draft", "Preflight includes signoff draft");
 requireText("scripts/print-app-store-preflight.mjs", "appstore:signoff-command", "Preflight includes signoff command");
 requireText("scripts/print-app-store-preflight.mjs", "expectedManualTodoCount: 4", "Preflight records expected manual TODO count");

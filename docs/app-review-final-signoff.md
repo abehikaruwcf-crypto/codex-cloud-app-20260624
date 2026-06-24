@@ -18,6 +18,12 @@ Generate a final `appstore:apply-inputs` command with current repository evidenc
 npm run appstore:signoff-command
 ```
 
+Generate the physical iPhone TestFlight evidence field map with:
+
+```bash
+npm run appstore:testflight-packet
+```
+
 Generate the current submission preflight packet with:
 
 ```bash
