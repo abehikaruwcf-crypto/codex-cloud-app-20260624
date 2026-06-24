@@ -216,10 +216,37 @@ h3 {
 .training-meter,
 .data-tools,
 .decision-list,
-.correction-panel {
+.correction-panel,
+.onboarding-card {
   border: 1px solid rgba(23, 32, 38, 0.1);
   border-radius: 8px;
   background: #ffffff;
+}
+
+.onboarding-card {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 16px;
+}
+
+.onboarding-card h2 {
+  margin-bottom: 8px;
+}
+
+.onboarding-card p:not(.eyebrow) {
+  color: #5d6c73;
+  font-size: 0.94rem;
+  line-height: 1.65;
+}
+
+.onboarding-card button {
+  min-height: 46px;
+  border: 0;
+  border-radius: 8px;
+  color: #ffffff;
+  background: #3a6f68;
+  font-weight: 900;
 }
 
 .match-summary {
@@ -653,6 +680,11 @@ h3 {
   color: #ffffff;
   background: #172026;
   font-weight: 900;
+}
+
+.data-tools .danger-action {
+  color: #8a3328;
+  background: #f8e9e6;
 }
 
 .decision-list {

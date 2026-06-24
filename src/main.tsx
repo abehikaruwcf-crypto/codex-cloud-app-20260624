@@ -45,6 +45,7 @@ type DecisionLog = {
 
 const STORAGE_KEY = "charm-id-camera-app-charms";
 const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
+const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
 const MAX_IMAGES_PER_ANGLE = 8;
 
 const captureAngles = [
@@ -257,6 +258,10 @@ function loadCharms() {
   }
 }
 
+function onboardingDismissed() {
+  return localStorage.getItem(ONBOARDING_STORAGE_KEY) === "true";
+}
+
 function App() {
   const [activeView, setActiveView] = useState<View>("identify");
   const [charms, setCharms] = useState<Charm[]>(loadCharms);
@@ -266,6 +271,7 @@ function App() {
   const [queryImages, setQueryImages] = useState<CharmImage[]>([]);
   const [decisionLogs, setDecisionLogs] = useState<DecisionLog[]>(loadDecisions);
   const [correctionTargetId, setCorrectionTargetId] = useState("");
+  const [showOnboarding, setShowOnboarding] = useState(!onboardingDismissed());
   const [isProcessing, setIsProcessing] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -501,6 +507,28 @@ function App() {
     URL.revokeObjectURL(url);
   }
 
+  function dismissOnboarding() {
+    localStorage.setItem(ONBOARDING_STORAGE_KEY, "true");
+    setShowOnboarding(false);
+  }
+
+  function resetLocalData() {
+    const confirmed = window.confirm(
+      "端末内の登録データ、学習写真、判定履歴を削除します。元に戻せません。実行しますか？",
+    );
+
+    if (!confirmed) {
+      return;
+    }
+
+    localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem(DECISION_STORAGE_KEY);
+    setCharms(sampleCharms);
+    setDecisionLogs([]);
+    setQueryImages([]);
+    setMessage("端末内データをリセットしました。");
+  }
+
   return (
     <main className="app-shell">
       <header className="app-header">
@@ -527,6 +555,22 @@ function App() {
       </section>
 
       {message ? <p className="status-message">{message}</p> : null}
+
+      {showOnboarding ? (
+        <section className="onboarding-card">
+          <div>
+            <p className="eyebrow">Getting started</p>
+            <h2>6方向で登録し、現場写真で育てます</h2>
+            <p>
+              まず登録タブで管理番号と6方向写真を保存します。識別時は候補から正解を選ぶと、
+              その撮影画像が追加学習されます。
+            </p>
+          </div>
+          <button type="button" onClick={dismissOnboarding}>
+            はじめる
+          </button>
+        </section>
+      ) : null}
 
       <section className={activeView === "identify" ? "view is-active" : "view"}>
         <div className="section-head">
@@ -743,6 +787,9 @@ function App() {
         <div className="data-tools">
           <button type="button" onClick={exportDataset}>
             データを書き出す
+          </button>
+          <button className="danger-action" type="button" onClick={resetLocalData}>
+            端末内データをリセット
           </button>
           <p>今は端末内保存です。バックアップを残すと機種変更や本番DB移行で使えます。</p>
         </div>
