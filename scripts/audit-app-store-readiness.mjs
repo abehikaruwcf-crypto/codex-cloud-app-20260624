@@ -142,6 +142,7 @@ fileExists("public/support.html", "Public support page");
 fileExists("docs/github-actions-app-store-readiness.md", "App Store readiness CI workflow template");
 fileExists("docs/github-pages-workflow.md", "GitHub Pages workflow template");
 fileExists("scripts/smoke-app-ui.mjs", "UI smoke test");
+fileExists("scripts/run-unit-tests.mjs", "Unit test runner");
 fileExists("scripts/generate-app-store-screenshots.mjs", "Screenshot generation script");
 fileExists("scripts/print-app-store-metadata.mjs", "App Store metadata print script");
 fileExists("scripts/apply-release-inputs.mjs", "Release input application script");
@@ -212,6 +213,7 @@ requireText("docs/github-pages-workflow.md", "another public static host", "Page
 requireText("docs/github-pages-workflow.md", "/support.html", "Support page Pages URL");
 requireText("docs/github-pages-workflow.md", "actions/deploy-pages@v4", "Pages deployment action template");
 requireText("docs/app-store-screenshots.md", "05-learning.jpg", "Screenshot docs include learning success shot");
+requireText("package.json", "\"test:unit\"", "Unit test script entry");
 requireText("package.json", "\"appstore:smoke\"", "UI smoke test script");
 requireText("package.json", "\"appstore:screenshots\"", "Screenshot generation script entry");
 requireText("package.json", "\"appstore:metadata\"", "Metadata print script entry");
@@ -224,6 +226,8 @@ requireText("scripts/apply-release-inputs.mjs", "--privacy-url", "Release input 
 requireText("scripts/apply-release-inputs.mjs", "--support-url", "Release input script accepts support URL");
 requireText("scripts/apply-release-inputs.mjs", "--dry-run", "Release input script supports dry run");
 requireText("scripts/apply-release-inputs.mjs", "https URL", "Release input script requires HTTPS URLs");
+requireText("tests/matching-and-learning.test.ts", "matching ranks the closest charm", "Matching ranking unit test exists");
+requireText("tests/matching-and-learning.test.ts", "learning merge keeps the latest examples", "Learning cap unit test exists");
 requireText("scripts/print-app-store-metadata.mjs", "fieldLimits", "Metadata print includes field limits");
 requireText("scripts/print-app-store-metadata.mjs", "maxBytes: 100", "Metadata print validates keyword byte limit");
 requireText("scripts/print-app-store-metadata.mjs", "used > max", "Metadata print fails on field limit overflow");
@@ -280,6 +284,9 @@ pngInfo(
   "2732 x 2732",
   "Splash 2732px PNG",
 );
+
+const unitTests = run("npm", ["run", "test:unit"]);
+addCheck("Unit tests", unitTests.ok ? "pass" : "fail", unitTests.output.split("\n").slice(-12).join("\n"));
 
 const screenshots = run("npm", ["run", "appstore:screenshots"]);
 addCheck(

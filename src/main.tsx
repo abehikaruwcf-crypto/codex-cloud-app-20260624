@@ -12,13 +12,13 @@ import {
   ImageSignature,
   View,
 } from "./domain";
+import { createLearningImages, mergeLearningImages } from "./learning";
 import { colorSignatureEngine } from "./matchingEngine";
 import "./styles.css";
 
 const STORAGE_KEY = "charm-id-camera-app-charms";
 const DECISION_STORAGE_KEY = "charm-id-camera-app-decisions";
 const ONBOARDING_STORAGE_KEY = "charm-id-camera-app-onboarding-dismissed";
-const MAX_IMAGES_PER_ANGLE = 8;
 const APP_VERSION = packageJson.version;
 const CAMERA_PERMISSION_HELP =
   "カメラが開かない場合は、iPhoneの設定アプリで Charm ID > カメラ を許可し、この画面に戻って撮り直してください。写真ライブラリから選べる場合は、既存写真でも登録・識別できます。";
@@ -735,28 +735,6 @@ function App() {
     setMessage("識別用の撮影をリセットしました。");
   }
 
-  function imagesForLearning(sourceImages: CharmImage[]) {
-    return sourceImages.map((image) => ({
-      ...image,
-      id: makeId("learned"),
-      source: "confirmed-identification" as const,
-      createdAt: new Date().toISOString(),
-    }));
-  }
-
-  function mergeLearningImages(charm: Charm, learnedImages: CharmImage[]) {
-    const nextImages = [...charm.images, ...learnedImages];
-
-    return {
-      ...charm,
-      images: angleSuggestions.flatMap((angleLabel) =>
-        nextImages
-          .filter((image) => image.angleLabel === angleLabel)
-          .slice(-MAX_IMAGES_PER_ANGLE),
-      ),
-    };
-  }
-
   function logDecision(candidate: Candidate, decision: DecisionLog["decision"], learnedImages = 0) {
     const nextLog: DecisionLog = {
       id: makeId("decision"),
@@ -785,7 +763,10 @@ function App() {
       return;
     }
 
-    const learnedImages = imagesForLearning(queryImages);
+    const learnedImages = createLearningImages(queryImages, {
+      makeId: () => makeId("learned"),
+      now: () => new Date().toISOString(),
+    });
 
     setCharms((current) =>
       current.map((charm) =>
@@ -813,7 +794,10 @@ function App() {
       return;
     }
 
-    const learnedImages = imagesForLearning(queryImages);
+    const learnedImages = createLearningImages(queryImages, {
+      makeId: () => makeId("learned"),
+      now: () => new Date().toISOString(),
+    });
 
     setCharms((current) =>
       current.map((charm) =>
