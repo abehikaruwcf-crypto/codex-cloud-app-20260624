@@ -96,6 +96,8 @@ const requiredSignoffFields = [
   "Backup import result",
   "Public URL verification result",
   "Strict verification result",
+  "Accessibility label result",
+  "Age rating result",
   "Final Privacy Policy URL",
   "Final Support URL",
   "Support contact",
@@ -189,6 +191,7 @@ const manualBlockers = [
 
 const nextInputs = [
   "Run npm run appstore:apply-inputs -- --support-contact <contact> --privacy-contact <contact> after contacts are finalized.",
+  "Run npm run appstore:apply-inputs -- --release-commit <sha> --uploaded-build <version-build> --testflight-device <device> to fill final signoff evidence.",
   "public/support.html and docs/support.html: replace the placeholder with a concrete app support contact.",
   "public/privacy.html and docs/privacy.html: replace the placeholder with a concrete privacy contact.",
   ...(hostedUrlsReady

@@ -67,15 +67,17 @@ npm run appstore:preflight
 
 Fill these values before changing the status to `Status: Ready for App Review`.
 
-When the final contacts and public URLs are known, apply them with:
+When the final contacts, public URLs, and release evidence are known, apply them with:
 
 ```bash
-npm run appstore:apply-inputs -- --support-contact support@example.com --privacy-contact privacy@example.com --privacy-url https://example.com/privacy.html --support-url https://example.com/support.html
+npm run appstore:apply-inputs -- --support-contact support@example.com --privacy-contact privacy@example.com --privacy-url https://example.com/privacy.html --support-url https://example.com/support.html --release-commit <sha> --evidence-report-generated <iso-date> --app-store-connect-app-id <app-id> --uploaded-build "1.0 (1)" --testflight-device "iPhone model / iOS version" --backup-validation-file <backup.json> --backup-validation-result passed --backup-import-result passed --public-url-verification-result passed --strict-verification-result passed --accessibility-label-result reviewed --age-rating-result "4+ confirmed" --signoff-owner <name> --signoff-date <yyyy-mm-dd>
 ```
+
+Add `--mark-ready` to the same command only after every required evidence value is complete. The command refuses to mark the page ready while required signoff fields are blank.
 
 | TODO | Required input | Target file or place |
 | --- | --- | --- |
 | Formal support contact | A concrete `mailto:` link, email address, or telephone contact for app support. | `public/support.html` and `docs/support.html` |
 | Privacy policy contact | A concrete `mailto:` link, email address, or telephone contact for privacy inquiries. | `public/privacy.html` and `docs/privacy.html` |
 | Full Xcode selected | Output of `xcodebuild -version` after selecting full Xcode. | This signoff page |
-| Final App Review signoff | Filled release commit, App Store Connect app ID, uploaded build, physical iPhone TestFlight result, final URLs, contacts, owner, and date. | This signoff page |
+| Final App Review signoff | Filled release commit, evidence timestamp, App Store Connect app ID, uploaded build, physical iPhone TestFlight result, backup validation/import result, public URL verification, strict verification, accessibility result, age rating result, final URLs, contacts, owner, and date. | This signoff page |

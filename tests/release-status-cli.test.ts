@@ -90,6 +90,8 @@ function fillSignoffFields(content: string) {
     "Backup import result": "passed on physical iPhone",
     "Public URL verification result": "passed with npm run appstore:public-urls",
     "Strict verification result": "passed",
+    "Accessibility label result": "reviewed against physical iPhone test",
+    "Age rating result": "4+ confirmed in App Store Connect",
     "Final Privacy Policy URL": "https://example.com/privacy.html",
     "Final Support URL": "https://example.com/support.html",
     "Support contact": "support@example.com",

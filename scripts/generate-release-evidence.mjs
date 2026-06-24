@@ -112,6 +112,8 @@ function finalSignoffEvidence() {
     "Backup import result",
     "Public URL verification result",
     "Strict verification result",
+    "Accessibility label result",
+    "Age rating result",
     "Final Privacy Policy URL",
     "Final Support URL",
     "Support contact",

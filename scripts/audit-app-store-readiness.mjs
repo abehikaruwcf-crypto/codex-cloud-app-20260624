@@ -280,6 +280,10 @@ requireText("scripts/apply-release-inputs.mjs", "--support-contact", "Release in
 requireText("scripts/apply-release-inputs.mjs", "--privacy-contact", "Release input script accepts privacy contact");
 requireText("scripts/apply-release-inputs.mjs", "--privacy-url", "Release input script accepts privacy URL");
 requireText("scripts/apply-release-inputs.mjs", "--support-url", "Release input script accepts support URL");
+requireText("scripts/apply-release-inputs.mjs", "--release-commit", "Release input script accepts final signoff evidence");
+requireText("scripts/apply-release-inputs.mjs", "--accessibility-label-result", "Release input script accepts accessibility signoff result");
+requireText("scripts/apply-release-inputs.mjs", "--age-rating-result", "Release input script accepts age rating signoff result");
+requireText("scripts/apply-release-inputs.mjs", "--mark-ready", "Release input script can mark final signoff ready");
 requireText("scripts/apply-release-inputs.mjs", "--dry-run", "Release input script supports dry run");
 requireText("scripts/apply-release-inputs.mjs", "https URL", "Release input script requires HTTPS URLs");
 requireText("scripts/apply-release-inputs.mjs", "docs/support.html", "Release input script updates Pages support page");
@@ -287,6 +291,7 @@ requireText("scripts/apply-release-inputs.mjs", "docs/privacy.html", "Release in
 requireText("tests/release-inputs-cli.test.ts", "release input CLI validates dry-run inputs", "Release input CLI dry-run unit test exists");
 requireText("tests/release-inputs-cli.test.ts", "rejects non-https public URLs", "Release input CLI URL validation test exists");
 requireText("tests/release-inputs-cli.test.ts", "applies contacts, hosted URLs, and signoff evidence fields", "Release input CLI apply test exists");
+requireText("tests/release-inputs-cli.test.ts", "refuses to mark final signoff ready", "Release input CLI ready guard test exists");
 requireText("tests/release-inputs-cli.test.ts", "pagesSupportPage", "Release input CLI verifies Pages support contact update");
 requireText("tests/release-inputs-cli.test.ts", "pagesPrivacyPage", "Release input CLI verifies Pages privacy contact update");
 requireText("tests/release-version-cli.test.ts", "keeps bundled and hosted support pages in sync", "Release version CLI Pages sync unit test exists");

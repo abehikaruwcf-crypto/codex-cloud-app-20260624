@@ -14,9 +14,53 @@ Options:
   --privacy-contact  Concrete privacy email, mailto link, tel link, or telephone number.
   --privacy-url      Final public Privacy Policy URL.
   --support-url      Final public Support URL.
+  --mark-ready       Mark final signoff as Ready for App Review after all required evidence fields are filled.
   --dry-run          Validate inputs without writing files.
+
+Final signoff evidence options:
+  --release-commit
+  --evidence-report-generated
+  --app-store-connect-app-id
+  --uploaded-build
+  --testflight-device
+  --backup-validation-file
+  --backup-validation-result
+  --backup-import-result
+  --public-url-verification-result
+  --strict-verification-result
+  --accessibility-label-result
+  --age-rating-result
+  --signoff-owner
+  --signoff-date
 `);
 }
+
+const signoffInputs = [
+  ["release-commit", "Release commit"],
+  ["evidence-report-generated", "Evidence report generated"],
+  ["app-store-connect-app-id", "App Store Connect app ID"],
+  ["uploaded-build", "Uploaded build"],
+  ["testflight-device", "TestFlight device"],
+  ["backup-validation-file", "Backup validation file"],
+  ["backup-validation-result", "Backup validation result"],
+  ["backup-import-result", "Backup import result"],
+  ["public-url-verification-result", "Public URL verification result"],
+  ["strict-verification-result", "Strict verification result"],
+  ["accessibility-label-result", "Accessibility label result"],
+  ["age-rating-result", "Age rating result"],
+  ["signoff-owner", "Signoff owner"],
+  ["signoff-date", "Signoff date"],
+];
+
+const validKeys = new Set([
+  "support-contact",
+  "privacy-contact",
+  "privacy-url",
+  "support-url",
+  "dry-run",
+  "mark-ready",
+  ...signoffInputs.map(([key]) => key),
+]);
 
 function parseArgs() {
   const parsed = {};
@@ -27,7 +71,11 @@ function parseArgs() {
     }
 
     const key = arg.slice(2);
-    if (key === "dry-run") {
+    if (!validKeys.has(key)) {
+      throw new Error(`Unknown option: --${key}`);
+    }
+
+    if (key === "dry-run" || key === "mark-ready") {
       parsed[key] = true;
       continue;
     }
@@ -99,6 +147,32 @@ function replaceOrThrow(content, search, replacement, label) {
   return content.replace(search, replacement);
 }
 
+function replaceSignoffValue(content, label, value) {
+  const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pattern = new RegExp(`^- ${escapedLabel}:.*$`, "m");
+  if (!pattern.test(content)) {
+    throw new Error(`Could not find final signoff field: ${label}.`);
+  }
+  return content.replace(pattern, `- ${label}: ${value}`);
+}
+
+function signoffValue(content, label) {
+  const escapedLabel = label.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = content.match(new RegExp(`^- ${escapedLabel}:[^\\S\\r\\n]*(.*)$`, "m"));
+  return match?.[1]?.trim() ?? "";
+}
+
+function missingSignoffFields(content) {
+  const labels = [
+    ...signoffInputs.map(([, label]) => label),
+    "Final Privacy Policy URL",
+    "Final Support URL",
+    "Support contact",
+    "Privacy contact",
+  ];
+  return labels.filter((label) => !signoffValue(content, label));
+}
+
 function updateSupportPage(contact) {
   const href = htmlEscape(contactHref(contact));
   const label = htmlEscape(contact);
@@ -147,20 +221,30 @@ function updateHostingDocs(privacyUrl, supportUrl) {
   write(path, content);
 }
 
-function updateFinalSignoff({ supportContact, privacyContact, privacyUrl, supportUrl }) {
+function updateFinalSignoff({ supportContact, privacyContact, privacyUrl, supportUrl, signoffValues, markReady }) {
   const path = "docs/app-review-final-signoff.md";
   let content = read(path);
   if (privacyUrl) {
-    content = content.replace(/- Final Privacy Policy URL:.*$/m, `- Final Privacy Policy URL: ${privacyUrl}`);
+    content = replaceSignoffValue(content, "Final Privacy Policy URL", privacyUrl);
   }
   if (supportUrl) {
-    content = content.replace(/- Final Support URL:.*$/m, `- Final Support URL: ${supportUrl}`);
+    content = replaceSignoffValue(content, "Final Support URL", supportUrl);
   }
   if (supportContact) {
-    content = content.replace(/- Support contact:.*$/m, `- Support contact: ${supportContact}`);
+    content = replaceSignoffValue(content, "Support contact", supportContact);
   }
   if (privacyContact) {
-    content = content.replace(/- Privacy contact:.*$/m, `- Privacy contact: ${privacyContact}`);
+    content = replaceSignoffValue(content, "Privacy contact", privacyContact);
+  }
+  for (const [label, value] of Object.entries(signoffValues)) {
+    content = replaceSignoffValue(content, label, value);
+  }
+  if (markReady) {
+    const missing = missingSignoffFields(content);
+    if (missing.length > 0) {
+      throw new Error(`Cannot mark ready until final signoff fields are filled: ${missing.join(", ")}.`);
+    }
+    content = content.replace(/^Status:.*$/m, "Status: Ready for App Review");
   }
   write(path, content);
 }
@@ -188,8 +272,14 @@ try {
   const privacyContact = parsed["privacy-contact"];
   const privacyUrl = parsed["privacy-url"];
   const supportUrl = parsed["support-url"];
+  const markReady = Boolean(parsed["mark-ready"]);
+  const signoffValues = Object.fromEntries(
+    signoffInputs
+      .filter(([key]) => parsed[key])
+      .map(([key, label]) => [label, parsed[key].trim()]),
+  );
 
-  if (!supportContact && !privacyContact && !privacyUrl && !supportUrl) {
+  if (!supportContact && !privacyContact && !privacyUrl && !supportUrl && !markReady && Object.keys(signoffValues).length === 0) {
     usage();
     process.exit(1);
   }
@@ -209,6 +299,11 @@ try {
   if ((privacyUrl && !supportUrl) || (!privacyUrl && supportUrl)) {
     throw new Error("--privacy-url and --support-url must be supplied together.");
   }
+  for (const [label, value] of Object.entries(signoffValues)) {
+    if (!value) {
+      throw new Error(`--${signoffInputs.find(([, itemLabel]) => itemLabel === label)?.[0]} must not be blank.`);
+    }
+  }
 
   if (supportContact) {
     updateSupportPage(supportContact);
@@ -220,7 +315,7 @@ try {
     updateHostingDocs(privacyUrl, supportUrl);
   }
 
-  updateFinalSignoff({ supportContact, privacyContact, privacyUrl, supportUrl });
+  updateFinalSignoff({ supportContact, privacyContact, privacyUrl, supportUrl, signoffValues, markReady });
 
   console.log(dryRun ? "Release inputs validated." : "Release inputs applied.");
   console.log("Next: run npm run appstore:status and npm run appstore:audit.");

@@ -102,6 +102,35 @@ test("release input CLI applies contacts, hosted URLs, and signoff evidence fiel
       "https://example.com/privacy.html",
       "--support-url",
       "https://example.com/support.html",
+      "--release-commit",
+      "abc1234",
+      "--evidence-report-generated",
+      "2026-06-25T00:00:00Z",
+      "--app-store-connect-app-id",
+      "1234567890",
+      "--uploaded-build",
+      "1.0 (1)",
+      "--testflight-device",
+      "iPhone 15 Pro / iOS 18",
+      "--backup-validation-file",
+      "charm-id-backup-2026-06-25.json",
+      "--backup-validation-result",
+      "passed",
+      "--backup-import-result",
+      "passed on physical iPhone",
+      "--public-url-verification-result",
+      "passed with npm run appstore:public-urls",
+      "--strict-verification-result",
+      "passed with npm run appstore:verify -- --strict",
+      "--accessibility-label-result",
+      "reviewed against physical iPhone test",
+      "--age-rating-result",
+      "4+ confirmed in App Store Connect",
+      "--signoff-owner",
+      "Release owner",
+      "--signoff-date",
+      "2026-06-25",
+      "--mark-ready",
     ]);
 
     assert.equal(result.ok, true);
@@ -128,6 +157,37 @@ test("release input CLI applies contacts, hosted URLs, and signoff evidence fiel
     assert.match(finalSignoff, /- Privacy contact: privacy@example\.com/);
     assert.match(finalSignoff, /- Final Privacy Policy URL: https:\/\/example\.com\/privacy\.html/);
     assert.match(finalSignoff, /- Final Support URL: https:\/\/example\.com\/support\.html/);
+    assert.match(finalSignoff, /Status: Ready for App Review/);
+    assert.match(finalSignoff, /- Release commit: abc1234/);
+    assert.match(finalSignoff, /- Uploaded build: 1\.0 \(1\)/);
+    assert.match(finalSignoff, /- Accessibility label result: reviewed against physical iPhone test/);
+    assert.match(finalSignoff, /- Age rating result: 4\+ confirmed in App Store Connect/);
+    assert.match(finalSignoff, /- Signoff owner: Release owner/);
+  } finally {
+    rmSync(fixtureRoot, { force: true, recursive: true });
+  }
+});
+
+test("release input CLI refuses to mark final signoff ready when evidence is incomplete", () => {
+  const fixtureRoot = copyFixtureTree();
+
+  try {
+    const result = runApplyInputs(fixtureRoot, [
+      "--support-contact",
+      "support@example.com",
+      "--privacy-contact",
+      "privacy@example.com",
+      "--privacy-url",
+      "https://example.com/privacy.html",
+      "--support-url",
+      "https://example.com/support.html",
+      "--mark-ready",
+    ]);
+
+    assert.equal(result.ok, false);
+    assert.match(result.output, /Cannot mark ready until final signoff fields are filled/);
+    assert.match(result.output, /Release commit/);
+    assert.match(result.output, /Age rating result/);
   } finally {
     rmSync(fixtureRoot, { force: true, recursive: true });
   }
