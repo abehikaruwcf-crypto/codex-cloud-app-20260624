@@ -33,3 +33,15 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - Privacy contact:
 - Signoff owner:
 - Signoff date:
+
+## TODO Resolution Inputs
+
+Fill these values before changing the status to `Status: Ready for App Review`.
+
+| TODO | Required input | Target file or place |
+| --- | --- | --- |
+| Formal support contact | A concrete `mailto:` link, email address, or telephone contact for app support. | `public/support.html` |
+| Privacy policy contact | A concrete `mailto:` link, email address, or telephone contact for privacy inquiries. | `public/privacy.html` |
+| Hosted privacy/support URLs | Final public URLs for `/privacy.html` and `/support.html` after GitHub Pages or another host is enabled. | `docs/github-pages-workflow.md`, App Store Connect, and this signoff page |
+| Full Xcode selected | Output of `xcodebuild -version` after selecting full Xcode. | This signoff page |
+| Final App Review signoff | Filled release commit, App Store Connect app ID, uploaded build, physical iPhone TestFlight result, final URLs, contacts, owner, and date. | This signoff page |

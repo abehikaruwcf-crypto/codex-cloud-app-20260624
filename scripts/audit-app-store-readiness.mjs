@@ -225,6 +225,9 @@ requireText("scripts/app-store-release-status.mjs", "Final App Review signoff", 
 requireText("scripts/app-store-release-status.mjs", "^Status: Ready for App Review$", "Release status checks exact final signoff status");
 requireText("scripts/app-store-release-status.mjs", "todoCount > 0", "Release status fails when TODO items remain");
 requireText("scripts/app-store-release-status.mjs", "Status summary", "Release status prints summary");
+requireText("scripts/app-store-release-status.mjs", "Next required inputs", "Release status prints next required inputs");
+requireText("scripts/app-store-release-status.mjs", "public/privacy.html: replace the placeholder", "Release status points to privacy contact input");
+requireText("scripts/app-store-release-status.mjs", "public/support.html: replace the placeholder", "Release status points to support contact input");
 requireText("README.md", "npm run appstore:status", "README includes release status command");
 requireText("README.md", "npm run appstore:metadata", "README includes metadata print command");
 requireText("README.md", "exits non-zero", "README explains release status failure behavior");
@@ -237,6 +240,9 @@ requireText("docs/app-review-final-signoff.md", "Status: Ready for App Review", 
 requireText("docs/app-review-final-signoff.md", "concrete support contact", "Final signoff requires concrete support contact");
 requireText("docs/app-review-final-signoff.md", "concrete privacy contact", "Final signoff requires concrete privacy contact");
 requireText("docs/app-review-final-signoff.md", "npm run appstore:status", "Final signoff includes release status evidence");
+requireText("docs/app-review-final-signoff.md", "TODO Resolution Inputs", "Final signoff includes TODO resolution inputs");
+requireText("docs/app-review-final-signoff.md", "Formal support contact", "Final signoff maps support contact TODO");
+requireText("docs/app-review-final-signoff.md", "Privacy policy contact", "Final signoff maps privacy contact TODO");
 requireText("docs/privacy-policy-draft.md", "Concrete contact information", "Privacy policy draft requires concrete contact");
 requireText("docs/app-store-review-answers.md", "concrete `mailto:` link", "Review answers require concrete support contact");
 requireText("docs/testflight-release-checklist.md", "npm run appstore:status", "TestFlight checklist includes release status");

@@ -137,6 +137,14 @@ const manualBlockers = [
   "Archive and upload from Xcode Organizer.",
 ];
 
+const nextInputs = [
+  "public/support.html: replace the placeholder with a concrete app support contact.",
+  "public/privacy.html: replace the placeholder with a concrete privacy contact.",
+  "docs/github-pages-workflow.md and App Store Connect: replace placeholder Pages URLs with final public Privacy/Support URLs.",
+  "docs/app-review-final-signoff.md: record Xcode, App Store Connect, uploaded build, TestFlight, URL, contact, owner, and date evidence.",
+  "docs/app-review-final-signoff.md: change Status to Ready for App Review only after appstore:status reports 0 todo.",
+];
+
 console.log(`Charm ID App Store Release Status`);
 console.log(`Version: ${packageVersion}`);
 console.log("");
@@ -151,6 +159,12 @@ console.log("");
 console.log("Manual items before App Review:");
 for (const blocker of manualBlockers) {
   console.log(`- ${blocker}`);
+}
+
+console.log("");
+console.log("Next required inputs:");
+for (const input of nextInputs) {
+  console.log(`- ${input}`);
 }
 
 console.log("");
