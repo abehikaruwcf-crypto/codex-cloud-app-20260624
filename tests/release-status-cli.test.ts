@@ -50,6 +50,24 @@ function runReleaseStatus(cwd: string) {
   }
 }
 
+function runCurrentReleaseStatus() {
+  try {
+    return {
+      ok: true,
+      output: execFileSync("npm", ["run", "appstore:status"], {
+        cwd: repoRoot,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "pipe"],
+      }),
+    };
+  } catch (error) {
+    return {
+      ok: false,
+      output: `${error.stdout ?? ""}${error.stderr ?? ""}`,
+    };
+  }
+}
+
 function readSignoff(cwd: string) {
   return readFileSync(join(cwd, "docs/app-review-final-signoff.md"), "utf8");
 }
@@ -117,4 +135,13 @@ test("release status passes final signoff check when status and required evidenc
   } finally {
     rmSync(fixtureRoot, { force: true, recursive: true });
   }
+});
+
+test("current release status exits nonzero while App Review TODOs remain", () => {
+  const result = runCurrentReleaseStatus();
+
+  assert.equal(result.ok, false);
+  assert.match(result.output, /Status summary: \d+ pass, [1-9]\d* todo/);
+  assert.match(result.output, /\[TODO\] Formal support contact/);
+  assert.match(result.output, /\[TODO\] Full Xcode selected/);
 });
