@@ -106,6 +106,11 @@ async function readState(page) {
     identifyFileLabels: [...document.querySelectorAll('.view.is-active input[type="file"]')]
       .map((input) => input.getAttribute("aria-label"))
       .filter(Boolean),
+    activeButtonLabels: [...document.querySelectorAll(".view.is-active button")]
+      .map((button) => button.getAttribute("aria-label") || button.textContent?.trim())
+      .filter(Boolean),
+    correctionSelectLabel: document.querySelector(".correction-panel select")?.getAttribute("aria-label") ?? null,
+    qualityMeterLabel: document.querySelector(".training-meter meter")?.getAttribute("aria-label") ?? null,
     topCandidate: document.querySelector(".match-summary h3")?.textContent?.trim() ?? null,
     qualityText: document.querySelector(".training-meter strong")?.textContent?.trim() ?? null,
   }));
@@ -168,7 +173,15 @@ try {
   expect(library.infoPanel?.includes(`Version ${packageVersion}`), "Library should show the package version.");
   expect(library.dataToolsText?.includes("リセット前や機種変更前"), "Library should explain backup before reset or migration.");
   expect(library.dataToolsText?.includes("端末内データは、この画面から削除"), "Library should explain local data deletion.");
-  await page.getByRole("button", { name: "詳細" }).first().click();
+  expect(
+    library.activeButtonLabels.includes("CH-001の詳細を開く"),
+    "Library detail buttons should include management numbers for accessibility.",
+  );
+  expect(
+    library.activeButtonLabels.includes("CH-001を削除"),
+    "Library delete buttons should include management numbers for accessibility.",
+  );
+  await page.getByRole("button", { name: "CH-001の詳細を開く" }).click();
   const detailedLibrary = await readState(page);
   expect(detailedLibrary.libraryDetailImages === 6, "Library detail should render six angle images.");
   expect(detailedLibrary.libraryDetailText?.includes("登録日"), "Library detail should show registration metadata.");
@@ -177,7 +190,7 @@ try {
     expect(dialog.type() === "prompt", "Library deletion should require typed management number confirmation.");
     await dialog.accept("WRONG");
   });
-  await page.getByRole("button", { name: "削除" }).first().click();
+  await page.getByRole("button", { name: "CH-001を削除" }).click();
   await page.getByText("管理番号が一致しないため削除を中止しました。").waitFor({ timeout: 3000 });
   const cancelledDeletionLibrary = await readState(page);
   expect(cancelledDeletionLibrary.libraryCards === 2, "Wrong deletion confirmation should keep the model.");
@@ -230,7 +243,7 @@ try {
   page.once("dialog", async (dialog) => {
     await dialog.accept("CH-001");
   });
-  await page.getByRole("button", { name: "削除" }).first().click();
+  await page.getByRole("button", { name: "CH-001を削除" }).click();
   await page.getByText("CH-001 を削除しました。").waitFor({ timeout: 3000 });
   const deletedLibrary = await readState(page);
   expect(deletedLibrary.libraryCards === 1, "Matching deletion confirmation should remove one model.");
@@ -256,12 +269,24 @@ try {
     identify.permissionNoteText?.includes("設定アプリで Charm ID > カメラ を許可"),
     "Identify view should explain how to recover from denied camera permission.",
   );
+  expect(
+    identify.activeButtonLabels.includes("CH-001を正解にする"),
+    "Candidate confirmation buttons should include management numbers for accessibility.",
+  );
+  expect(
+    identify.activeButtonLabels.includes("CH-001 は違う候補として記録"),
+    "Candidate rejection buttons should include management numbers for accessibility.",
+  );
+  expect(
+    identify.correctionSelectLabel === "候補にない場合の正しい管理番号",
+    "Correction select should expose an accessible label.",
+  );
   page.once("dialog", async (dialog) => {
     expect(dialog.type() === "confirm", "Correct candidate learning should require confirmation.");
     expect(dialog.message().includes("CH-001"), "Learning confirmation should name the candidate management number.");
     await dialog.dismiss();
   });
-  await page.getByRole("button", { name: "正解にする" }).first().click();
+  await page.getByRole("button", { name: "CH-001を正解にする" }).click();
   await page.getByText("追加学習を中止しました。管理番号を確認してから確定してください。").waitFor({
     timeout: 3000,
   });
@@ -273,7 +298,7 @@ try {
   page.once("dialog", async (dialog) => {
     await dialog.accept();
   });
-  await page.getByRole("button", { name: "正解にする" }).first().click();
+  await page.getByRole("button", { name: "CH-001を正解にする" }).click();
   await page.getByText("CH-001 を確定し、2枚を追加学習しました。").waitFor({ timeout: 3000 });
   const confirmedLearning = await readState(page);
   expect(
@@ -294,6 +319,7 @@ try {
     register.permissionNoteText?.includes("写真ライブラリから選べる場合"),
     "Register view should mention photo library fallback when camera capture is unavailable.",
   );
+  expect(register.qualityMeterLabel === "登録品質", "Register quality meter should expose an accessible label.");
   await page.getByPlaceholder("例: CH-1042").fill(" ch-001 ");
   await page.getByRole("button", { name: "登録する" }).click();
   const duplicateRegister = await readState(page);

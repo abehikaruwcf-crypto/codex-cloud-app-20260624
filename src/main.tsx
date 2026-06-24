@@ -1017,10 +1017,18 @@ function App() {
                       <img src={candidate.bestImage.imageUrl} alt="" />
                     ) : null}
                     <div className="candidate-actions">
-                      <button type="button" onClick={() => confirmCandidate(candidate)}>
+                      <button
+                        type="button"
+                        aria-label={`${candidate.charm.managementNumber}を正解にする`}
+                        onClick={() => confirmCandidate(candidate)}
+                      >
                         正解にする
                       </button>
-                      <button type="button" onClick={() => logDecision(candidate, "rejected", 0)}>
+                      <button
+                        type="button"
+                        aria-label={`${candidate.charm.managementNumber} は違う候補として記録`}
+                        onClick={() => logDecision(candidate, "rejected", 0)}
+                      >
                         違う
                       </button>
                     </div>
@@ -1037,6 +1045,7 @@ function App() {
               <h3>候補にない場合</h3>
               <p>正しい管理番号を選ぶと、今回の撮影画像をそのモデルに追加学習します。</p>
               <select
+                aria-label="候補にない場合の正しい管理番号"
                 value={correctionTargetId}
                 onChange={(event) => setCorrectionTargetId(event.target.value)}
               >
@@ -1138,7 +1147,7 @@ function App() {
               <span>登録品質</span>
               <strong>{currentQualityScore}%</strong>
             </div>
-            <meter min="0" max="100" value={currentQualityScore} />
+            <meter aria-label="登録品質" min="0" max="100" value={currentQualityScore} />
             <p>
               {missingDraftAngles.length === 0
                 ? "6方向が揃っています。識別用の参照データとして登録できます。"
@@ -1238,11 +1247,16 @@ function App() {
                     <div className="library-actions">
                       <button
                         type="button"
+                        aria-label={`${charm.managementNumber}の詳細を${isSelected ? "閉じる" : "開く"}`}
                         onClick={() => setSelectedLibraryCharmId(isSelected ? "" : charm.id)}
                       >
                         {isSelected ? "閉じる" : "詳細"}
                       </button>
-                      <button type="button" onClick={() => deleteCharm(charm.id)}>
+                      <button
+                        type="button"
+                        aria-label={`${charm.managementNumber}を削除`}
+                        onClick={() => deleteCharm(charm.id)}
+                      >
                         削除
                       </button>
                     </div>
