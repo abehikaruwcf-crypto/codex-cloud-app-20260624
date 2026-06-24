@@ -11,7 +11,7 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - Full Xcode selected and `xcodebuild -version` reports Xcode.
 - Apple Developer Program team selected in the Xcode `App` target.
 - App Store Connect app record exists for Bundle ID `com.wcf.charmid`.
-- Final hosted Privacy Policy URL opens publicly.
+- Final hosted Privacy Policy URL opens publicly and includes a concrete privacy contact such as a `mailto:` link, email address, or telephone contact.
 - Final hosted Support URL opens publicly and includes a concrete support contact such as a `mailto:` link, email address, or telephone contact.
 - Final App Store screenshots are captured from the release build at Apple-supported sizes.
 - TestFlight build is uploaded and processed in App Store Connect.
@@ -30,5 +30,6 @@ Change `Status: Pending` to `Status: Ready for App Review` only after every evid
 - Final Privacy Policy URL:
 - Final Support URL:
 - Support contact:
+- Privacy contact:
 - Signoff owner:
 - Signoff date:

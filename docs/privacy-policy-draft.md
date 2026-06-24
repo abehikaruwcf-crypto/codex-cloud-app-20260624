@@ -39,4 +39,4 @@ The current local-only build is expected to answer "Data Not Collected" in App S
 
 ## Contact
 
-Contact information must be added before App Store submission.
+Concrete contact information, such as a `mailto:` link, email address, telephone contact, or legally required contact details, must be added before App Store submission.

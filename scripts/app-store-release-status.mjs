@@ -34,21 +34,31 @@ function mark(ok) {
   return ok ? "PASS" : "TODO";
 }
 
+function hasConcreteContact(content) {
+  return (
+    /mailto:[^"'\s>]+@[^"'\s>]+/i.test(content) ||
+    /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/.test(content) ||
+    /tel:\+?[0-9][0-9()\-\s]+/i.test(content)
+  );
+}
+
 const packageVersion = hasFile("package.json") ? readJson("package.json").version : "unknown";
 const xcode = run("xcodebuild", ["-version"]);
 const xcodeSelected = xcode.ok && xcode.output.includes("Xcode");
 const supportPage = hasFile("public/support.html") ? readText("public/support.html") : "";
+const privacyPage = hasFile("public/privacy.html") ? readText("public/privacy.html") : "";
 const pagesWorkflow = hasFile("docs/github-pages-workflow.md") ? readText("docs/github-pages-workflow.md") : "";
 const finalSignoff = hasFile("docs/app-review-final-signoff.md")
   ? readText("docs/app-review-final-signoff.md")
   : "";
 const hasSupportPlaceholder =
   supportPage.includes("正式なサポート連絡先") || supportPage.includes("配布元の担当者");
-const hasSupportContact =
-  /mailto:[^"'\s>]+@[^"'\s>]+/i.test(supportPage) ||
-  /[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/.test(supportPage) ||
-  /tel:\+?[0-9][0-9()\-\s]+/i.test(supportPage);
+const hasPrivacyPlaceholder =
+  privacyPage.includes("アプリ提供元まで") || privacyPage.includes("お問い合わせは、アプリ提供元");
+const hasSupportContact = hasConcreteContact(supportPage);
+const hasPrivacyContact = hasConcreteContact(privacyPage);
 const formalSupportContactReady = !hasSupportPlaceholder && hasSupportContact;
+const privacyContactReady = !hasPrivacyPlaceholder && hasPrivacyContact;
 const hostedUrlsReady =
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/privacy.html") &&
   !pagesWorkflow.includes("https://<owner>.github.io/<repo>/support.html");
@@ -71,6 +81,13 @@ const checks = [
     detail: formalSupportContactReady
       ? "public/support.html includes a concrete support contact."
       : "Replace support-page placeholder with a concrete mailto, email address, or telephone contact.",
+  },
+  {
+    ok: privacyContactReady,
+    title: "Privacy policy contact",
+    detail: privacyContactReady
+      ? "public/privacy.html includes a concrete privacy contact."
+      : "Replace privacy-page placeholder with a concrete mailto, email address, or telephone contact.",
   },
   {
     ok: hostedUrlsReady,
@@ -113,6 +130,7 @@ const manualBlockers = [
   "Create App Store Connect app record for Bundle ID com.wcf.charmid.",
   "Enable/publish public Privacy Policy and Support URLs.",
   "Replace the support-page placeholder with a concrete mailto, email address, or telephone contact.",
+  "Replace the privacy-page placeholder with a concrete mailto, email address, or telephone contact.",
   "Capture final App Store screenshots from release build at Apple-supported sizes.",
   "Run physical iPhone TestFlight validation.",
   "Complete docs/app-review-final-signoff.md.",
