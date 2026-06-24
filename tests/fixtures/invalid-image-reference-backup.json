@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "exportedAt": "2026-06-25T09:00:00.000Z",
+  "charms": [
+    {
+      "id": "fixture-invalid-reference",
+      "managementNumber": "CH-903",
+      "note": "",
+      "createdAt": "2026-06-25T09:00:00.000Z",
+      "images": [
+        {
+          "id": "fixture-front",
+          "imageUrl": "data:test/front",
+          "angleLabel": "表",
+          "signature": { "red": 220, "green": 174, "blue": 72, "brightness": 155 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-back",
+          "imageUrl": "javascript:alert(1)",
+          "angleLabel": "裏",
+          "signature": { "red": 220, "green": 174, "blue": 72, "brightness": 155 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-right",
+          "imageUrl": "data:test/right",
+          "angleLabel": "右側面",
+          "signature": { "red": 220, "green": 174, "blue": 72, "brightness": 155 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-left",
+          "imageUrl": "data:test/left",
+          "angleLabel": "左側面",
+          "signature": { "red": 220, "green": 174, "blue": 72, "brightness": 155 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-top",
+          "imageUrl": "data:test/top",
+          "angleLabel": "上側面",
+          "signature": { "red": 220, "green": 174, "blue": 72, "brightness": 155 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        },
+        {
+          "id": "fixture-bottom",
+          "imageUrl": "data:test/bottom",
+          "angleLabel": "下側面",
+          "signature": { "red": 220, "green": 174, "blue": 72, "brightness": 155 },
+          "source": "registration",
+          "createdAt": "2026-06-25T09:00:00.000Z"
+        }
+      ]
+    }
+  ],
+  "decisionLogs": []
+}

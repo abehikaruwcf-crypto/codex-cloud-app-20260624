@@ -373,6 +373,8 @@ requireText("tests/matching-and-learning.test.ts", "backup validation rejects in
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects empty image data", "Backup empty image validation unit test exists");
 requireText("src/backup.ts", "validateBackupPayload", "Backup validation module exists");
 requireText("src/backup.ts", "画像データが空です", "Backup validation rejects empty image data");
+requireText("tests/matching-and-learning.test.ts", "backup validation rejects unsupported image references", "Backup image reference validation unit test exists");
+requireText("src/backup.ts", "画像データ形式が不正です", "Backup validation rejects unsupported image references");
 requireText("src/backup.ts", "createBackupPayload", "Backup export payload helper exists");
 requireText("src/main.tsx", "バックアップを書き出せませんでした", "Backup export validates before download");
 requireText("tests/matching-and-learning.test.ts", "backup export payload validates", "Backup export validation unit test exists");

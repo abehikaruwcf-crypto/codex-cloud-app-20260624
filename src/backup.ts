@@ -28,6 +28,16 @@ export function missingAngles(images: CharmImage[]) {
   return captureAngles.filter((angle) => !images.some((image) => image.angleLabel === angle.label));
 }
 
+function isSupportedImageReference(imageUrl: string) {
+  const normalizedImageUrl = imageUrl.trim();
+
+  return (
+    normalizedImageUrl.startsWith("data:") ||
+    normalizedImageUrl.startsWith("blob:") ||
+    /^https?:\/\/[^\s]+$/i.test(normalizedImageUrl)
+  );
+}
+
 function normalizeSignature(value: unknown): ImageSignature {
   const signature = isRecord(value) ? value : {};
 
@@ -187,6 +197,14 @@ export function validateBackupPayload(value: unknown, backup: BackupPayload) {
 
     if (emptyImageAngles.length > 0) {
       return `${normalizedManagementNumber} の画像データが空です: ${emptyImageAngles.join(" / ")}`;
+    }
+
+    const unsupportedImageAngles = charm.images
+      .filter((image) => !isSupportedImageReference(image.imageUrl))
+      .map((image) => image.angleLabel);
+
+    if (unsupportedImageAngles.length > 0) {
+      return `${normalizedManagementNumber} の画像データ形式が不正です: ${unsupportedImageAngles.join(" / ")}`;
     }
   }
 

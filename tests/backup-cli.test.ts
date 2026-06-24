@@ -44,3 +44,12 @@ test("backup validation CLI rejects empty image data", () => {
   assert.match(result.output, /画像データが空です/);
   assert.match(result.output, /CH-902/);
 });
+
+test("backup validation CLI rejects unsupported image references", () => {
+  const result = runBackupValidation("tests/fixtures/invalid-image-reference-backup.json");
+
+  assert.equal(result.ok, false);
+  assert.match(result.output, /Invalid backup:/);
+  assert.match(result.output, /画像データ形式が不正です/);
+  assert.match(result.output, /CH-903/);
+});

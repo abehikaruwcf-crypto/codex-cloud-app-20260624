@@ -227,6 +227,29 @@ test("backup validation rejects empty image data before import", () => {
   );
 });
 
+test("backup validation rejects unsupported image references before import", () => {
+  const payload = normalizeBackupPayload(
+    {
+      charms: [
+        {
+          managementNumber: "CH-036",
+          images: captureAngles.map((angle) => ({
+            ...image(`unsupported-${angle.id}`, angle.label, gold),
+            imageUrl: angle.label === "裏" ? "not-a-valid-image-reference" : `data:test/${angle.id}`,
+          })),
+        },
+      ],
+    },
+    backupOptions,
+  );
+
+  assert.ok(payload);
+  assert.equal(
+    validateBackupPayload({ version: 1 }, payload),
+    "CH-036 の画像データ形式が不正です: 裏",
+  );
+});
+
 test("backup validation rejects future backup versions before import", () => {
   const payload = normalizeBackupPayload(
     {
