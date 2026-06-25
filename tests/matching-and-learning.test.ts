@@ -8,7 +8,9 @@ import {
 } from "../src/backup";
 import { captureAngles, Charm, CharmImage, ImageSignature } from "../src/domain";
 import {
+  canDirectlyLearnCandidate,
   createLearningImages,
+  DIRECT_LEARNING_MIN_SCORE,
   MAX_IMAGES_PER_ANGLE,
   mergeLearningImages,
 } from "../src/learning";
@@ -112,6 +114,13 @@ test("confirmed learning images are copied with new ids, timestamps, and learnin
         learnedImage.createdAt === "2026-06-25T09:00:00.000Z",
     ),
   );
+});
+
+test("direct learning only allows medium or high confidence candidates", () => {
+  assert.equal(DIRECT_LEARNING_MIN_SCORE, 74);
+  assert.equal(canDirectlyLearnCandidate(88), true);
+  assert.equal(canDirectlyLearnCandidate(74), true);
+  assert.equal(canDirectlyLearnCandidate(73), false);
 });
 
 test("learning merge keeps the latest examples per angle and preserves registration angle grouping", () => {

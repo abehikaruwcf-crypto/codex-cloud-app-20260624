@@ -18,7 +18,7 @@ import {
   ImageSignature,
   View,
 } from "./domain";
-import { createLearningImages, mergeLearningImages } from "./learning";
+import { canDirectlyLearnCandidate, createLearningImages, mergeLearningImages } from "./learning";
 import { colorSignatureEngine } from "./matchingEngine";
 import "./styles.css";
 
@@ -654,6 +654,14 @@ function App() {
   }
 
   function confirmCandidate(candidate: Candidate) {
+    if (!canDirectlyLearnCandidate(candidate.score)) {
+      setMessage(
+        `${candidate.charm.managementNumber} は一致度が低いため、正しい管理番号を明示選択してから追加学習してください。`,
+      );
+      setCorrectionTargetId(candidate.charm.id);
+      return;
+    }
+
     const confirmed = window.confirm(
       `${candidate.charm.managementNumber} を正解として、今回の撮影画像を追加学習しますか？`,
     );
@@ -910,36 +918,44 @@ function App() {
             ) : null}
             <div className="result-list">
               {candidates.length > 0 ? (
-                candidates.map((candidate, index) => (
-                  <article className="candidate-card" key={candidate.charm.id}>
-                    <div className="candidate-rank">{index + 1}</div>
-                    <div>
-                      <h3>{candidate.charm.managementNumber}</h3>
-                      <p>
-                        {candidate.score}%一致 / {candidate.matchedAngles}方向
-                      </p>
-                    </div>
-                    {candidate.bestImage ? (
-                      <img src={candidate.bestImage.imageUrl} alt="" />
-                    ) : null}
-                    <div className="candidate-actions">
-                      <button
-                        type="button"
-                        aria-label={`${candidate.charm.managementNumber}を正解にする`}
-                        onClick={() => confirmCandidate(candidate)}
-                      >
-                        正解にする
-                      </button>
-                      <button
-                        type="button"
-                        aria-label={`${candidate.charm.managementNumber} は違う候補として記録`}
-                        onClick={() => logDecision(candidate, "rejected", 0)}
-                      >
-                        違う
-                      </button>
-                    </div>
-                  </article>
-                ))
+                candidates.map((candidate, index) => {
+                  const canDirectLearn = canDirectlyLearnCandidate(candidate.score);
+
+                  return (
+                    <article className="candidate-card" key={candidate.charm.id}>
+                      <div className="candidate-rank">{index + 1}</div>
+                      <div>
+                        <h3>{candidate.charm.managementNumber}</h3>
+                        <p>
+                          {candidate.score}%一致 / {candidate.matchedAngles}方向
+                        </p>
+                        {!canDirectLearn ? (
+                          <small>一致度が低いため、下の管理番号選択から確認してください。</small>
+                        ) : null}
+                      </div>
+                      {candidate.bestImage ? (
+                        <img src={candidate.bestImage.imageUrl} alt="" />
+                      ) : null}
+                      <div className="candidate-actions">
+                        <button
+                          type="button"
+                          aria-label={`${candidate.charm.managementNumber}を正解にする`}
+                          disabled={!canDirectLearn}
+                          onClick={() => confirmCandidate(candidate)}
+                        >
+                          正解にする
+                        </button>
+                        <button
+                          type="button"
+                          aria-label={`${candidate.charm.managementNumber} は違う候補として記録`}
+                          onClick={() => logDecision(candidate, "rejected", 0)}
+                        >
+                          違う
+                        </button>
+                      </div>
+                    </article>
+                  );
+                })
               ) : (
                 <p className="empty-state">登録済みチャームがありません。</p>
               )}

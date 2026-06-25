@@ -368,6 +368,8 @@ requireText("tests/release-signoff-command.test.ts", "release signoff command pa
 requireText("tests/release-input-template.test.ts", "maps final signoff values to apply-inputs JSON", "Release input template unit test exists");
 requireText("tests/matching-and-learning.test.ts", "matching ranks the closest charm", "Matching ranking unit test exists");
 requireText("tests/matching-and-learning.test.ts", "learning merge keeps the latest examples", "Learning cap unit test exists");
+requireText("tests/matching-and-learning.test.ts", "direct learning only allows medium or high confidence", "Direct learning confidence guard unit test exists");
+requireText("src/main.tsx", "一致度が低いため", "Low confidence direct learning guard exists");
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects duplicate management numbers", "Backup duplicate validation unit test exists");
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects incomplete six-angle models", "Backup angle validation unit test exists");
 requireText("tests/matching-and-learning.test.ts", "backup validation rejects empty image data", "Backup empty image validation unit test exists");

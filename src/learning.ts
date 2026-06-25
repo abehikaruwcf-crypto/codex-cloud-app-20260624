@@ -1,6 +1,7 @@
 import { angleSuggestions, Charm, CharmImage } from "./domain";
 
 export const MAX_IMAGES_PER_ANGLE = 8;
+export const DIRECT_LEARNING_MIN_SCORE = 74;
 
 type LearningImageOptions = {
   makeId: () => string;
@@ -17,6 +18,10 @@ export function createLearningImages(
     source: "confirmed-identification",
     createdAt: options.now(),
   }));
+}
+
+export function canDirectlyLearnCandidate(score: number) {
+  return score >= DIRECT_LEARNING_MIN_SCORE;
 }
 
 export function mergeLearningImages(charm: Charm, learnedImages: CharmImage[]): Charm {
