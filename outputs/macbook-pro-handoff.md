@@ -1,6 +1,6 @@
 # Charm ID MacBook Pro Handoff
 
-Last updated: 2026-06-25 JST
+Last updated: 2026-06-25 09:26 JST
 
 ## Quick Links
 
@@ -16,9 +16,13 @@ Last updated: 2026-06-25 JST
 - Current workspace on MacBook Air: `/Users/abehikarusub/Documents/Codex/2026-06-24/new-chat-9`
 - Git remote: `https://github.com/abehikaruwcf-crypto/codex-cloud-app-20260624.git`
 - Branch: `main`
+- Latest confirmed commit: `94d30fc`
+- Working tree on MacBook Air at pause: clean
 - Thread pin: reapplied as pinned
 
 The safest shared source of truth is GitHub `main`. If MacBook Air is shut down, continue from MacBook Pro by opening the pinned thread or cloning/pulling the repository on the Pro.
+
+Important limitation: this currently running MBA thread cannot be forcibly moved to another host from inside itself. The reliable continuation path is to use the pinned thread plus GitHub `main` as the durable project state. Once the MBP opens this thread or a repo-backed Codex session, it should pull `origin/main` and continue from there.
 
 ## Where Work Lives
 
@@ -40,6 +44,8 @@ Preferred path:
 2. Ask Codex on the Pro to continue from GitHub repository `abehikaruwcf-crypto/codex-cloud-app-20260624`.
 3. Use `git pull origin main` before editing and `git push origin main` after verified changes.
 4. Keep large or user-facing generated files under `outputs`.
+
+If Codex on the Pro asks which machine should run the work, choose the MacBook Pro host. In device lists it has appeared as `abehikarunoMBP.elecom`.
 
 If the repository is not already present on the Pro:
 
@@ -78,11 +84,19 @@ npm run dev:doctor
 
 Mobile can steer the work, but the actual local iOS/Xcode build still depends on whichever Mac is active. If both Macs may be closed, use Codex Cloud with this GitHub repository as the source of truth.
 
+For mobile-led work, keep this invariant: the MBP is the worker, GitHub `main` is the shared memory, and mobile only sends instructions. Ask for a commit and push after each verified checkpoint.
+
 Suggested mobile/MBP resume prompt:
 
 ```text
 Charm IDアプリ開発を続行して。GitHub repo abehikaruwcf-crypto/codex-cloud-app-20260624 の main を pull して、npm run appstore:status を確認し、ユーザー入力なしで進められるApp Store公開品質改善を実装・検証・commit・pushして。
 ログイン、2FA、外部送信、App Store提出、課金、削除、秘密情報表示だけ止めて。
+```
+
+Short resume prompt from mobile:
+
+```text
+Charm IDをMBPで続行。origin/mainをpullして、手動ゲート以外で進められる改善を検証込みでcommit/pushして。
 ```
 
 ## If MacBook Air Shuts Down
@@ -99,9 +113,17 @@ Before closing MacBook Air:
 ```bash
 git status --short
 git log -1 --oneline
+git ls-remote origin main
 ```
 
 The working tree should be clean and the latest useful work should be pushed to `origin/main`. If `git status --short` shows changes, commit and push them first or record exactly why they are intentionally local-only.
+
+Current pause check:
+
+```text
+git status --short: clean
+git log -1 --oneline: 94d30fc Validate persisted local datasets on startup
+```
 
 ## Approval-Light Progress Rules
 
