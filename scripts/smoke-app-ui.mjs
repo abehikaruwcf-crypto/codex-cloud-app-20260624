@@ -165,6 +165,35 @@ try {
   expect(fresh.count === "0件", "Fresh first launch should not preload demo data.");
   expect(fresh.onboardingTitle === "6方向登録と追加学習", "Fresh first launch should show onboarding.");
   expect(fresh.emptyLibrary?.includes("登録データがありません"), "Fresh empty library state should be present.");
+  await page.evaluate(() => {
+    localStorage.setItem("charm-id-camera-app-onboarding-dismissed", "true");
+    localStorage.setItem(
+      "charm-id-camera-app-charms",
+      JSON.stringify([
+        {
+          id: "stored-invalid",
+          managementNumber: "CH-910",
+          note: "",
+          createdAt: "2026-06-25T00:00:00.000Z",
+          images: [
+            {
+              id: "stored-invalid-front",
+              imageUrl: "javascript:alert(1)",
+              angleLabel: "表",
+              signature: { red: 0, green: 0, blue: 0, brightness: 0 },
+              source: "registration",
+              createdAt: "2026-06-25T00:00:00.000Z",
+            },
+          ],
+        },
+      ]),
+    );
+    localStorage.setItem("charm-id-camera-app-decisions", JSON.stringify({ invalid: true }));
+  });
+  await page.reload();
+  const recoveredStorage = await readState(page);
+  expect(recoveredStorage.count === "0件", "Invalid persisted charm data should be discarded on startup.");
+  expect(recoveredStorage.statusText === null, "Invalid persisted decision data should not render history status.");
 
   await page.goto(`${baseUrl}/?smokeError=1`);
   const errorState = await page.evaluate(() => ({

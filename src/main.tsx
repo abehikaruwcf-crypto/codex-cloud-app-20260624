@@ -5,6 +5,7 @@ import {
   createBackupPayload,
   missingAngles,
   normalizeBackupPayload,
+  normalizeDecisionLog,
   normalizeManagementNumber,
   validateBackupPayload,
 } from "./backup";
@@ -354,10 +355,20 @@ function loadDecisions() {
   }
 
   try {
-    return (JSON.parse(stored) as DecisionLog[]).map((log) => ({
-      ...log,
-      learnedImages: log.learnedImages ?? 0,
-    }));
+    const parsed = JSON.parse(stored) as unknown;
+
+    if (!Array.isArray(parsed)) {
+      return [];
+    }
+
+    return parsed
+      .map((log) =>
+        normalizeDecisionLog(log, {
+          makeId,
+          now: () => new Date().toISOString(),
+        }),
+      )
+      .filter((log): log is DecisionLog => Boolean(log));
   } catch {
     return [];
   }
@@ -371,13 +382,24 @@ function loadCharms() {
   }
 
   try {
-    return (JSON.parse(stored) as Charm[]).map((charm) => ({
-      ...charm,
-      images: charm.images.map((image) => ({
-        ...image,
-        source: image.source ?? "registration",
-      })),
-    }));
+    const parsed = JSON.parse(stored) as unknown;
+    const backup = normalizeBackupPayload(
+      {
+        version: 1,
+        charms: parsed,
+        decisionLogs: [],
+      },
+      {
+        makeId,
+        now: () => new Date().toISOString(),
+      },
+    );
+
+    if (!backup) {
+      return [];
+    }
+
+    return validateBackupPayload({ version: 1 }, backup) ? [] : backup.charms;
   } catch {
     return [];
   }
